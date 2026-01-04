@@ -157,7 +157,7 @@ finest magickal emporium.
 Where could my {color:lightblue2}moonsilver medallion{rgb:gray} be? Where?
 {choice}
 {item}Inquire about the medallion.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -330,7 +330,7 @@ We shall enhance its attributes at once.
 {item}Weapon{/item}
 {item}Ammunition{/item}
 {item}Back.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -344,7 +344,7 @@ We shall enhance its attributes at once.
 {item}Ammunition{/item}
 {item}Shield{/item}
 {item}Back.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -369,7 +369,7 @@ We shall enhance its attributes at once.
 {item}Hand Bomb{/item}
 {item}Measure{/item}
 {item}Back.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -380,7 +380,7 @@ We shall enhance its attributes at once.
 {item}Light Armor{/item}
 {item}Mystic Armor{/item}
 {item}Back.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -391,7 +391,7 @@ We shall enhance its attributes at once.
 {item}Light Helm{/item}
 {item}Mystic Helm{/item}
 {item}Back.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -407,7 +407,7 @@ We shall enhance its attributes at once.
 {item}Pendant{/item}
 {item}Ring{/item}
 {item}Back.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -419,7 +419,7 @@ We shall enhance its attributes at once.
 {item}Bomb{/item}
 {item}Shot{/item}
 {item}Back.{/item}
-{item}Leave{/item}
+{item}Leave.{/item}
 {/choice}
 {/dialog}
 
@@ -485,7 +485,7 @@ for refinement within this class.
 {item}{icon:wind}Wind element{/item}
 {item}{icon:holy}Holy element{/item}
 {item}{icon:dark}Dark element{/item}
-{item}Cleanse current element{/item}
+{item}Cleanse binding{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -738,20 +738,20 @@ Almost there...
 {dialog 74}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
-{item}{color:lightblue}Range{color:none}{/item}
-{item}{color:lightblue}Charge Time{color:none}{/item}
-{item}{color:lightblue}Attack Power{color:none}{/item}
-{item}{color:lightblue}Evade{color:none}{/item}
-{item}{color:lightblue}Knockback Chance{color:none}{/item}
-{item}{color:lightblue}Combo/Critical Chance{color:none}{/item}
-{item}{color:lightblue}On Hit Rate{color:none}{/item}
-{item}{color:lightblue}Max HP{color:none}{/item}
-{item}{color:lightblue}Max MP{color:none}{/item}
-{item}{color:lightblue}Strength{color:none}{/item}
-{item}{color:lightblue}Magick Power{color:none}{/item}
-{item}{color:lightblue}Vitality{color:none}{/item}
-{item}{color:lightblue}Speed{color:none}{/item}
-{item}Remove current refinement{/item}
+{item}Range{/item}
+{item}Charge Time{/item}
+{item}Attack Power{/item}
+{item}Evade{/item}
+{item}Knockback Chance{/item}
+{item}Combo/Critical Chance{/item}
+{item}On Hit Rate{/item}
+{item}Max HP{/item}
+{item}Max MP{/item}
+{item}Strength{/item}
+{item}Magick Power{/item}
+{item}Vitality{/item}
+{item}Speed{/item}
+{item}Cleanse refinement{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -759,15 +759,15 @@ Almost there...
 {dialog 75}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
-{item}{color:lightblue}Evade{color:none}{/item}
-{item}{color:lightblue}Magick Evade{color:none}{/item}
-{item}{color:lightblue}Max HP{color:none}{/item}
-{item}{color:lightblue}Max MP{color:none}{/item}
-{item}{color:lightblue}Strength{color:none}{/item}
-{item}{color:lightblue}Magick Power{color:none}{/item}
-{item}{color:lightblue}Vitality{color:none}{/item}
-{item}{color:lightblue}Speed{color:none}{/item}
-{item}Remove current refinement{/item}
+{item}Evade{/item}
+{item}Magick Evade{/item}
+{item}Max HP{/item}
+{item}Max MP{/item}
+{item}Strength{/item}
+{item}Magick Power{/item}
+{item}Vitality{/item}
+{item}Speed{/item}
+{item}Cleanse refinement{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -775,15 +775,15 @@ Almost there...
 {dialog 76}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
-{item}{color:lightblue}Defense{color:none}{/item}
-{item}{color:lightblue}Magick Resist{color:none}{/item}
-{item}{color:lightblue}Max HP{color:none}{/item}
-{item}{color:lightblue}Max MP{color:none}{/item}
-{item}{color:lightblue}Strength{color:none}{/item}
-{item}{color:lightblue}Magick Power{color:none}{/item}
-{item}{color:lightblue}Vitality{color:none}{/item}
-{item}{color:lightblue}Speed{color:none}{/item}
-{item}Remove current refinement{/item}
+{item}Defense{/item}
+{item}Magick Resist{/item}
+{item}Max HP{/item}
+{item}Max MP{/item}
+{item}Strength{/item}
+{item}Magick Power{/item}
+{item}Vitality{/item}
+{item}Speed{/item}
+{item}Cleanse refinement{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -791,16 +791,16 @@ Almost there...
 {dialog 77}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
-{item}{color:lightblue}Attack Power{color:none}{/item}
-{item}{color:lightblue}Evade{color:none}{/item}
-{item}{color:lightblue}On Hit Rate{color:none}{/item}
-{item}{color:lightblue}Max HP{color:none}{/item}
-{item}{color:lightblue}Max MP{color:none}{/item}
-{item}{color:lightblue}Strength{color:none}{/item}
-{item}{color:lightblue}Magick Power{color:none}{/item}
-{item}{color:lightblue}Vitality{color:none}{/item}
-{item}{color:lightblue}Speed{color:none}{/item}
-{item}Remove current refinement{/item}
+{item}Attack Power{/item}
+{item}Evade{/item}
+{item}On Hit Rate{/item}
+{item}Max HP{/item}
+{item}Max MP{/item}
+{item}Strength{/item}
+{item}Magick Power{/item}
+{item}Vitality{/item}
+{item}Speed{/item}
+{item}Cleanse refinement{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}

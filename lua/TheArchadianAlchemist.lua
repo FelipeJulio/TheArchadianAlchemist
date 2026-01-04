@@ -112,7 +112,14 @@ local addresses = {
 -- =================
 -- modules
 -- =================
-local config = {}
+local config = {
+    paths = {
+        equipment = "scripts/config/TheArchadianAlchemist/equipment.lua",
+        attribute = "scripts/config/TheArchadianAlchemist/attribute.lua",
+        element = "scripts/config/TheArchadianAlchemist/element.lua",
+        directory = "scripts/config/TheArchadianAlchemist/*.lua"
+    }
+}
 local valid = {}
 local mem = {}
 local flags = {}
@@ -412,9 +419,9 @@ end
 
 -- @description: load and parse all config files
 function config:load()
-    local equipmentConfig = self:external("scripts/config/TheArchadianAlchemist/equipment.lua", "equipment") or {}
-    local attributeConfig = self:external("scripts/config/TheArchadianAlchemist/attribute.lua", "attribute") or {}
-    local elementConfig = self:external("scripts/config/TheArchadianAlchemist/element.lua", "element") or {}
+    local equipmentConfig = self:external(self.paths.equipment, "equipment") or {}
+    local attributeConfig = self:external(self.paths.attribute, "attribute") or {}
+    local elementConfig = self:external(self.paths.element, "element") or {}
 
     local rawConfig = {
         equipment = equipmentConfig,
@@ -1325,8 +1332,14 @@ end
 -- handlers
 -- =================
 
--- @todo: implement onFileChange handler for hot reload
-function handlers:onFileChange()
+function handlers:onFileChange(filepath, stats, created, deleted)
+    if deleted then
+        return
+    end
+
+    print(string.format("[handlers:onFileChange] file reloaded %s", filepath))
+
+    config:load()
 end
 
 function handlers:onSave()
@@ -1386,6 +1399,10 @@ end
 
 event.registerEventAsync("onInitDone", function()
     config:load()
+end)
+
+event.registerFileChangeHandler(config.paths.directory, function(filepath, stats, created, deleted)
+    handlers:onFileChange(filepath, stats, created, deleted)
 end)
 
 event.registerSaveHandler("TheArchadianAlchemist", function(filepath)
