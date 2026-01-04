@@ -3593,7 +3593,7 @@ actor NPC_Alchemist(6) {
 
     setkutipakustatus(1);
     setunazukistatus(1);
-    setmeswinline(0, 4);
+    setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 44, 48, 0x03fe, 1);
     mesclose(0);
@@ -3634,7 +3634,7 @@ actor NPC_Alchemist(6) {
 
     setkutipakustatus(1);
     setunazukistatus(1);
-    setmeswinline(0, 4);
+    setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 45, 48, 0x03fe, 1);
     mesclose(0);
@@ -3668,7 +3668,7 @@ actor NPC_Alchemist(6) {
 
     setkutipakustatus(1);
     setunazukistatus(1);
-    setmeswinline(0, 4);
+    setmeswinline(0, 5);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 46, 48, 0x03fe, 1);
     mesclose(0);
@@ -3701,7 +3701,7 @@ actor NPC_Alchemist(6) {
 
     setkutipakustatus(1);
     setunazukistatus(1);
-    setmeswinline(0, 4);
+    setmeswinline(0, 5);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 47, 48, 0x03fe, 1);
     mesclose(0);
@@ -3734,7 +3734,7 @@ actor NPC_Alchemist(6) {
 
     setkutipakustatus(1);
     setunazukistatus(1);
-    setmeswinline(0, 4);
+    setmeswinline(0, 5);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 48, 48, 0x03fe, 1);
     mesclose(0);
@@ -3767,7 +3767,7 @@ actor NPC_Alchemist(6) {
 
     setkutipakustatus(1);
     setunazukistatus(1);
-    setmeswinline(0, 4);
+    setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 49, 48, 0x03fe, 1);
     mesclose(0);
@@ -3884,7 +3884,7 @@ actor NPC_Alchemist(6) {
     setkutipakustatus(1);
     setunazukistatus(1);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
+    setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 53, 48, 0x03fe, 1);
     mesclose(0);
@@ -4003,7 +4003,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
+    setmeswinline(0, 6);
     askpos(0, 0, 1);
     setkutipakustatus(1);
     setunazukistatus(1);
