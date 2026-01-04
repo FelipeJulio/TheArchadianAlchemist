@@ -1,0 +1,6 @@
+{format:ebp}
+
+{dialog 0}
+Exit
+{/dialog}
+
