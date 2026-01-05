@@ -337,6 +337,10 @@ function config:element(rawElements, elementNameToId)
             parsed[elementId] = {
                 upgrades = upgrades
             }
+        elseif elementName == "remove" then
+            parsed[9] = {
+                upgrades = upgrades
+            }
         end
     end
     return parsed
@@ -1163,17 +1167,20 @@ function loader:dispatch(base, addresses, config)
 
     -- load upgrade materials for attribute tier selection
     if flowStatus == 3 and valid:tier(tierId) then
-        loader:upgrade(base, addresses.equipments.upgrades, subcategoryId, tierId, categoryId, config)
+        loader:upgrade(base, addresses.equipments.upgrades, subcategoryId, tierId, categoryId, config, flowStatus)
 
         -- load tier values for attribute selection, skip if removal
     elseif flowStatus == 3 and subcategoryId and (valid:removal(subcategoryId) or valid:attribute(subcategoryId)) then
-        if not valid:removal(subcategoryId) then
+        if valid:removal(subcategoryId) then
+            -- load upgrade materials for attribute removal
+            loader:upgrade(base, addresses.equipments.upgrades, subcategoryId, nil, categoryId, config, flowStatus)
+        else
             loader:tier(base, addresses.obtained, subcategoryId, categoryId, config)
         end
 
         -- load upgrade materials for element selection
     elseif flowStatus == 2 and subcategoryId and (valid:element(subcategoryId) or valid:removal(subcategoryId)) then
-        loader:upgrade(base, addresses.equipments.upgrades, subcategoryId, nil, categoryId, config)
+        loader:upgrade(base, addresses.equipments.upgrades, subcategoryId, nil, categoryId, config, flowStatus)
 
         -- load equipment list for category selection
     elseif valid:category(categoryId) then
@@ -1214,20 +1221,27 @@ function loader:equipment(base, offset, categoryId, config)
 end
 
 -- @description: load upgrade materials into memory buffer
--- @params: base addr, offset, subcategory id, tier id, category id, config table
-function loader:upgrade(base, offset, subcategoryId, tierId, categoryId, config)
+-- @params: base addr, offset, subcategory id, tier id, category id, config table, flowStatus (optional)
+function loader:upgrade(base, offset, subcategoryId, tierId, categoryId, config, flowStatus)
     if not config then
         return false
     end
 
-    print(string.format("[loader:upgrade] subcategoryId %d, tierId %d, categoryId %d", subcategoryId, tierId or 0, categoryId or 0))
+    print(string.format("[loader:upgrade] subcategoryId %d, tierId %d, categoryId %d, flowStatus %d", subcategoryId, tierId or 0,
+        categoryId or 0, flowStatus or 0))
 
     local upgrades = nil
     if subcategoryId == 9 then
-        -- get upgrades for attribute removal
-        local attrData = config.attributes and config.attributes[9]
-        local rawUpgrades = attrData and (attrData[categoryId] and attrData[categoryId].upgrades or attrData.upgrades)
-        upgrades = rawUpgrades and valid:tier(tierId) and rawUpgrades[tierId] or rawUpgrades
+        -- get upgrades for removal (differentiate between element and attribute removal by flowStatus)
+        if flowStatus == 2 then
+            -- element removal
+            local elemData = config.elements and config.elements[9]
+            upgrades = elemData and elemData.upgrades
+        elseif flowStatus == 3 then
+            -- attribute removal
+            local attrData = config.attributes and config.attributes[9]
+            upgrades = attrData and (attrData[categoryId] and attrData[categoryId].upgrades or attrData.upgrades)
+        end
     elseif valid:tier(tierId) and categoryId then
         -- get upgrades for attribute tier
         local attrData = config.attributes and config.attributes[subcategoryId]

@@ -307,21 +307,23 @@ Welcome, my friend... pray, tell me,{wait}
 what alchemy shall we perform today?
 {choice}
 {item}Alter its very essence{/item}
-{item}Refine its qualities{/item}
+{item}Alter its qualities{/item}
 {item}Maybe later.{/item}
 {/choice}
 {/dialog}
 
 {dialog 41}
 {instant}Researcher
-You wish to alter its essence? Very well...{wait}
-We shall change its elemental nature.
+You wish to alter its essence?
+Very well...{wait}
+Then, let us bind an element.
 {/dialog}
 
 {dialog 42}
 {instant}Researcher
-You wish to refine its qualities? So be it...{wait}
-We shall enhance its attributes at once.
+You wish to refine its qualities?
+So be it...{wait}
+Then, we shall refine its attributes.
 {/dialog}
 
 {dialog 43}
@@ -477,14 +479,14 @@ for refinement within this class.
 {dialog 53}
 {speed}Which element shall be bound to {color:gold}{macro:7,0,1,0}{color:none}?
 {choice}
-{item}{icon:fire}Fire element{/item}
-{item}{icon:lightning}Lightning element{/item}
-{item}{icon:ice}Ice element{/item}
-{item}{icon:earth}Earth element{/item}
-{item}{icon:water}Water element{/item}
-{item}{icon:wind}Wind element{/item}
-{item}{icon:holy}Holy element{/item}
-{item}{icon:dark}Dark element{/item}
+{item}{scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}Fire element{/item}
+{item}{scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}Lightning element{/item}
+{item}{scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}Ice element{/item}
+{item}{scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}Earth element{/item}
+{item}{scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}Water element{/item}
+{item}{scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}Wind element{/item}
+{item}{scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}Holy element{/item}
+{item}{scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}Dark element{/item}
 {item}Cleanse binding{/item}
 {item}Back.{/item}
 {/choice}
@@ -492,7 +494,7 @@ for refinement within this class.
 
 {dialog 54}
 {instant}Researcher
-To bind the {icon:fire}{color:gold}Fire{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}{color:gold}Fire{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -504,7 +506,7 @@ Shall we proceed?
 
 {dialog 55}
 {instant}Researcher
-To bind the {icon:lightning}{color:gold}Lightning{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}{color:gold}Lightning{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -516,7 +518,7 @@ Shall we proceed?
 
 {dialog 56}
 {instant}Researcher
-To bind the {icon:ice}{color:gold}Ice{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}{color:gold}Ice{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -528,7 +530,7 @@ Shall we proceed?
 
 {dialog 57}
 {instant}Researcher
-To bind the {icon:earth}{color:gold}Earth{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}{color:gold}Earth{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -540,7 +542,7 @@ Shall we proceed?
 
 {dialog 58}
 {instant}Researcher
-To bind the {icon:water}{color:gold}Water{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}{color:gold}Water{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -552,7 +554,7 @@ Shall we proceed?
 
 {dialog 59}
 {instant}Researcher
-To bind the {icon:wind}{color:gold}Wind{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}{color:gold}Wind{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -564,7 +566,7 @@ Shall we proceed?
 
 {dialog 60}
 {instant}Researcher
-To bind the {icon:holy}{color:gold}Holy{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}{color:gold}Holy{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -576,7 +578,7 @@ Shall we proceed?
 
 {dialog 61}
 {instant}Researcher
-To bind the {icon:dark}{color:gold}Dark{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
+To bind the {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}{color:gold}Dark{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
 {color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
@@ -615,8 +617,8 @@ What would you like to do now?
 {instant}Researcher
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none}
 absorbs heat in perfect balance.{wait}
-See how {icon:fire}{color:gold}Fire{color:none} binds,
-lively yet obedient.{wait}
+The {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}Fire element burns bright and steady,
+its passion tempered by perfect control.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -628,8 +630,8 @@ What would you like to do now?
 {instant}Researcher
 Impeccable... the {color:gold}{macro:7,0,1,0}{color:none}
 channels lightning with no resistance.{wait}
-The power of {icon:lightning}{color:gold}Lightning{color:none}
-moves fast and precise.{wait}
+The {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}Lightning element surges and dances,
+swift power bound in measured rhythm.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -641,8 +643,8 @@ What would you like to do now?
 {instant}Researcher
 Remarkable... the {color:gold}{macro:7,0,1,0}{color:none}
 crystallizes as the cold seals it firm.{wait}
-{icon:ice}{color:gold}Ice{color:none} affinity formed flawless
-and pure.{wait}
+The {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}Ice element settles pure and clear,
+its stillness gleaming with silent strength.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -654,8 +656,8 @@ What would you like to do now?
 {instant}Researcher
 Wonderful... the {color:gold}{macro:7,0,1,0}{color:none}
 settles into a strong and firm bond.{wait}
-{icon:earth}{color:gold}Earth{color:none} essence holds solid
-and steady.{wait}
+The {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}Earth element stands calm and sure,
+unyielding, steadfast, and resolute.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -667,8 +669,8 @@ What would you like to do now?
 {instant}Researcher
 Great... the {color:gold}{macro:7,0,1,0}{color:none}
 adapts smooth and perfectly balanced.{wait}
-{icon:water}{color:gold}Water{color:none} flows true,
-exactly as expected.{wait}
+The {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}Water element flows soft and true,
+ever adapting, yet never astray.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -680,8 +682,8 @@ What would you like to do now?
 {instant}Researcher
 Perfect... the {color:gold}{macro:7,0,1,0}{color:none}
 resonates lightly, full of motion.{wait}
-{icon:wind}{color:gold}Wind{color:none} flows free,
-responsive and calm.{wait}
+The {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}Wind element drifts light and free,
+its motion graceful, its form unseen.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -693,8 +695,8 @@ What would you like to do now?
 {instant}Researcher
 Admirable... the {color:gold}{macro:7,0,1,0}{color:none}
 accepts the light with pure grace.{wait}
-{icon:holy}{color:gold}Holy{color:none} shines clear,
-no rejection at all.{wait}
+The {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}Holy element shines calm and pure,
+a flawless light untouched by doubt.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -706,8 +708,8 @@ What would you like to do now?
 {instant}Researcher
 Splendid... the {color:gold}{macro:7,0,1,0}{color:none}
 draws in darkness, still and calm.{wait}
-{icon:dark}{color:gold}Dark{color:none} power accepted
-without resistance.{wait}
+The {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}Dark element stirs deep and quiet,
+a power veiled, yet perfectly bound.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1325,7 +1327,7 @@ This overwrites the current formula. Proceed?
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 Residual warmth lingers within the structure.{wait}
-I observe signs of a binding to {icon:fire}{color:gold}Fire{color:none}.
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}{color:gold}Fire{color:none}.
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1337,7 +1339,7 @@ This overwrites the current essence. Proceed?
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 A swift residual charge remains present.{wait}
-I observe signs of a binding to {icon:lightning}{color:gold}Lightning{color:none}.
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}{color:gold}Lightning{color:none}.
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1349,7 +1351,7 @@ This overwrites the current essence. Proceed?
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 Preserved cold clings to its surface.{wait}
-I observe signs of a binding to {icon:ice}{color:gold}Ice{color:none}.
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}{color:gold}Ice{color:none}.
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1361,7 +1363,7 @@ This overwrites the current essence. Proceed?
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 Its weight and stability are unmistakable.{wait}
-I observe signs of a binding to {icon:earth}{color:gold}Earth{color:none}.
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}{color:gold}Earth{color:none}.
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1373,7 +1375,7 @@ This overwrites the current essence. Proceed?
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 A fluid resonance flows through it.{wait}
-I observe signs of a binding to {icon:water}{color:gold}Water{color:none}.
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}{color:gold}Water{color:none}.
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1384,8 +1386,8 @@ This overwrites the current essence. Proceed?
 {dialog 125}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-A light and responsive flow persists.{wait}
-I observe signs of a binding to {icon:wind}{color:gold}Wind{color:none}.{wait}
+Air moves freely within its core.{wait}
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}{color:gold}Wind{color:none}.{wait}
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1396,8 +1398,8 @@ This overwrites the current essence. Proceed?
 {dialog 126}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-Air moves freely within its core.{wait}
-I observe signs of a binding to {icon:wind}{color:gold}Wind{color:none}.{wait}
+A pure and unwavering radiance shines.{wait}
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}{color:gold}Holy{color:none}
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1408,8 +1410,8 @@ This overwrites the current essence. Proceed?
 {dialog 127}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-A pure and unwavering radiance shines.{wait}
-I observe signs of a binding to {icon:holy}{color:gold}Holy{color:none}
+A faint shadow pulses within its core.{wait}
+I observe signs of a binding to {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}{color:gold}Dark{color:none}.
 This overwrites the current essence. Proceed?
 {choice}
 {item}Do it!{/item}
@@ -1419,25 +1421,13 @@ This overwrites the current essence. Proceed?
 
 {dialog 128}
 {instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-A silent pull of shadow persists.{wait}
-I observe signs of a binding to {icon:dark}{color:gold}Dark{color:none}.
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 129}
-{instant}Researcher
 Let me begin...{waitn1:2}
 Reagents align, impurities fade...{waitn1:2}
 Flow stabilizes, energy minimal...{waitn1:2}
 Structure... steady...
 {/dialog}
 
-{dialog 130}
+{dialog 129}
 {instant}Researcher
 Proceeding carefully...{waitn1:2}
 Vessels steady, heat drives distillation...{waitn1:2}
@@ -1445,7 +1435,7 @@ Essence separates, traces fade...{waitn1:2}
 Distillate... stable...
 {/dialog}
 
-{dialog 131}
+{dialog 130}
 {instant}Researcher
 Focus now...{waitn1:2}
 Catalyst reacts, bonds shift...{waitn1:2}

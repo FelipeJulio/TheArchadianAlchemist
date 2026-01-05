@@ -3567,7 +3567,6 @@ actor NPC_Alchemist(6) {
   dialog_40:
     flow_poll_mode = 1;
 
-
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 40);
@@ -3576,13 +3575,25 @@ actor NPC_Alchemist(6) {
 
     if (local_choice == 0) {
       flow_status = 2;
-      goto dialog_43;
+      goto dialog_41;
     } else if (local_choice == 1) {
       flow_status = 3;
-      goto dialog_44;
+      goto dialog_42;
     } else if (local_choice == 2) {
       goto dialog_51;
     }
+
+  dialog_41:
+    flow_poll_mode = 1;
+    amese(0, 0x01000000 | 41);
+    messync(0, 1);
+    goto dialog_43;
+
+  dialog_42:
+    flow_poll_mode = 1;
+    amese(0, 0x01000000 | 42);
+    messync(0, 1);
+    goto dialog_44;
 
   // @description: element category selection
   dialog_43:
@@ -4239,9 +4250,9 @@ actor NPC_Alchemist(6) {
         case 6:
           goto dialog_125;
         case 7:
-          goto dialog_127;
+          goto dialog_126;
         case 8:
-          goto dialog_128;
+          goto dialog_127;
         default:
           goto dialog_73;
       }
@@ -4322,7 +4333,7 @@ actor NPC_Alchemist(6) {
     }
     goto dialog_73;
 
-  dialog_127:
+  dialog_126:
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
@@ -4334,7 +4345,7 @@ actor NPC_Alchemist(6) {
     }
     goto dialog_73;
 
-  dialog_128:
+  dialog_127:
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
@@ -5452,7 +5463,7 @@ actor NPC_Alchemist(6) {
     flow_success = 1;
     wait(14);
     flow_success = 0;
-    goto dialog_129;
+    goto dialog_128;
 
   // @description: tier 2 confirmation
   dialog_96:
@@ -5491,7 +5502,7 @@ actor NPC_Alchemist(6) {
     flow_success = 1;
     wait(14);
     flow_success = 0;
-    goto dialog_130;
+    goto dialog_129;
 
   // @description: tier 3 confirmation
   dialog_97:
@@ -5530,7 +5541,7 @@ actor NPC_Alchemist(6) {
     flow_success = 1;
     wait(14);
     flow_success = 0;
-    goto dialog_131;
+    goto dialog_130;
 
   // @description: remove attribute
   dialog_98:
@@ -5978,7 +5989,7 @@ actor NPC_Alchemist(6) {
     }
 
   // @description: tier 1 animation
-  dialog_129:
+  dialog_128:
     flow_poll_mode = 1;
     amese(0, 0x01000000 | 129);
     messync(0, 1);
@@ -5988,7 +5999,7 @@ actor NPC_Alchemist(6) {
     goto attribute_success_dialog;
 
   // @description: tier 2 animation
-  dialog_130:
+  dialog_129:
     flow_poll_mode = 1;
     amese(0, 0x01000000 | 130);
     messync(0, 1);
@@ -5998,7 +6009,7 @@ actor NPC_Alchemist(6) {
     goto attribute_success_dialog;
 
   // @description: tier 3 animation
-  dialog_131:
+  dialog_130:
     flow_poll_mode = 1;
     amese(0, 0x01000000 | 131);
     messync(0, 1);
