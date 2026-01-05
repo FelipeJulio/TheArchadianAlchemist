@@ -1442,3 +1442,27 @@ Catalyst reacts, bonds shift...{waitn1:2}
 Matrix adapts, transformation holds...{waitn1:2}
 Synchronization... almost...
 {/dialog}
+
+{dialog 131}
+{instant}Researcher
+Wait... I see no traces of bound essence...{waitn1:2}
+It appears {color:gold}{macro:7,0,1,0}{color:none} holds no element binded.
+Nothing can be done with it.{wait}
+What would you like to do now?
+{choice}
+{item}Try another.{/item}
+{item}That is all.{/item}
+{/choice}
+{/dialog}
+
+{dialog 132}
+{instant}Researcher
+Wait... I see no traces of alchemical process...{waitn1:2}
+It seems {color:gold}{macro:7,0,1,0}{color:none} bears no refined qualities.
+Nothing can be done with it.{wait}
+What would you like to do now?
+{choice}
+{item}Try another.{/item}
+{item}That is all.{/item}
+{/choice}
+{/dialog}
