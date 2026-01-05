@@ -3404,6 +3404,7 @@ symlink NPC07(NPC01) : 5;
 actor NPC_Alchemist(6) {
   // @description: pause idle animations during dialog
   int stop_random_motion;
+	int rantom_move_head;
   // @description: player choice
   int local_choice;
   // @description: equipment category
@@ -3456,17 +3457,28 @@ actor NPC_Alchemist(6) {
     // hideshadow();
     // setnavimapfootmarkstatus(1);
 
-    setpos(11.4, 3.376, 1.8);
-    dir(-0.8);
-    bindp2_d4(0x03000004, 3, 1);
-    setweight(-1);
-    set_ignore_hitgroup(1);
-    fieldsignmes(0x01000000 | 1059);
-    setnpcname(0x0423);
-    stdmotionread(16);
-    stdmotionreadsync();
-    stdmotionplay(0x01000000);
-    setnavimapfootmarkstatus(1);
+
+		hidecomplete();
+
+		modelread(0x03000004);
+		modelreadsync(0x03000004);
+		bindp2_d4(0x03000004, 3, 2);
+		stdmotionread(16);
+		stdmotionreadsync();
+		stdmotionplay_2c2(0x0100001b, 6);
+		fieldsignmes(0x01000000 | 1059);
+		setnpcname(0x0423);
+
+		setpos(11.4, 3.376, 1.8);
+		dir(-0.6);
+		setweight(-1);
+		set_ignore_hitgroup(1);
+
+		clearhidecomplete();
+		setnavimapfootmarkstatus(1);
+		rgbatrans(1, 1, 1, 1, 10);
+
+		hideshadow();
 
     return;
   }
@@ -3495,20 +3507,39 @@ actor NPC_Alchemist(6) {
     while (true) {
       if (stop_random_motion == 1) {
         wait(1);
+				lookatoff();
         continue;
       }
-      sysLookata(-1);
+
       motionplay_bb(0x10000000, 20);
       wait(1);
       motionsync_282(1);
-      sysLookata(1);
-      wait((rand_29(90) + 90));
+
+			rantom_move_head = rand_29(2);
+			if (rantom_move_head == 0)
+			{
+				lookatoff();
+			}
+			else
+			{
+				rantom_move_head = rand_29(2);
+				if (rantom_move_head == 0)
+				{
+					sysLookata(-1);
+				}
+				else
+				{
+					sysLookata(0);
+				}
+			}
+
+      wait((rand_29(180) + 90));
     }
   }
 
   // @description: dialog handler
   function talk(2) {
-    stop_random_motion = 0;
+    stop_random_motion = 1;
     flow_status = 0;
     flow_poll_mode = 0;
     flow_selected = 0;
@@ -3520,7 +3551,6 @@ actor NPC_Alchemist(6) {
     selected_equipment_id = 0;
     selected_tier = 0;
 
-    lookatoff();
     sethpmenu(0);
     ucoff();
     settrapshowstatus(0);
@@ -3529,20 +3559,18 @@ actor NPC_Alchemist(6) {
       turnsync();
       stdmotionplay_2c2(0x01000002, 20);
     }
+		setkutipakustatus(1);
+    setunazukistatus(1);
+    setkubifuristatus(1);
 
   // @description: main menu
   dialog_40:
     flow_poll_mode = 1;
-    stop_random_motion = 1;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
 
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 40);
-    setkubifuristatus(0);
-    setkutipakustatus(0);
     mesclose(0);
     messync(0, 1);
 
@@ -3562,15 +3590,11 @@ actor NPC_Alchemist(6) {
     selected_subcategory = 0;
     flow_load_equipment = 0;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 43, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 2) {
       goto dialog_40;
@@ -3592,15 +3616,11 @@ actor NPC_Alchemist(6) {
     selected_subcategory = 0;
     flow_load_equipment = 0;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 44, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 6) {
       goto dialog_40;
@@ -3633,15 +3653,11 @@ actor NPC_Alchemist(6) {
     selected_subcategory = 0;
     flow_load_equipment = 0;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 45, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 17) {
       if (flow_status == 2) {
@@ -3667,15 +3683,11 @@ actor NPC_Alchemist(6) {
     selected_subcategory = 0;
     flow_load_equipment = 0;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 5);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 46, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 3) {
       if (flow_status == 2) {
         goto dialog_43;
@@ -3700,15 +3712,11 @@ actor NPC_Alchemist(6) {
     selected_subcategory = 0;
     flow_load_equipment = 0;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 5);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 47, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 3) {
       if (flow_status == 2) {
         goto dialog_43;
@@ -3733,15 +3741,11 @@ actor NPC_Alchemist(6) {
     selected_subcategory = 0;
     flow_load_equipment = 0;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 5);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 48, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 8) {
       if (flow_status == 2) {
         goto dialog_43;
@@ -3766,15 +3770,11 @@ actor NPC_Alchemist(6) {
     selected_subcategory = 0;
     flow_load_equipment = 0;
 
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 49, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 4) {
       if (flow_status == 2) {
         goto dialog_43;
@@ -3825,16 +3825,12 @@ actor NPC_Alchemist(6) {
     }
 
     if (local_equipment_qtty == 0) {
-      setkutipakustatus(1);
-      setunazukistatus(1);
       amese(0, 0x01000000 | 52);
       messync(0, 1);
-      setkutipakustatus(0);
-      setunazukistatus(0);
       goto return_to_category_dialog;
     }
 
-    for (local_i = local_equipment_qtty; local_i < 31; local_i++) {
+    for (local_i = local_equipment_qtty; local_i <= 30; local_i++) {
       setaskselectignore(0, local_i);
     }
 
@@ -3845,13 +3841,9 @@ actor NPC_Alchemist(6) {
     }
 
     askpos(0, 0, local_equipment_qtty + 1);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     local_equipment_index = aask(0, 0x01000000 | 50, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_equipment_index >= local_equipment_qtty) {
       goto return_to_category_dialog;
     }
@@ -3882,16 +3874,12 @@ actor NPC_Alchemist(6) {
   // @description: element selection
   dialog_53:
     flow_poll_mode = 2;
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmeswinline(0, 6);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 53, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 9) {
       goto dialog_50;
     }
@@ -3939,15 +3927,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 12, 0, upgrade_gil[0]);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 54);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -3977,15 +3961,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 12, 0, upgrade_gil[0]);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 55);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4017,13 +3997,9 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, upgrade_gil[0]);
     setmeswinline(0, 6);
     askpos(0, 0, 1);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     local_choice = aaske(0, 0x01000000 | 56);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 1) {
       goto dialog_50;
@@ -4055,15 +4031,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 12, 0, upgrade_gil[0]);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 57);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4093,15 +4065,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 12, 0, upgrade_gil[0]);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 58);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4131,15 +4099,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 12, 0, upgrade_gil[0]);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 59);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4169,15 +4133,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 12, 0, upgrade_gil[0]);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 60);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4207,15 +4167,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 12, 0, upgrade_gil[0]);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 61);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 1) {
       goto dialog_50;
@@ -4246,15 +4202,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 62);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4298,15 +4250,11 @@ actor NPC_Alchemist(6) {
 
   dialog_120:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 120);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4314,15 +4262,11 @@ actor NPC_Alchemist(6) {
 
   dialog_121:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 121);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 1) {
       goto dialog_50;
@@ -4332,15 +4276,11 @@ actor NPC_Alchemist(6) {
 
   dialog_122:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 122);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4348,15 +4288,11 @@ actor NPC_Alchemist(6) {
 
   dialog_123:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 123);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4364,15 +4300,11 @@ actor NPC_Alchemist(6) {
 
   dialog_124:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 124);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4380,15 +4312,11 @@ actor NPC_Alchemist(6) {
 
   dialog_125:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 125);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4396,15 +4324,11 @@ actor NPC_Alchemist(6) {
 
   dialog_127:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 127);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4412,15 +4336,11 @@ actor NPC_Alchemist(6) {
 
   dialog_128:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 128);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 1) {
       goto dialog_50;
     }
@@ -4429,12 +4349,8 @@ actor NPC_Alchemist(6) {
   // @description: alchemy animation
   dialog_73:
     flow_poll_mode = 1;
-    setkutipakustatus(1);
-    setunazukistatus(1);
     amese(0, 0x01000000 | 73);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     sebsoundplay(0, 38);
     if (selected_subcategory != 9) {
@@ -4481,15 +4397,11 @@ actor NPC_Alchemist(6) {
   // @description: not enough items
   dialog_63:
     flow_poll_mode = 1;
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 63);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4498,15 +4410,11 @@ actor NPC_Alchemist(6) {
 
   dialog_64:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 64);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 0) {
       goto dialog_50;
@@ -4523,15 +4431,11 @@ actor NPC_Alchemist(6) {
 
   dialog_65:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 65);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4547,15 +4451,11 @@ actor NPC_Alchemist(6) {
 
   dialog_66:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 66);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4571,15 +4471,11 @@ actor NPC_Alchemist(6) {
 
   dialog_67:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 67);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4595,15 +4491,11 @@ actor NPC_Alchemist(6) {
 
   dialog_68:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 68);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4619,15 +4511,11 @@ actor NPC_Alchemist(6) {
 
   dialog_69:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 69);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4643,15 +4531,11 @@ actor NPC_Alchemist(6) {
 
   dialog_70:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 70);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4667,15 +4551,11 @@ actor NPC_Alchemist(6) {
 
   dialog_71:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 71);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4691,15 +4571,11 @@ actor NPC_Alchemist(6) {
 
   dialog_72:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 72);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
@@ -4730,16 +4606,12 @@ actor NPC_Alchemist(6) {
   // @description: weapon attributes menu
   dialog_74:
     flow_poll_mode = 2;
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmesmacro(0, 0, 1, selected_equipment_id);
     setmeswinline(0, 7);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 74, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 14) {
       goto dialog_50;
     }
@@ -4790,16 +4662,12 @@ actor NPC_Alchemist(6) {
 
   dialog_75:
     flow_poll_mode = 2;
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmesmacro(0, 0, 1, selected_equipment_id);
     setmeswinline(0, 7);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 75, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 9) {
       goto dialog_50;
     }
@@ -4835,16 +4703,12 @@ actor NPC_Alchemist(6) {
 
   dialog_76:
     flow_poll_mode = 2;
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmesmacro(0, 0, 1, selected_equipment_id);
     setmeswinline(0, 7);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 76, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 9) {
       goto dialog_50;
     }
@@ -4880,16 +4744,12 @@ actor NPC_Alchemist(6) {
 
   dialog_77:
     flow_poll_mode = 2;
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmesmacro(0, 0, 1, selected_equipment_id);
     setmeswinline(0, 7);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 77, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
     if (local_choice == 10) {
       goto dialog_50;
     }
@@ -4936,15 +4796,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 78);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -4975,15 +4831,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 79);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -5014,15 +4866,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 80);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -5053,15 +4901,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 81);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -5092,15 +4936,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 82);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -5131,15 +4971,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 83);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -5170,15 +5006,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 84);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -5244,15 +5076,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 86);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -5283,15 +5111,11 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 8, 0, obtained_tier1);
     setmesmacro(0, 9, 0, obtained_tier2);
     setmesmacro(0, 10, 0, obtained_tier3);
-    setkutipakustatus(1);
-    setunazukistatus(1);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 87);
     mesclose(0);
     messync(0, 1);
-    setkutipakustatus(0);
-    setunazukistatus(0);
 
     if (local_choice == 3) {
       goto return_to_attribute_menu;
@@ -6203,8 +6027,10 @@ actor NPC_Alchemist(6) {
     selected_equipment_id = 0;
     selected_tier = 0;
 
+		setkutipakustatus(0);
+    setunazukistatus(0);
     setkubifuristatus(0);
-    setkutipakustatus(0);
+
     ucon();
     sethpmenu(1);
     clear_force_char_nearfade();

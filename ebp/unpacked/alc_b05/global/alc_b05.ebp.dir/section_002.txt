@@ -308,7 +308,7 @@ what alchemy shall we perform today?
 {choice}
 {item}Alter its very essence{/item}
 {item}Refine its qualities{/item}
-{item}Perhaps another time{/item}
+{item}Maybe later.{/item}
 {/choice}
 {/dialog}
 
@@ -494,7 +494,7 @@ for refinement within this class.
 {instant}Researcher
 To bind the {icon:fire}{color:gold}Fire{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -506,7 +506,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:lightning}{color:gold}Lightning{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -518,7 +518,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:ice}{color:gold}Ice{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -530,7 +530,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:earth}{color:gold}Earth{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -542,7 +542,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:water}{color:gold}Water{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -554,7 +554,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:wind}{color:gold}Wind{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -566,7 +566,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:holy}{color:gold}Holy{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -578,7 +578,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:dark}{color:gold}Dark{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -592,7 +592,7 @@ I must warn you...{wait}
 Unbinding an element once altered is no simple task.{wait}
 To cleanse the {color:gold}{macro:7,0,1,0}{color:none} of its current essence,
 the following reagents will be required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed with the cleansing?
 {item}Do it!{/item}
@@ -809,9 +809,9 @@ Almost there...
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Range{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -820,9 +820,9 @@ Which reagents will refine the {color:lightblue}Range{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Charge Time{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight decrease {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate decrease {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great decrease {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight decrease by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate decrease by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great decrease by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -831,9 +831,9 @@ Which reagents will refine the {color:lightblue}Charge Time{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Attack Power{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -842,9 +842,9 @@ Which reagents will refine the {color:lightblue}Attack Power{color:none} formula
 {instant}Researcher
 Which reagents will refine the {color:lightblue}On Hit Rate{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -853,9 +853,9 @@ Which reagents will refine the {color:lightblue}On Hit Rate{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Knockback Chance{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -864,9 +864,9 @@ Which reagents will refine the {color:lightblue}Knockback Chance{color:none} for
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Combo/Critical Chance{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -875,9 +875,9 @@ Which reagents will refine the {color:lightblue}Combo/Critical Chance{color:none
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -886,9 +886,9 @@ Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -897,9 +897,9 @@ Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Magick Evade{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -908,9 +908,9 @@ Which reagents will refine the {color:lightblue}Magick Evade{color:none} formula
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Defense{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -919,9 +919,9 @@ Which reagents will refine the {color:lightblue}Defense{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Magick Resist{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -930,9 +930,9 @@ Which reagents will refine the {color:lightblue}Magick Resist{color:none} formul
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Max HP{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -941,9 +941,9 @@ Which reagents will refine the {color:lightblue}Max HP{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Max MP{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -952,9 +952,9 @@ Which reagents will refine the {color:lightblue}Max MP{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Strength{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -963,9 +963,9 @@ Which reagents will refine the {color:lightblue}Strength{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Magick Power{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -974,9 +974,9 @@ Which reagents will refine the {color:lightblue}Magick Power{color:none} formula
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Vitality{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
@@ -985,19 +985,19 @@ Which reagents will refine the {color:lightblue}Vitality{color:none} formula?
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Speed{color:none} formula?
 {choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase {color:gold}{macro:10,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
+{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
 
 {dialog 95}
 {instant}Researcher
-Splendid, we shall apply {color:lightblue}Alchemical Refinement{color:none}
+We shall apply {color:lightblue}Alchemical Refinement{color:none}
 to the {color:gold}{macro:7,0,1,0}{color:none}.
 A simple process, for modest reagents.{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed?
 {choice}
 {item}Let's do it!{/item}
@@ -1007,10 +1007,10 @@ Shall we proceed?
 
 {dialog 96}
 {instant}Researcher
-Excellent, we shall employ {color:lightblue}Stabilized Distillation{color:none}
+We shall employ {color:lightblue}Stabilized Distillation{color:none}
 on the {color:gold}{macro:7,0,1,0}{color:none}.
 A refined method, for stable reagents.{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed?
 {choice}
 {item}Let's do it!{/item}
@@ -1020,10 +1020,10 @@ Shall we proceed?
 
 {dialog 97}
 {instant}Researcher
-Magnificent, we shall invoke {color:lightblue}Catalytic Transmutation{color:none}
+We shall invoke {color:lightblue}Catalytic Transmutation{color:none}
 upon the {color:gold}{macro:7,0,1,0}{color:none}.
 An advanced process, for superior reagents.{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed?
 {choice}
 {item}Let's do it!{/item}
@@ -1037,7 +1037,7 @@ I must caution you...{wait}
 Undoing a refinement is a delicate process.{wait}
 To cleanse the {color:gold}{macro:7,0,1,0}{color:none} of its current refinement,
 the following reagents will be required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
+{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed with the cleansing?
 {choice}
 {item}Do it!{/item}
@@ -1047,7 +1047,7 @@ Shall we proceed with the cleansing?
 
 {dialog 99}
 {instant}Researcher
-Splendid... the {color:gold}{macro:7,0,1,0}{color:none} adjusted to the refinement.
+Excellent... the {color:gold}{macro:7,0,1,0}{color:none} adapted to refinement.
 {color:lightblue}Range{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
 Its reach now extends farther with steady precision.{wait}
 What would you like to do now?
@@ -1059,9 +1059,10 @@ What would you like to do now?
 
 {dialog 100}
 {instant}Researcher
-Impeccable... the {color:gold}{macro:7,0,1,0}{color:none} synchronized with the process.
+Splendid... the {color:gold}{macro:7,0,1,0}{color:none} synchronized successfully.
 {color:lightblue}Charge Time{color:none} decreased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Energy gathers faster without destabilizing the flow.{wait}
+Energy gathers faster without
+destabilizing the flow.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1071,9 +1072,10 @@ What would you like to do now?
 
 {dialog 101}
 {instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} absorbed the alteration.
+Excellent... the {color:gold}{macro:7,0,1,0}{color:none} absorbed the change.
 {color:lightblue}Attack Power{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Each strike now lands with greater force.{wait}
+Each strike now lands
+with greater force.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1085,7 +1087,8 @@ What would you like to do now?
 {instant}Researcher
 Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} refined its trigger.
 {color:lightblue}On Hit Rate{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Effects now activate with greater consistency.{wait}
+Effects now activate
+with greater consistency.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1095,9 +1098,10 @@ What would you like to do now?
 
 {dialog 103}
 {instant}Researcher
-Impeccable... the {color:gold}{macro:7,0,1,0}{color:none} stabilized its force.
+Brilliant... the {color:gold}{macro:7,0,1,0}{color:none} stabilized its force.
 {color:lightblue}Knockback Chance{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Impacts now push enemies back more reliably.{wait}
+Impacts now push enemies
+back more reliably.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1107,9 +1111,10 @@ What would you like to do now?
 
 {dialog 104}
 {instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} aligned its momentum.
+Perfect... the {color:gold}{macro:7,0,1,0}{color:none} aligned its momentum.
 {color:lightblue}Critical Rate{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Critical strikes now emerge more naturally.{wait}
+Critical strikes now
+emerge more naturally.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1119,9 +1124,10 @@ What would you like to do now?
 
 {dialog 105}
 {instant}Researcher
-Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} adapted its balance.
+Exceptional... the {color:gold}{macro:7,0,1,0}{color:none} adapted its balance.
 {color:lightblue}Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Weapon strikes are avoided with improved timing.{wait}
+Weapon strikes are avoided
+with improved timing.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1131,9 +1137,10 @@ What would you like to do now?
 
 {dialog 106}
 {instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} refined its defense.
+Excellent... the {color:gold}{macro:7,0,1,0}{color:none} refined its guard.
 {color:lightblue}Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Shielded movements now react more efficiently.{wait}
+Shielded movements now
+react more efficiently.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1143,9 +1150,10 @@ What would you like to do now?
 
 {dialog 107}
 {instant}Researcher
-Impeccable... the {color:gold}{macro:7,0,1,0}{color:none} tuned its arcane guard.
+Admirable... the {color:gold}{macro:7,0,1,0}{color:none} tuned its ward.
 {color:lightblue}Magick Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Arcane attacks are deflected more precisely.{wait}
+Arcane attacks are deflected
+more precisely.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1155,9 +1163,10 @@ What would you like to do now?
 
 {dialog 108}
 {instant}Researcher
-Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} reinforced its structure.
+Flawless... the {color:gold}{macro:7,0,1,0}{color:none} reinforced its frame.
 {color:lightblue}Defense{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Incoming physical damage is reduced more effectively.{wait}
+Incoming physical damage is
+reduced more effectively.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1167,9 +1176,10 @@ What would you like to do now?
 
 {dialog 109}
 {instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} strengthened its warding.
+Splendid... the {color:gold}{macro:7,0,1,0}{color:none} strengthened its ward.
 {color:lightblue}Magick Resist{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Magick damage is mitigated with greater reliability.{wait}
+Magick damage is mitigated
+with greater reliability.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1181,7 +1191,8 @@ What would you like to do now?
 {instant}Researcher
 Impeccable... the {color:gold}{macro:7,0,1,0}{color:none} reinforced its vitality.
 {color:lightblue}Max HP{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Endurance and survivability are noticeably improved.{wait}
+Endurance and survivability
+are noticeably improved.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1193,7 +1204,8 @@ What would you like to do now?
 {instant}Researcher
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none} expanded its reserves.
 {color:lightblue}Max MP{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Magick can now be sustained for longer periods.{wait}
+Magick can now be sustained
+for longer periods.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1203,9 +1215,10 @@ What would you like to do now?
 
 {dialog 112}
 {instant}Researcher
-Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} focused its strength.
+Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} focused its power.
 {color:lightblue}Strength{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Physical actions now carry greater weight.{wait}
+Physical actions now
+carry greater weight.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1215,9 +1228,10 @@ What would you like to do now?
 
 {dialog 113}
 {instant}Researcher
-Impeccable... the {color:gold}{macro:7,0,1,0}{color:none} intensified its flow.
+Brilliant... the {color:gold}{macro:7,0,1,0}{color:none} boosted its flow.
 {color:lightblue}Magick Power{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Spells now manifest with greater potency.{wait}
+Spells now manifest
+with greater potency.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1227,9 +1241,10 @@ What would you like to do now?
 
 {dialog 114}
 {instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} hardened its core.
+Perfect... the {color:gold}{macro:7,0,1,0}{color:none} hardened its core.
 {color:lightblue}Vitality{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Damage is endured with greater resilience.{wait}
+Damage is endured
+with greater resilience.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1239,9 +1254,10 @@ What would you like to do now?
 
 {dialog 115}
 {instant}Researcher
-Perfect... the {color:gold}{macro:7,0,1,0}{color:none} accelerated its rhythm.
+Exceptional... the {color:gold}{macro:7,0,1,0}{color:none} quickened its pace.
 {color:lightblue}Speed{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Movement and reactions feel noticeably sharper.{wait}
+Movement and reactions
+feel noticeably sharper.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
@@ -1254,7 +1270,8 @@ What would you like to do now?
 Complete... the {color:gold}{macro:7,0,1,0}{color:none} has been
 fully cleansed of its refinement.{wait}
 The alchemical imprint dissolves,
-restoring the item to a neutral state.{wait}
+restoring the item to
+a neutral state.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
