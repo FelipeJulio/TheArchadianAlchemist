@@ -494,7 +494,7 @@ for refinement within this class.
 {instant}Researcher
 To bind the {icon:fire}{color:gold}Fire{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -506,7 +506,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:lightning}{color:gold}Lightning{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -518,7 +518,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:ice}{color:gold}Ice{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -530,7 +530,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:earth}{color:gold}Earth{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -542,7 +542,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:water}{color:gold}Water{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -554,7 +554,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:wind}{color:gold}Wind{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -566,7 +566,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:holy}{color:gold}Holy{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -578,7 +578,7 @@ Shall we proceed?
 {instant}Researcher
 To bind the {icon:dark}{color:gold}Dark{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed?
 {item}Let's do it!{/item}
@@ -592,7 +592,7 @@ I must warn you...{wait}
 Unbinding an element once altered is no simple task.{wait}
 To cleanse the {color:gold}{macro:7,0,1,0}{color:none} of its current essence,
 the following reagents will be required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 {choice}
 Shall we proceed with the cleansing?
 {item}Do it!{/item}
@@ -600,11 +600,11 @@ Shall we proceed with the cleansing?
 {/choice}
 {/dialog}
 
-{dialog 86}
+{dialog 63}
 {instant}Researcher
-Hmm... you do not have the required reagents.
-Come back once you have acquired them.
-What would you like to do now?{wait}
+Hmm... you lack the required reagents
+or sufficient gil to proceed.{wait}
+What would you like to do now?
 {choice}
 {item}Try another.{/item}
 {item}That is all.{/item}
@@ -997,7 +997,7 @@ Which reagents will refine the {color:lightblue}Speed{color:none} formula?
 Splendid, we shall apply {color:lightblue}Alchemical Refinement{color:none}
 to the {color:gold}{macro:7,0,1,0}{color:none}.
 A simple process, for modest reagents.{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed?
 {choice}
 {item}Let's do it!{/item}
@@ -1010,7 +1010,7 @@ Shall we proceed?
 Excellent, we shall employ {color:lightblue}Stabilized Distillation{color:none}
 on the {color:gold}{macro:7,0,1,0}{color:none}.
 A refined method, for stable reagents.{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed?
 {choice}
 {item}Let's do it!{/item}
@@ -1023,7 +1023,7 @@ Shall we proceed?
 Magnificent, we shall invoke {color:lightblue}Catalytic Transmutation{color:none}
 upon the {color:gold}{macro:7,0,1,0}{color:none}.
 An advanced process, for superior reagents.{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed?
 {choice}
 {item}Let's do it!{/item}
@@ -1037,7 +1037,7 @@ I must caution you...{wait}
 Undoing a refinement is a delicate process.{wait}
 To cleanse the {color:gold}{macro:7,0,1,0}{color:none} of its current refinement,
 the following reagents will be required:{wait}
-{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, and {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}.
+{color:lightblue}{macro:0,0,1,0} {macro:3,0,0,0}{color:none}, {color:lightblue}{macro:1,0,1,0} {macro:4,0,0,0}{color:none}, {color:lightblue}{macro:2,0,1,0} {macro:5,0,0,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
 Shall we proceed with the cleansing?
 {choice}
 {item}Do it!{/item}

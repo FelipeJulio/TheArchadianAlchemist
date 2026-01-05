@@ -100,12 +100,12 @@ local addresses = {
     equipments = {
 
         -- @description: upgrades materials
-        -- @values: 0 nothing, 3 item ids (2 bytes each), 3 qty (1 byte each)
+        -- @values: 0 nothing, 3 item ids (2 bytes each), 3 qty (1 byte each), 3 gil values (2 bytes each)
         upgrades = 0x67,
 
         -- @description: equipment list
         -- @values: 0 nothing, 31 ids (2 bytes each)
-        list = 0x70
+        list = 0x76
     }
 }
 
@@ -373,7 +373,7 @@ function config:value(rawValues, categoryNameToId, attributeNameToId, rawUpgrade
                         if tierValues[tier] then
                             parsed[attributeId][categoryId][tier] = {
                                 value = tierValues[tier],
-                                upgrades = rawUpgrades and rawUpgrades[attributeName]
+                                upgrades = rawUpgrades and rawUpgrades[attributeName] and rawUpgrades[attributeName][tier]
                             }
                         end
                     end
@@ -383,7 +383,7 @@ function config:value(rawValues, categoryNameToId, attributeNameToId, rawUpgrade
                             if tierValues[tier] then
                                 parsed[attributeId][tier] = {
                                     value = tierValues[tier],
-                                    upgrades = rawUpgrades and rawUpgrades[attributeName]
+                                    upgrades = rawUpgrades and rawUpgrades[attributeName] and rawUpgrades[attributeName][tier]
                                 }
                             end
                         end
@@ -1223,32 +1223,19 @@ function loader:upgrade(base, offset, subcategoryId, tierId, categoryId, config)
     print(string.format("[loader:upgrade] subcategoryId %d, tierId %d, categoryId %d", subcategoryId, tierId or 0, categoryId or 0))
 
     local upgrades = nil
-
-    -- get upgrades for attribute removal
     if subcategoryId == 9 then
+        -- get upgrades for attribute removal
         local attrData = config.attributes and config.attributes[9]
-        if attrData and categoryId then
-            upgrades = attrData[categoryId] and attrData[categoryId].upgrades or attrData.upgrades
-        else
-            upgrades = attrData and attrData.upgrades
-        end
-        -- get upgrades for attribute tier
+        local rawUpgrades = attrData and (attrData[categoryId] and attrData[categoryId].upgrades or attrData.upgrades)
+        upgrades = rawUpgrades and valid:tier(tierId) and rawUpgrades[tierId] or rawUpgrades
     elseif valid:tier(tierId) and categoryId then
+        -- get upgrades for attribute tier
         local attrData = config.attributes and config.attributes[subcategoryId]
-        if attrData then
-            local categoryData = attrData[categoryId]
-            if categoryData then
-                local tierData = categoryData[tierId]
-                upgrades = tierData and tierData.upgrades
-            else
-                local tierData = attrData[tierId]
-                upgrades = tierData and tierData.upgrades
-            end
-        end
-        -- get upgrades for element
+        upgrades = attrData and ((attrData[categoryId] and attrData[categoryId][tierId] or attrData[tierId]) and
+                       (attrData[categoryId] and attrData[categoryId][tierId] or attrData[tierId]).upgrades)
     else
-        local elemData = config.elements and config.elements[subcategoryId]
-        upgrades = elemData and elemData.upgrades
+        -- get upgrades for element
+        upgrades = config.elements and config.elements[subcategoryId] and config.elements[subcategoryId].upgrades
     end
 
     if not upgrades then
@@ -1256,19 +1243,21 @@ function loader:upgrade(base, offset, subcategoryId, tierId, categoryId, config)
     end
 
     -- clear memory
-    mem:clear(base, offset, 9)
+    mem:clear(base, offset, 15)
 
-    -- write item ids and quantities to memory
-    local idOffset = 0
-    local qtyOffset = 6
+    -- write item ids and quantities and gil to memory
+    local idOffset, qtyOffset, gilOffset = 0, 6, 9
+    local gilValue = upgrades[4] or 0
     for i = 1, 3 do
-        local up = upgrades[i]
-        if up then
-            mem:write(base, offset + idOffset, up[1] or up.id, 2)
-            mem:write(base, offset + qtyOffset, up[2] or up.qtt, 1)
+        local item = upgrades[i]
+        if item then
+            mem:write(base, offset + idOffset, item[1] or item.id, 2)
+            mem:write(base, offset + qtyOffset, item[2] or item.qtt, 1)
         end
+        mem:write(base, offset + gilOffset, gilValue, 2)
         idOffset = idOffset + 2
         qtyOffset = qtyOffset + 1
+        gilOffset = gilOffset + 2
     end
 
     return true
@@ -1421,4 +1410,3 @@ end)
 event.registerEventAsync("onMapJump", function(locationId)
     controller:location(locationId)
 end)
-

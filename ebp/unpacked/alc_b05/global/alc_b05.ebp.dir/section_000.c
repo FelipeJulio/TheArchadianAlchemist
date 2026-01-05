@@ -72,9 +72,10 @@ import scratch1   u_char		obtained_current_element = 0x4F;
 // loaded upgrade list
 import scratch1   u_short		upgrade_item_ids[3] = 0x67;
 import scratch1   u_char		upgrade_item_qtys[3] = 0x6D;
+import scratch1   u_short		upgrade_gil[1] = 0x70;
 
 // loaded equipment list
-import scratch1   u_short		equipment_list[31] = 0x70;
+import scratch1   u_short		equipment_list[31] = 0x76;
 
 
 //======================================================================
@@ -3937,6 +3938,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setkutipakustatus(1);
     setunazukistatus(1);
     setmeswinline(0, 4);
@@ -3955,6 +3957,10 @@ actor NPC_Alchemist(6) {
         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) {
       goto dialog_63;
     }
+
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_55:
@@ -3970,6 +3976,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setkutipakustatus(1);
     setunazukistatus(1);
     setmeswinline(0, 4);
@@ -3988,6 +3995,10 @@ actor NPC_Alchemist(6) {
         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) {
       goto dialog_63;
     }
+
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_56:
@@ -4003,6 +4014,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setmeswinline(0, 6);
     askpos(0, 0, 1);
     setkutipakustatus(1);
@@ -4023,6 +4035,9 @@ actor NPC_Alchemist(6) {
       goto dialog_63;
     }
 
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_57:
@@ -4039,6 +4054,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setkutipakustatus(1);
     setunazukistatus(1);
     setmeswinline(0, 4);
@@ -4057,6 +4073,10 @@ actor NPC_Alchemist(6) {
         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) {
       goto dialog_63;
     }
+
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_58:
@@ -4072,6 +4092,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setkutipakustatus(1);
     setunazukistatus(1);
     setmeswinline(0, 4);
@@ -4090,6 +4111,10 @@ actor NPC_Alchemist(6) {
         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) {
       goto dialog_63;
     }
+
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_59:
@@ -4105,6 +4130,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setkutipakustatus(1);
     setunazukistatus(1);
     setmeswinline(0, 4);
@@ -4123,6 +4149,10 @@ actor NPC_Alchemist(6) {
         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) {
       goto dialog_63;
     }
+
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_60:
@@ -4138,6 +4168,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setkutipakustatus(1);
     setunazukistatus(1);
     setmeswinline(0, 4);
@@ -4156,6 +4187,10 @@ actor NPC_Alchemist(6) {
         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) {
       goto dialog_63;
     }
+
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_61:
@@ -4171,6 +4206,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setkutipakustatus(1);
     setunazukistatus(1);
     setmeswinline(0, 4);
@@ -4191,6 +4227,9 @@ actor NPC_Alchemist(6) {
       goto dialog_63;
     }
 
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
     goto check_element_before_apply;
 
   dialog_62:
@@ -4472,6 +4511,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4492,6 +4535,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4512,6 +4559,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4532,6 +4583,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4552,6 +4607,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4572,6 +4631,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4592,6 +4655,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4612,6 +4679,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -4632,6 +4703,10 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_50;
     } else if (local_choice == 1) {
+
+      if (upgrade_gil[0] > 0) {
+        subgill(upgrade_gil[0]);
+      }
       flow_success = 1;
       wait(14);
       flow_success = 0;
@@ -5526,6 +5601,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 95);
@@ -5542,6 +5618,13 @@ actor NPC_Alchemist(6) {
       goto dialog_63;
     }
 
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
+
+    if (upgrade_gil[0] > 0) {
+      subgill(upgrade_gil[0]);
+    }
     flow_success = 1;
     wait(14);
     flow_success = 0;
@@ -5559,6 +5642,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 96);
@@ -5573,6 +5657,13 @@ actor NPC_Alchemist(6) {
       goto dialog_63;
     }
 
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
+
+    if (upgrade_gil[0] > 0) {
+      subgill(upgrade_gil[0]);
+    }
     flow_success = 1;
     wait(14);
     flow_success = 0;
@@ -5590,6 +5681,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 97);
@@ -5604,6 +5696,13 @@ actor NPC_Alchemist(6) {
       goto dialog_63;
     }
 
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
+
+    if (upgrade_gil[0] > 0) {
+      subgill(upgrade_gil[0]);
+    }
     flow_success = 1;
     wait(14);
     flow_success = 0;
@@ -5624,6 +5723,7 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
     setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
+    setmesmacro(0, 12, 0, upgrade_gil[0]);
     setmeswinline(0, 3);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 98);
@@ -5638,6 +5738,13 @@ actor NPC_Alchemist(6) {
       goto dialog_63;
     }
 
+    if (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0]) {
+      goto dialog_63;
+    }
+
+    if (upgrade_gil[0] > 0) {
+      subgill(upgrade_gil[0]);
+    }
     flow_success = 1;
     wait(14);
     flow_success = 0;
