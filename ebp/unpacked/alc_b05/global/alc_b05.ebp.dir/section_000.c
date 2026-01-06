@@ -54,6 +54,9 @@ import scratch1   u_char		unlocked_tiers = 0x49;
 import scratch1   u_char		flow_check_attribute = 0x4B;
 import scratch1   u_char		flow_check_element = 0x4E;
 import scratch1   u_char		flow_poll_mode = 0x4A;
+import scratch1   u_char		unlocked_main_quest = 0x37;
+import scratch1   u_char		unlocked_elements[8] = 0x38; // For subcategories 1-8 (fire, lightning, ice, earth, water, wind, holy, dark)
+import scratch1   u_char		unlocked_attributes[17] = 0x38; // For subcategories 10-26 (reusing same space as elements)
 
 // selected flags
 import scratch1   u_char		selected_category = 0x55;
@@ -3889,41 +3892,117 @@ actor NPC_Alchemist(6) {
   dialog_53:
     flow_poll_mode = 2;
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 6);
+
+    // set macros for element unlock flags (14-21 for elements 1-8)
+    setmesmacro(0, 14, 0, unlocked_elements[0]); // fire (subcategory 1)
+    setmesmacro(0, 15, 0, unlocked_elements[1]); // lightning (subcategory 2)
+    setmesmacro(0, 16, 0, unlocked_elements[2]); // ice (subcategory 3)
+    setmesmacro(0, 17, 0, unlocked_elements[3]); // earth (subcategory 4)
+    setmesmacro(0, 18, 0, unlocked_elements[4]); // water (subcategory 5)
+    setmesmacro(0, 19, 0, unlocked_elements[5]); // wind (subcategory 6)
+    setmesmacro(0, 20, 0, unlocked_elements[6]); // holy (subcategory 7)
+    setmesmacro(0, 21, 0, unlocked_elements[7]); // dark (subcategory 8)
+
+    // hide locked elements using setaskselectignore
+    if (unlocked_elements[0] == 0) {
+      setaskselectignore(0, 0);
+    }
+    if (unlocked_elements[1] == 0) {
+      setaskselectignore(0, 1);
+    }
+    if (unlocked_elements[2] == 0) {
+      setaskselectignore(0, 2);
+    }
+    if (unlocked_elements[3] == 0) {
+      setaskselectignore(0, 3);
+    }
+    if (unlocked_elements[4] == 0) {
+      setaskselectignore(0, 4);
+    }
+    if (unlocked_elements[5] == 0) {
+      setaskselectignore(0, 5);
+    }
+    if (unlocked_elements[6] == 0) {
+      setaskselectignore(0, 6);
+    }
+    if (unlocked_elements[7] == 0) {
+      setaskselectignore(0, 7);
+    }
+
+    // calculate visible options: unlocked elements + Cleanse binding + Back (always visible)
+    local_count = 0;
+    if (unlocked_elements[0] > 0) {
+      local_count++;
+    }
+    if (unlocked_elements[1] > 0) {
+      local_count++;
+    }
+    if (unlocked_elements[2] > 0) {
+      local_count++;
+    }
+    if (unlocked_elements[3] > 0) {
+      local_count++;
+    }
+    if (unlocked_elements[4] > 0) {
+      local_count++;
+    }
+    if (unlocked_elements[5] > 0) {
+      local_count++;
+    }
+    if (unlocked_elements[6] > 0) {
+      local_count++;
+    }
+    if (unlocked_elements[7] > 0) {
+      local_count++;
+    }
+    local_count += 2; // for "Cleanse binding" and "Back" options
+
+    if (local_count < 2) {
+      local_count = 2;
+    }
+    if (local_count > 10) {
+      local_count = 10;
+    }
+
+    setmeswinline(0, local_count);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 53, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
+
+    // Back is always option 9
     if (local_choice == 9) {
       goto dialog_50;
     }
 
-    if (local_choice >= 0 && local_choice <= 8) {
-      if (local_choice == 8) {
-        selected_subcategory = 9;
-      } else {
-        selected_subcategory = local_choice + 1;
-      }
+    // Cleanse binding is always option 8
+    if (local_choice == 8) {
+      selected_subcategory = 9;
+      goto check_element_before_remove;
+    }
 
-      if (local_choice == 0) {
-        goto dialog_54;
-      } else if (local_choice == 1) {
-        goto dialog_55;
-      } else if (local_choice == 2) {
-        goto dialog_56;
-      } else if (local_choice == 3) {
-        goto dialog_57;
-      } else if (local_choice == 4) {
-        goto dialog_58;
-      } else if (local_choice == 5) {
-        goto dialog_59;
-      } else if (local_choice == 6) {
-        goto dialog_60;
-      } else if (local_choice == 7) {
-        goto dialog_61;
-      } else if (local_choice == 8) {
-        selected_subcategory = 9;
-        goto check_element_before_remove;
+    // Process element selection (0-7), but verify it's unlocked
+    if (local_choice >= 0 && local_choice <= 7) {
+      // verify element is unlocked before processing
+      if (unlocked_elements[local_choice] > 0) {
+        selected_subcategory = local_choice + 1;
+        if (local_choice == 0) {
+          goto dialog_54;
+        } else if (local_choice == 1) {
+          goto dialog_55;
+        } else if (local_choice == 2) {
+          goto dialog_56;
+        } else if (local_choice == 3) {
+          goto dialog_57;
+        } else if (local_choice == 4) {
+          goto dialog_58;
+        } else if (local_choice == 5) {
+          goto dialog_59;
+        } else if (local_choice == 6) {
+          goto dialog_60;
+        } else if (local_choice == 7) {
+          goto dialog_61;
+        }
       }
     }
 
@@ -4772,62 +4851,154 @@ actor NPC_Alchemist(6) {
   dialog_74:
     flow_poll_mode = 2;
     setmesmacro(0, 0, 1, selected_equipment_id);
-    setmeswinline(0, 7);
+
+    setmesmacro(0, 22, 0, unlocked_attributes[0]);
+    setmesmacro(0, 23, 0, unlocked_attributes[1]);
+    setmesmacro(0, 24, 0, unlocked_attributes[2]);
+    setmesmacro(0, 25, 0, unlocked_attributes[3]);
+    setmesmacro(0, 26, 0, unlocked_attributes[4]);
+    setmesmacro(0, 27, 0, unlocked_attributes[5]);
+    setmesmacro(0, 28, 0, unlocked_attributes[6]);
+    setmesmacro(0, 33, 0, unlocked_attributes[11]);
+    setmesmacro(0, 34, 0, unlocked_attributes[12]);
+    setmesmacro(0, 35, 0, unlocked_attributes[13]);
+    setmesmacro(0, 36, 0, unlocked_attributes[14]);
+    setmesmacro(0, 37, 0, unlocked_attributes[15]);
+    setmesmacro(0, 38, 0, unlocked_attributes[16]);
+
+    if (unlocked_attributes[0] == 0) {
+      setaskselectignore(0, 0);
+    }
+    if (unlocked_attributes[1] == 0) {
+      setaskselectignore(0, 1);
+    }
+    if (unlocked_attributes[2] == 0) {
+      setaskselectignore(0, 2);
+    }
+    if (unlocked_attributes[6] == 0) {
+      setaskselectignore(0, 3);
+    }
+    if (unlocked_attributes[4] == 0) {
+      setaskselectignore(0, 4);
+    }
+    if (unlocked_attributes[5] == 0) {
+      setaskselectignore(0, 5);
+    }
+    if (unlocked_attributes[3] == 0) {
+      setaskselectignore(0, 6);
+    }
+    if (unlocked_attributes[11] == 0) {
+      setaskselectignore(0, 7);
+    }
+    if (unlocked_attributes[12] == 0) {
+      setaskselectignore(0, 8);
+    }
+    if (unlocked_attributes[13] == 0) {
+      setaskselectignore(0, 9);
+    }
+    if (unlocked_attributes[14] == 0) {
+      setaskselectignore(0, 10);
+    }
+    if (unlocked_attributes[15] == 0) {
+      setaskselectignore(0, 11);
+    }
+    if (unlocked_attributes[16] == 0) {
+      setaskselectignore(0, 12);
+    }
+
+
+    local_count = 0;
+    if (unlocked_attributes[0] > 0) local_count++;
+    if (unlocked_attributes[1] > 0) local_count++;
+    if (unlocked_attributes[2] > 0) local_count++;
+    if (unlocked_attributes[6] > 0) local_count++;
+    if (unlocked_attributes[4] > 0) local_count++;
+    if (unlocked_attributes[5] > 0) local_count++;
+    if (unlocked_attributes[3] > 0) local_count++;
+    if (unlocked_attributes[11] > 0) local_count++;
+    if (unlocked_attributes[12] > 0) local_count++;
+    if (unlocked_attributes[13] > 0) local_count++;
+    if (unlocked_attributes[14] > 0) local_count++;
+    if (unlocked_attributes[15] > 0) local_count++;
+    if (unlocked_attributes[16] > 0) local_count++;
+    local_count += 2;
+
+    if (local_count < 2) {
+      local_count = 2;
+    }
+    if (local_count > 15) {
+      local_count = 15;
+    }
+
+    setmeswinline(0, local_count);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 74, 48, 0x03fe, 1);
     mesclose(0);
     messync(0, 1);
+
     if (local_choice == 14) {
       goto dialog_50;
     }
 
-    if (local_choice == 0) {
-      selected_subcategory = 10;
-      goto dialog_78;
-    } else if (local_choice == 1) {
-      selected_subcategory = 11;
-      goto dialog_79;
-    } else if (local_choice == 2) {
-      selected_subcategory = 12;
-      goto dialog_80;
-    } else if (local_choice == 3) {
-      selected_subcategory = 16;
-      goto dialog_84;
-    } else if (local_choice == 4) {
-      selected_subcategory = 14;
-      goto dialog_82;
-    } else if (local_choice == 5) {
-      selected_subcategory = 15;
-      goto dialog_83;
-    } else if (local_choice == 6) {
-      selected_subcategory = 13;
-      goto dialog_81;
-    } else if (local_choice == 7) {
-      selected_subcategory = 21;
-      goto dialog_89;
-    } else if (local_choice == 8) {
-      selected_subcategory = 22;
-      goto dialog_90;
-    } else if (local_choice == 9) {
-      selected_subcategory = 23;
-      goto dialog_91;
-    } else if (local_choice == 10) {
-      selected_subcategory = 24;
-      goto dialog_92;
-    } else if (local_choice == 11) {
-      selected_subcategory = 25;
-      goto dialog_93;
-    } else if (local_choice == 12) {
-      selected_subcategory = 26;
-      goto dialog_94;
-    } else if (local_choice == 13) {
+    if (local_choice == 13) {
       selected_subcategory = 9;
       goto check_attribute_before_remove;
+    }
+
+    if (local_choice == 0 && unlocked_attributes[0] > 0) {
+      selected_subcategory = 10;
+      goto dialog_78;
+    } else if (local_choice == 1 && unlocked_attributes[1] > 0) {
+      selected_subcategory = 11;
+      goto dialog_79;
+    } else if (local_choice == 2 && unlocked_attributes[2] > 0) {
+      selected_subcategory = 12;
+      goto dialog_80;
+    } else if (local_choice == 3 && unlocked_attributes[6] > 0) {
+      selected_subcategory = 16;
+      goto dialog_84;
+    } else if (local_choice == 4 && unlocked_attributes[4] > 0) {
+      selected_subcategory = 14;
+      goto dialog_82;
+    } else if (local_choice == 5 && unlocked_attributes[5] > 0) {
+      selected_subcategory = 15;
+      goto dialog_83;
+    } else if (local_choice == 6 && unlocked_attributes[3] > 0) {
+      selected_subcategory = 13;
+      goto dialog_81;
+    } else if (local_choice == 7 && unlocked_attributes[11] > 0) {
+      selected_subcategory = 21;
+      goto dialog_89;
+    } else if (local_choice == 8 && unlocked_attributes[12] > 0) {
+      selected_subcategory = 22;
+      goto dialog_90;
+    } else if (local_choice == 9 && unlocked_attributes[13] > 0) {
+      selected_subcategory = 23;
+      goto dialog_91;
+    } else if (local_choice == 10 && unlocked_attributes[14] > 0) {
+      selected_subcategory = 24;
+      goto dialog_92;
+    } else if (local_choice == 11 && unlocked_attributes[15] > 0) {
+      selected_subcategory = 25;
+      goto dialog_93;
+    } else if (local_choice == 12 && unlocked_attributes[16] > 0) {
+      selected_subcategory = 26;
+      goto dialog_94;
     }
 
   dialog_75:
     flow_poll_mode = 2;
     setmesmacro(0, 0, 1, selected_equipment_id);
+
+    setmesmacro(0, 29, 0, unlocked_attributes[7]);
+    setmesmacro(0, 30, 0, unlocked_attributes[8]);
+    setmesmacro(0, 33, 0, unlocked_attributes[11]);
+    setmesmacro(0, 34, 0, unlocked_attributes[12]);
+    setmesmacro(0, 35, 0, unlocked_attributes[13]);
+    setmesmacro(0, 36, 0, unlocked_attributes[14]);
+    setmesmacro(0, 37, 0, unlocked_attributes[15]);
+    setmesmacro(0, 38, 0, unlocked_attributes[16]);
+
     setmeswinline(0, 7);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 75, 48, 0x03fe, 1);
@@ -4869,6 +5040,16 @@ actor NPC_Alchemist(6) {
   dialog_76:
     flow_poll_mode = 2;
     setmesmacro(0, 0, 1, selected_equipment_id);
+
+    setmesmacro(0, 31, 0, unlocked_attributes[9]);
+    setmesmacro(0, 32, 0, unlocked_attributes[10]);
+    setmesmacro(0, 33, 0, unlocked_attributes[11]);
+    setmesmacro(0, 34, 0, unlocked_attributes[12]);
+    setmesmacro(0, 35, 0, unlocked_attributes[13]);
+    setmesmacro(0, 36, 0, unlocked_attributes[14]);
+    setmesmacro(0, 37, 0, unlocked_attributes[15]);
+    setmesmacro(0, 38, 0, unlocked_attributes[16]);
+
     setmeswinline(0, 7);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 76, 48, 0x03fe, 1);
@@ -4910,6 +5091,17 @@ actor NPC_Alchemist(6) {
   dialog_77:
     flow_poll_mode = 2;
     setmesmacro(0, 0, 1, selected_equipment_id);
+
+    setmesmacro(0, 24, 0, unlocked_attributes[2]);
+    setmesmacro(0, 28, 0, unlocked_attributes[6]);
+    setmesmacro(0, 25, 0, unlocked_attributes[3]);
+    setmesmacro(0, 33, 0, unlocked_attributes[11]);
+    setmesmacro(0, 34, 0, unlocked_attributes[12]);
+    setmesmacro(0, 35, 0, unlocked_attributes[13]);
+    setmesmacro(0, 36, 0, unlocked_attributes[14]);
+    setmesmacro(0, 37, 0, unlocked_attributes[15]);
+    setmesmacro(0, 38, 0, unlocked_attributes[16]);
+
     setmeswinline(0, 7);
     askpos(0, 0, 1);
     local_choice = aask(0, 0x01000000 | 77, 48, 0x03fe, 1);
@@ -4965,7 +5157,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -4976,7 +5167,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -4987,12 +5177,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5022,7 +5212,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5033,7 +5222,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5044,12 +5232,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5079,7 +5267,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5090,7 +5277,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5101,12 +5287,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5136,7 +5322,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5147,7 +5332,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5158,12 +5342,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5193,7 +5377,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5204,7 +5387,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5215,12 +5397,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5250,7 +5432,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5261,7 +5442,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5272,12 +5452,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5307,7 +5487,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5318,7 +5497,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5329,12 +5507,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5364,7 +5542,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5375,7 +5552,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5386,12 +5562,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5421,7 +5597,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5432,7 +5607,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5443,12 +5617,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5478,7 +5652,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5489,7 +5662,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5500,12 +5672,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5535,7 +5707,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5546,7 +5717,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5557,12 +5727,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5592,7 +5762,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5603,7 +5772,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5614,12 +5782,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5649,7 +5817,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5660,7 +5827,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5671,12 +5837,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5706,7 +5872,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5717,7 +5882,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5728,12 +5892,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5763,7 +5927,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5774,7 +5937,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5785,12 +5947,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5820,7 +5982,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5831,7 +5992,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5842,12 +6002,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);
@@ -5877,7 +6037,6 @@ actor NPC_Alchemist(6) {
     setmesmacro(0, 12, 0, unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, unlocked_tiers >= 3);
 
-    // hide tier if locked by story progression OR disabled in config (obtained_tierX == 0)
     if (unlocked_tiers < 1 || obtained_tier1 == 0) {
       setaskselectignore(0, 0);
     }
@@ -5888,7 +6047,6 @@ actor NPC_Alchemist(6) {
       setaskselectignore(0, 2);
     }
 
-    // count available tiers: unlocked AND have value > 0
     local_count = 0;
     if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
       local_count = local_count + 1;
@@ -5899,12 +6057,12 @@ actor NPC_Alchemist(6) {
     if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
       local_count = local_count + 1;
     }
-    local_count = local_count + 1;  // +1 for Back option
+    local_count = local_count + 1;
     if (local_count < 2) {
-      local_count = 2;  // minimum: 1 tier + Back
+      local_count = 2;
     }
     if (local_count > 4) {
-      local_count = 4;  // maximum: 3 tiers + Back
+      local_count = 4;
     }
 
     setmeswinline(0, local_count);

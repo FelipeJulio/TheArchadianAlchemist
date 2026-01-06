@@ -46,7 +46,15 @@ local addresses = {
 
         -- @description: unlocked tiers status
         -- @values: 0 = none, 1 = tier 1, 2 = tier 1+2, 3 = tier 1+2+3
-        unlockedTiers = 0x49
+        unlockedTiers = 0x49,
+
+        -- @description: reserved for main quest status
+        -- @values: to define
+        mainQuest = 0x37,
+
+        -- @description: unlocked content status (array start)
+        -- @values: if 0x50 = 2 (0x38-0x3F: 8 bytes for elements 1-8) if 0x50 = 3 (0x38-0x48: 17 bytes for attributes 10-26)
+        unlockedContent = 0x38
     },
 
     selected = {
@@ -124,6 +132,7 @@ local config = {
         equipment = "scripts/config/TheArchadianAlchemist/equipment.lua",
         attribute = "scripts/config/TheArchadianAlchemist/attribute.lua",
         element = "scripts/config/TheArchadianAlchemist/element.lua",
+        questline = "scripts/config/TheArchadianAlchemist/questline.lua",
         directory = "scripts/config/TheArchadianAlchemist/*.lua"
     }
 }
@@ -222,7 +231,7 @@ local flow = {
         sync = 16
     }
 }
-local story = {}
+local unlock = {}
 local controller = {
     targetLocation = 642,
     locationId = -1,
@@ -407,6 +416,63 @@ function config:value(rawValues, categoryNameToId, attributeNameToId, rawUpgrade
     return parsed
 end
 
+--- @description: parse questline config by converting names to ids
+function config:questline(rawQuestline, elementNameToId, attributeNameToId)
+    local parsed = {}
+
+    -- parse mainQuest
+    if rawQuestline.mainQuest then
+        parsed.mainQuest = {
+            ids = rawQuestline.mainQuest.ids or {}
+        }
+    end
+
+    -- parse elementalExchange
+    if rawQuestline.elementalExchange then
+        parsed.elementalExchange = {
+            ids = rawQuestline.elementalExchange.ids or {}
+        }
+
+        -- convert element names to IDs in contents
+        parsed.elementalExchange.contents = {}
+        if rawQuestline.elementalExchange.contents then
+            for levelIndex, levelContents in ipairs(rawQuestline.elementalExchange.contents) do
+                parsed.elementalExchange.contents[levelIndex] = {}
+                for elementName, flag in pairs(levelContents) do
+                    local elementId = elementNameToId[elementName]
+                    if elementId then
+                        parsed.elementalExchange.contents[levelIndex][elementId] = flag > 0 and 1 or 0
+                    end
+                end
+            end
+        end
+    end
+
+    -- parse attributeRefinement
+    if rawQuestline.attributeRefinement then
+        parsed.attributeRefinement = {
+            ids = rawQuestline.attributeRefinement.ids or {}
+        }
+
+        -- convert attribute names to IDs in contents
+        parsed.attributeRefinement.contents = {}
+        if rawQuestline.attributeRefinement.contents then
+            for levelIndex, levelContents in ipairs(rawQuestline.attributeRefinement.contents) do
+                parsed.attributeRefinement.contents[levelIndex] = {}
+                for attributeName, flag in pairs(levelContents) do
+                    local attributeId = attributeNameToId[attributeName]
+                    if attributeId then
+                        local finalFlag = flag > 0 and 1 or 0
+                        parsed.attributeRefinement.contents[levelIndex][attributeId] = finalFlag
+                    end
+                end
+            end
+        end
+    end
+
+    return parsed
+end
+
 -- @description: parse all config files and convert names to ids
 function config:parse(rawConfig)
     local categoryNameToId, attributeNameToId, elementNameToId = self:lookup()
@@ -425,7 +491,8 @@ function config:parse(rawConfig)
     return {
         equipment = self:equipment(rawConfig.equipment, categoryNameToId),
         attributes = parsedAttributes,
-        elements = self:element(rawConfig.elements, elementNameToId)
+        elements = self:element(rawConfig.elements, elementNameToId),
+        questline = self:questline(rawConfig.questline or {}, elementNameToId, attributeNameToId)
     }
 end
 
@@ -434,11 +501,13 @@ function config:load()
     local equipmentConfig = self:external(self.paths.equipment, "equipment") or {}
     local attributeConfig = self:external(self.paths.attribute, "attribute") or {}
     local elementConfig = self:external(self.paths.element, "element") or {}
+    local questlineConfig = self:external(self.paths.questline, "questline") or {}
 
     local rawConfig = {
         equipment = equipmentConfig,
         attributes = attributeConfig,
-        elements = elementConfig
+        elements = elementConfig,
+        questline = questlineConfig
     }
 
     self.data = self:parse(rawConfig)
@@ -1012,29 +1081,95 @@ function flow:load(base, addresses)
 end
 
 -- =================
--- story
+-- unlock
 -- =================
 
 -- @description: todo
-function story:unlockNpc(base, addresses)
+function unlock:npc(base, addresses)
 end
 
--- @description: unlock tier based on story progression
--- @params: base addr, addresses table, config module
-function story:unlockTier(base, addresses, configModule)
-    local progress = mem:read(addresses.storyProgress, nil, 2)
+local function calculateLevelIndex(progress, ids)
+    if not ids or #ids < 2 then
+        return 1
+    end
+    if #ids >= 3 and progress >= ids[3] then
+        return 3
+    elseif progress >= ids[2] then
+        return 2
+    end
+    return 1
+end
 
-    local attrConfig = configModule:external(configModule.paths.attribute, "attribute")
-    if not attrConfig or not attrConfig.tierUnlock then
+-- @description: unlock tier based on story progression and flow status
+-- @params: base addr, addresses table, parsed questline config
+function unlock:tier(base, addresses, questline)
+    local progress = mem:read(addresses.storyProgress, nil, 2)
+    local flowStatus = flags:get(base, addresses.flow.status)
+
+    local ids = nil
+
+    -- get tier for elements
+    if flowStatus == 2 then
+        ids = questline.elementalExchange and questline.elementalExchange.ids or nil
+        -- get tier for attributes
+    elseif flowStatus == 3 then
+        ids = questline.attributeRefinement and questline.attributeRefinement.ids or nil
+    end
+
+    if not ids then
         return
     end
 
-    local unlockStatus = 1
-    if progress >= attrConfig.tierUnlock[2] then
-        unlockStatus = progress >= attrConfig.tierUnlock[3] and 3 or 2
+    local unlockStatus = calculateLevelIndex(progress, ids)
+    if valid:tier(unlockStatus) then
+        flags:set(base, addresses.flow.unlockedTiers, unlockStatus)
+    end
+end
+
+-- @description: unlock content based on story progression
+-- @params: base addr, addresses table, parsed questline config
+function unlock:content(base, addresses, questline)
+    local progress = mem:read(addresses.storyProgress, nil, 2)
+    local flowStatus = flags:get(base, addresses.flow.status)
+
+    local contents, ids, startId, endId = nil, nil, nil, nil
+
+    -- unlock elements
+    if flowStatus == 2 then
+        if not valid:config(questline, "elementalExchange") then
+            return
+        end
+        contents = questline.elementalExchange.contents
+        ids = questline.elementalExchange.ids
+        startId, endId = 1, 8
     end
 
-    mem:write(base, addresses.flow.unlockedTiers, unlockStatus, 1)
+    -- unlock attributes
+    if flowStatus == 3 then
+        if not valid:config(questline, "attributeRefinement") then
+            return
+        end
+        contents = questline.attributeRefinement.contents
+        ids = questline.attributeRefinement.ids
+        startId, endId = 10, 26
+    end
+
+    if not contents or not ids or not startId or not endId then
+        return
+    end
+
+    local levelIndex = calculateLevelIndex(progress, ids)
+    local levelContents = contents[levelIndex]
+    if not levelContents then
+        return
+    end
+
+    -- write flags to memory
+    local baseOffset = addresses.flow.unlockedContent
+    for id = startId, endId do
+        local flag = (levelContents[id] or 0) > 0 and 1 or 0
+        flags:set(base, baseOffset + (id - startId), flag)
+    end
 end
 
 -- =================
@@ -1105,8 +1240,11 @@ function controller:poll(pollId)
         return
     end
 
-    -- unlock tiers based on story progression
-    story:unlockTier(addresses.base, addresses, config)
+    -- unlock tiers and content based on story progression and flow status
+    if config.data and config.data.questline then
+        unlock:tier(addresses.base, addresses, config.data.questline)
+        unlock:content(addresses.base, addresses, config.data.questline)
+    end
 
     -- poll flow flags and dispatch event if any
     local event = flow:poll(addresses.base, addresses)
