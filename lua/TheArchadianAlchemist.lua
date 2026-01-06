@@ -7,6 +7,9 @@ local addresses = {
     -- @description: current location
     locationId = 0x021654C4,
 
+    -- @description: story progression
+    storyProgress = 0x2164480,
+
     flow = {
 
         -- @description: conversation state
@@ -39,7 +42,11 @@ local addresses = {
 
         -- @description: poll mode
         -- @values: 0 idle, 1 talk , 2 sync
-        pollMode = 0x4A
+        pollMode = 0x4A,
+
+        -- @description: unlocked tiers status
+        -- @values: 0 = none, 1 = tier 1, 2 = tier 1+2, 3 = tier 1+2+3
+        unlockedTiers = 0x49
     },
 
     selected = {
@@ -210,11 +217,12 @@ local flow = {
         attribute = "attribute"
     },
     intervals = {
-        idle = 3000,
-        talk = 300,
+        idle = 2560,
+        talk = 256,
         sync = 16
     }
 }
+local story = {}
 local controller = {
     targetLocation = 642,
     locationId = -1,
@@ -441,7 +449,7 @@ end
 -- =================
 
 function mem:read(base, offset, size)
-    local address = base + offset
+    local address = (offset == nil) and base or (base + offset)
 
     if size == 1 then
         return memory.u8[address]
@@ -453,7 +461,7 @@ function mem:read(base, offset, size)
 end
 
 function mem:write(base, offset, value, size)
-    local address = base + offset
+    local address = (offset == nil) and base or (base + offset)
 
     if size == 1 then
         memory.u8[address] = value
@@ -466,7 +474,11 @@ end
 
 function mem:clear(base, offset, length)
     for i = 0, length - 1 do
-        self:write(base, offset + i, 0, 1)
+        if offset == nil then
+            self:write(base + i, nil, 0, 1)
+        else
+            self:write(base, offset + i, 0, 1)
+        end
     end
 end
 
@@ -1000,6 +1012,32 @@ function flow:load(base, addresses)
 end
 
 -- =================
+-- story
+-- =================
+
+-- @description: todo
+function story:unlockNpc(base, addresses)
+end
+
+-- @description: unlock tier based on story progression
+-- @params: base addr, addresses table, config module
+function story:unlockTier(base, addresses, configModule)
+    local progress = mem:read(addresses.storyProgress, nil, 2)
+
+    local attrConfig = configModule:external(configModule.paths.attribute, "attribute")
+    if not attrConfig or not attrConfig.tierUnlock then
+        return
+    end
+
+    local unlockStatus = 1
+    if progress >= attrConfig.tierUnlock[2] then
+        unlockStatus = progress >= attrConfig.tierUnlock[3] and 3 or 2
+    end
+
+    mem:write(base, addresses.flow.unlockedTiers, unlockStatus, 1)
+end
+
+-- =================
 -- controller
 -- =================
 
@@ -1066,6 +1104,9 @@ function controller:poll(pollId)
     if not self.running or not self.valid then
         return
     end
+
+    -- unlock tiers based on story progression
+    story:unlockTier(addresses.base, addresses, config)
 
     -- poll flow flags and dispatch event if any
     local event = flow:poll(addresses.base, addresses)
@@ -1417,7 +1458,7 @@ event.registerLoadHandler("TheArchadianAlchemist", function(filepath, savedData)
 end)
 
 event.registerEventAsync("onSaveLoad", function()
-    local locationId = mem:read(0, addresses.locationId, 4)
+    local locationId = mem:read(addresses.locationId, nil, 4)
     controller:location(locationId)
 end)
 

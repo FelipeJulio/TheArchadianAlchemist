@@ -1,3 +1,7 @@
+-- @description: each value represents the story progress id required to unlock each tier.
+local tierUnlock = {1380, 2150, 4400}
+
+-- @description: each value represents the items, quantities, and gil required for each tier upgrade.
 local upgrades = {
     attackPower = { -- {item, quantity}, gil
     {{8329, 1}, {8330, 1}, {8331, 1}, 900}, -- tier 1
@@ -88,10 +92,11 @@ local upgrades = {
     {8323, 2}, {8325, 3}, {8339, 4}, 1250}
 }
 
+-- @description: each value represents the increment for each level; when set to 0, the option becomes hidden
 local values = {
     sword = { -- tier 1, tier 2, tier 3
-        range = {2, 5, 7},
-        chargeTime = {3, 7, 12},
+        range = {2, 0, 0},
+        chargeTime = {3, 7, 0},
         attackPower = {10, 25, 40},
         evadeWeapon = {1, 3, 5},
         knockbackChance = {2, 8, 14},
@@ -541,6 +546,7 @@ local values = {
 }
 
 return {
+    tierUnlock = tierUnlock,
     upgrades = upgrades,
     values = values
 }

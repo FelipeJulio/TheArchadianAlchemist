@@ -1,3 +1,4 @@
+-- @description: each value represents the items, quantities, and gil required for elemental upgrade.
 local upgrades = {
     fire = { -- {item, quantity}, gil
     {8243, 4}, {8235, 3}, {8227, 2}, 7850},

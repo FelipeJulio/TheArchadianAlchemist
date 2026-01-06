@@ -1,3 +1,4 @@
+-- @description: each value represents the id of the equipment that will be loaded into the list according to each subcategory.
 local equipment = {
     sword = { -- sword
     4097, -- broadsword

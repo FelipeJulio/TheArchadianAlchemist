@@ -1,1468 +1,193 @@
 {format:ebp}
 
 {dialog 0}
-{instant}{npc:963}
-Hello, I'm the Chopmaster. Help you with aught?
-{choice}
-{item}Trade pine chops for sandalwood.{/item}
-{item}What are pine and sandalwood chops?{/item}
-{item}Just passing through.{/item}
-{/choice}
+Letter
 {/dialog}
 
 {dialog 1}
-{instant}{npc:963}
-Aught else I can help you with?
-{choice}
-{item}Trade pine chops for sandalwood.{/item}
-{item}What are pine and sandalwood chops?{/item}
-{item}Just passing through.{/item}
-{/choice}
+{instant}Letter
+You find a letter on the table. It reads:{wait}
+"I know my days grow short. I regret only that
+I shall not have the opportunity to return that
+item entrusted to me all these many years.{wait}
+"I have divided it into four pieces, in hopes
+this might prevent it falling easily into
+searching hands.{wait}
+"I have enclosed the whereabouts of one of the
+four, in the event its rightful owner should
+come seeking to recover it.{wait}
+"Stop the water's flow, then loose it once more.
+East Southeast East Southwest Southeast
+I pray that it rest there undisturbed."
 {/dialog}
 
 {dialog 2}
-{instant}{npc:963}
-Looks like you've nary a chop to your name.
-Are you sure you belong here in the City?
+{instant}{npc:635}
+I always thought sky pirates were supposed to
+steal sky. There's no sky in Lowtown...it all made
+sense. I've got a lot of thinkin' to do...
 {/dialog}
 
 {dialog 3}
-{instant}{npc:963}
-Ah, {macro:0,0,1,0} chops, I see. With just {macro:4,0,1,0} more
-you'll qualify to ride a cab.
+{instant}{npc:636}
+Can you believe we got our very own hideout?
+All by ourselves, too! Well...maybe we had a
+{italic}little{/italic} help from you.{wait}
+There must be {italic}somethin'{/italic} we're better at than
+you...and we'll find it!
 {/dialog}
 
 {dialog 4}
-{instant}{npc:963}
-Ah, {macro:0,0,1,0} chop, I see. With just {macro:4,0,1,0} more
-you'll qualify to ride a cab.
+{instant}{npc:629}
+Wow... Look at all the books... No fair.
+Since I'm here, I guess I may as well read 'em!{wait}
+Maybe they'll write a book about you someday,
+Vaan. Better do lots of extra heroic things,
+just to make sure.
 {/dialog}
 
 {dialog 5}
-{instant}{npc:963}
-Ah, {macro:0,0,1,0} chops, I see. With just {macro:4,0,1,0} more
-you'll qualify to ride a cab.
+{instant}{npc:48}
+Remember that kid you helped out of here? Well,
+he said that me and the others could use the
+place, if we wanted to.{wait}
+This'll be our very own hideout! Just think of all
+the plottin', schemin', and craftin' we can do!
+...Did I mention the plottin'?{wait}
+I haven't decided if we're still gonna try to be
+sky pirates or not. But whatever we do, we'll
+give it our best!{wait}
+So you don't have to worry 'bout us. If you still
+wanna be a sky pirate, we'll be rootin' for ya!
 {/dialog}
 
 {dialog 6}
-{instant}{npc:963}
-Ah, you've come by {macro:0,0,1,0} chops, I see.
-Very good, you qualify to ride a cab.{wait}
-Just {macro:3,0,1,0} more, and you can trade them in for
-a sandalwood chop. Those with sandalwood
-may ride cabs, {italic}and{/italic} get into Central.
+{instant}{npc:48}
+I told ya, you don't have to worry 'bout us.
+If you're doin' something you wanna do, that's
+good enough for me.
 {/dialog}
 
 {dialog 7}
-{instant}{npc:963}
-Ah, you've come by {macro:0,0,1,0} chops, I see.
-Very good, you qualify to ride a cab.{wait}
-Just {macro:3,0,1,0} more, and you can trade them in for
-a sandalwood chop. Those with sandalwood
-may ride cabs, {italic}and{/italic} get into Central.
+{instant}{npc:47}
+Me and Filo formed a new club. We're the
+Buccaneer's Battalion now! A battalion's
+bigger than a brigade...isn't it?{wait}
+We figure all of us together can take care of
+ourselves even when you and Penelo aren't
+around.{wait}
+So now you two can go wherever you need to
+without having to worry about watchin' after
+us.{wait}
+Just don't do anything too dangerous, okay?
+I don't know what you're off doing, but make sure
+to come back in one piece!{wait}
+You'll always have a place to come back to.
+Penelo too!
 {/dialog}
 
 {dialog 8}
-{instant}{npc:963}
-Very well, here's your sandalwood chop.
+{instant}{npc:47}
+Really, Vaan, you don't need to worry about us.
+Just be sure to come back and visit...and bring
+lots of pirate loot!
 {/dialog}
 
 {dialog 9}
-{instant}{npc:963}
-Congratulations on getting your sandalwood.
-This designates you as a most promising ardent.
-Why, you might even make gentry one day.{wait}
-Those with sandalwood may ride cabs, and get
-into Central.
+{instant}{npc:991}
+My pop owns this place. He was lettin' it out to
+somebody, but it's been empty for a while now.{wait}
+When my pop heard about the kids helpin' out that
+lady and the Imperial from the Sandsea, he said
+they could use it.{wait}
+They really liked that idea, so Deeg is happy.
+You should stop by when you can.{wait}
+You never did take that letter, though...
+Well, doubt you need it now. {italic}(snort){/italic}
 {/dialog}
 
 {dialog 10}
-{instant}{npc:963}
-Ah, I see you've already got your sandalwood.
-You won't be needing to do any business with me,
-then.
+{instant}{npc:991}
+My pop owns this place. He was lettin' it out to
+somebody, but it's been empty for a while now.{wait}
+When my pop heard about the kids helpin' out that
+lady and the Imperial from the Sandsea, he said
+they could use it.{wait}
+They really liked that idea, so Deeg is happy.
+You should stop by when you can. {italic}(snort){/italic}
 {/dialog}
 
 {dialog 11}
-{instant}{npc:963}
-Here in Archades, people spend their whole lives
-trying to get their hands on pine chops and, if
-they're lucky, a chop of fine sandalwood.{wait}
-Gil, they're only good for the buying and selling
-of goods. You can have all the gil in the world
-and it won't buy you respect.{wait}
-Only chops of pine, or a chop of sandal will win
-you that.{wait}
-You see, the chops represent your contribution
-to the greater good of the Empire.{wait}
-Common citizens might come by pinewood chops
-enough during their daily lives, but it takes a
-soldier, or some great deed to earn sandalwood.
+{instant}{npc:991}
+Started out Deeg hid in here for fear of that
+ghost. But the more Deeg comes, the more Deeg
+likes it. Kinda cozy. {italic}(snort){/italic}{wait}
+My pop owns the place. He was lettin' it out to
+somebody, but it's empty now.{wait}
+Whoever used to live here left a letter on the
+table. Deeg read it, but it doesn't make any sense.
+You can have it, if you want.
 {/dialog}
 
 {dialog 12}
-{instant}{npc:963}
-Best of luck to you.
+{instant}{npc:991}
+My pop owns this place. He was lettin' it out to
+somebody, but it's empty now.{wait}
+Deeg thinks that letter on the table belonged to
+him. Didn't make much sense, though... Maybe it's
+some code about water or something?{wait}
+Hmm... Maybe {italic}that's{/italic} it... {italic}(snort){/italic}
+Deeg has an idea, but...better check it out first.
+Come back in a little bit.
 {/dialog}
 
 {dialog 13}
-{instant}{npc:963}
-You've some business with me?
-{choice}
-{item}I'd like to buy a chop.{/item}
-{item}No, it's nothing.{/item}
-{/choice}
+{instant}{npc:991}
+My pop owns this place. He was lettin' it out to
+somebody, but it's empty now.{wait}
+Deeg thinks that letter on the table belonged to
+him. Didn't make much sense at first. But then Deeg
+thought maybe it had something to do with water.{wait}
+There are a bunch of gates that control the water
+down in the waterway, but you need a key to work
+'em. {italic}(snort){/italic}{wait}
+Deeg {italic}did{/italic} see a moogle runnin' around
+squeakin' something about a key...{wait}
+Deeg may have seen him around town before. Maybe
+you should try to find him. You never know...that
+could be the key!
 {/dialog}
 
 {dialog 14}
-{instant}{npc:963}
-Well, let's see...{wait}
-Look, I shouldn't be telling you this, but it {italic}is{/italic}
-possible to buy chops. Not officially, mind you.{wait}
-It's a malboro eat malboro world here in the City,
-and there're people who will do just about
-anything for a few gil. Even sell their chops.{wait}
-We're happy to buy what chops come up for sale,
-of course, meaning...
+{instant}{npc:991}
+My pop owns this place. He was lettin' it out to
+somebody, but it's empty now.{wait}
+{italic}(snort){/italic} Really? You figured out that letter?{wait}
+Deeg knew it had to do with those gates!
+And that's a pretty neat bit of medallion you
+found... Looks important. Wonder what it's for.
 {/dialog}
 
 {dialog 15}
-{instant}{npc:963}
-They're not cheap, but this is the price.
-{choice}
-{item}Purchase one pinewood chop for {macro:0,0,0,0} gil.{/item}
-{item}Never mind.{/item}
-{/choice}
+{instant}{npc:991}
+My pop owns this place. He was lettin' it out to
+somebody, but it's empty now.{wait}
+Seems a waste, little Deeg usin' it all by myself.
+Better to let someone who could do something
+with it have it. {italic}(snort){/italic}
 {/dialog}
 
 {dialog 16}
-{instant}{npc:963}
-Many thanks, sir.
 {/dialog}
 
 {dialog 17}
-{instant}{npc:963}
-Ah, you seem to lack the necessary funds.
+{instant}
+scrach_var_1, scrach_var_2 and scrach_var_3
+{color:lightblue}{macro:0,0,0,0}, {macro:1,0,0,0} and {macro:2,0,0,0}
 {/dialog}
 
 {dialog 18}
-{instant}{npc:762}
-Welcome, welcome. I'm sure you'll find our
-selection of magicks befitting of the Empire's
-finest magickal emporium.
-{/dialog}
-
-{dialog 19}
-{instant}{npc:733}
-Where could my {color:lightblue2}moonsilver medallion{rgb:gray} be? Where?
-{choice}
-{item}Inquire about the medallion.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 20}
-{instant}{npc:733}
-Hrmm...
-{/dialog}
-
-{dialog 21}
-{instant}{npc:733}
-You would hear of my plight? Hrmm... It is sad,
-though common. I needed money. Unthinking, I sold
-my {color:lightblue2}moonsilver medallion{rgb:gray}.{wait}
-I must have it back. I have need of it...but the man
-to whom I sold it, one {color:gold2}Otto{color:none}, is missing.
-{/dialog}
-
-{dialog 22}
-{/dialog}
-
-{dialog 23}
-{instant}{npc:733}
-Do not make me speak of this again. It is shame to
-me. I sold my {color:lightblue2}moonsilver medallion{rgb:gray} for money.{wait}
-Though it be a symbol of a love that endures,
-unlike love, it has a price.{wait}
-I must have it back. I have need of it... But the man
-to whom I sold it, one {color:gold2}Otto{color:none}, is missing.
-{/dialog}
-
-{dialog 24}
-{instant}{npc:733}
-I have asked that you not make me speak of this.
-I told you, I sold the {color:lightblue2}moonsilver medallion{rgb:gray} for...{wait}
-What? You have found the medallion?{wait}
-Might I...Might I please...?
-{choice}
-{item}Give him the {color:lightblue2}moonsilver medallion{color:none}.{/item}
-{item}Decline.{/item}
-{/choice}
-{/dialog}
-
-{dialog 25}
-{instant}{npc:733}
-I am...in great need. It is a very important
-medallion to me... Please.
-{/dialog}
-
-{dialog 26}
-{instant}{npc:733}
-I thank you. Without this I would have been in
-great disfavor with the Frog King... But, what is
-this? It is broken...?{wait}
-No...this is most unusual. A piece has been taken
-away, yet the medallion is somehow stronger. This
-warmth...this is true love.{wait}
-I believe this medallion has been in the presence
-of a great love. Though its form be diminished,
-it is rather as if it had been made whole.{wait}
-I return now to the King. I am in your debt.
-My gratitude be with you.
-{/dialog}
-
-{dialog 27}
-{instant}{npc:733}
-The medallion appears broken, but nothing could
-be more untrue. I will take this medallion, steeped
-in love, back to the Frog King of Nabudis.
-{/dialog}
-
-{dialog 28}
-{instant}{npc:928}
-Sweetling, had you heard? My good friend Otto's
-gone missing.
-{/dialog}
-
-{dialog 29}
-{instant}{npc:929}
-Oh, I heard, I heard. Fell in love with a—pardon
-me—{italic}tart{/italic} down in Old Archades, they say? He
-always was a character.
-{/dialog}
-
-{dialog 30}
-{instant}{npc:713}
-Shh! Don't talk to me!
-{/dialog}
-
-{dialog 31}
-{instant}{npc:713}
-You...I met you in Nalbina, did I not? Don't you
-remember me? I'm July, the streetear.{wait}
-Why, thanks to you, I received a fine reward from
-the wife of an Imperial particularly unfond of
-chocobos.{wait}
-In fact, I owe you my gratitude. Here.
-{/dialog}
-
-{dialog 32}
-{instant}{npc:713}
-So long, then. Hmm? What am I doing now? I work
-for an inquiry agency, as a matter of fact. The
-coin is good, but it's wearisome work, really.
-{/dialog}
-
-{dialog 33}
-{instant}{npc:713}
-Once I've finished this posting, I'm off to make
-some inquiries in Rabanastre.{wait}
-A man here—an Imperial, actually—had his coin
-pouch stolen by a pickpocket in the market there,
-and he wants it back. Good luck, eh? So long!
-{/dialog}
-
-{dialog 34}
-{instant}{npc:1078}
-Bah! You must think me foolish. I doubt it not.
-I {italic}am{/italic} a fool. I should never have left her behind
-in Old Archades to come here...{wait}
-She always dreamed of a place where we could be
-happy together...and it made her sad. She would
-spend hours gazing into the distance...{wait}
-Me? I gazed up at the City, so sure it held
-the answer...that I was destined for greatness...
-But {italic}that{/italic} was the most foolish dream of all.
-{/dialog}
-
-{dialog 35}
-{/dialog}
-
-{dialog 36}
-Something Shiny
-{/dialog}
-
-{dialog 37}
-{/dialog}
-
-{dialog 38}
-{/dialog}
-
-{dialog 39}
-{/dialog}
-
-{dialog 40}
-{instant}Researcher
-Welcome, my friend... pray, tell me,{wait}
-what alchemy shall we perform today?
-{choice}
-{item}Alter its very essence{/item}
-{item}Alter its qualities{/item}
-{item}Maybe later.{/item}
-{/choice}
-{/dialog}
-
-{dialog 41}
-{instant}Researcher
-You wish to alter its essence?
-Very well...{wait}
-Then, let us bind an element.
-{/dialog}
-
-{dialog 42}
-{instant}Researcher
-You wish to refine its qualities?
-So be it...{wait}
-Then, we shall refine its attributes.
-{/dialog}
-
-{dialog 43}
-{speed}Now, which shall we begin with?
-{choice}
-{item}Weapon{/item}
-{item}Ammunition{/item}
-{item}Back.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 44}
-{speed}Now, which shall we begin with?
-{choice}
-{item}Weapon{/item}
-{item}Armor{/item}
-{item}Helm{/item}
-{item}Accessory{/item}
-{item}Ammunition{/item}
-{item}Shield{/item}
-{item}Back.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 45}
-{speed}What type of weapon?
-{choice}
-{item}Sword{/item}
-{item}Greatsword{/item}
-{item}Katana{/item}
-{item}Ninja Sword{/item}
-{item}Spear{/item}
-{item}Pole{/item}
-{item}Bow{/item}
-{item}Crossbow{/item}
-{item}Gun{/item}
-{item}Dagger{/item}
-{item}Rod{/item}
-{item}Staff{/item}
-{item}Mace{/item}
-{item}Axe{/item}
-{item}Hammer{/item}
-{item}Hand Bomb{/item}
-{item}Measure{/item}
-{item}Back.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 46}
-{speed}What type of Armor?
-{choice}
-{item}Heavy Armor{/item}
-{item}Light Armor{/item}
-{item}Mystic Armor{/item}
-{item}Back.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 47}
-{speed}What type of Helm?
-{choice}
-{item}Heavy Helm{/item}
-{item}Light Helm{/item}
-{item}Mystic Helm{/item}
-{item}Back.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 48}
-{speed}What type of Accessory?
-{choice}
-{item}Belt{/item}
-{item}Boot{/item}
-{item}Bracelet{/item}
-{item}Collar{/item}
-{item}Crown{/item}
-{item}Glove{/item}
-{item}Pendant{/item}
-{item}Ring{/item}
-{item}Back.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 49}
-{speed}What type of Ammunition?
-{choice}
-{item}Arrow{/item}
-{item}Bolt{/item}
-{item}Bomb{/item}
-{item}Shot{/item}
-{item}Back.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 50}
-{speed}And which shall it be, then?
-{choice}
-{item}{macro:0,0,1,0}{/item}
-{item}{macro:1,0,1,0}{/item}
-{item}{macro:2,0,1,0}{/item}
-{item}{macro:3,0,1,0}{/item}
-{item}{macro:4,0,1,0}{/item}
-{item}{macro:5,0,1,0}{/item}
-{item}{macro:6,0,1,0}{/item}
-{item}{macro:7,0,1,0}{/item}
-{item}{macro:8,0,1,0}{/item}
-{item}{macro:9,0,1,0}{/item}
-{item}{macro:10,0,1,0}{/item}
-{item}{macro:11,0,1,0}{/item}
-{item}{macro:12,0,1,0}{/item}
-{item}{macro:13,0,1,0}{/item}
-{item}{macro:14,0,1,0}{/item}
-{item}{macro:15,0,1,0}{/item}
-{item}{macro:16,0,1,0}{/item}
-{item}{macro:17,0,1,0}{/item}
-{item}{macro:18,0,1,0}{/item}
-{item}{macro:19,0,1,0}{/item}
-{item}{macro:20,0,1,0}{/item}
-{item}{macro:21,0,1,0}{/item}
-{item}{macro:22,0,1,0}{/item}
-{item}{macro:23,0,1,0}{/item}
-{item}{macro:24,0,1,0}{/item}
-{item}{macro:25,0,1,0}{/item}
-{item}{macro:26,0,1,0}{/item}
-{item}{macro:27,0,1,0}{/item}
-{item}{macro:28,0,1,0}{/item}
-{item}{macro:29,0,1,0}{/item}
-{item}{macro:30,0,1,0}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 51}
-{instant}Researcher
-Very well. Should your gear need work,{wait}
-you know where to find me.{wait}
-I shall handle it with care.
-{/dialog}
-
-{dialog 52}
-{instant}Researcher
-Hm... it seems you lack an item suited{wait}
-for refinement within this class.
-{/dialog}
-
-{dialog 53}
-{speed}Which element shall be bound to {color:gold}{macro:7,0,1,0}{color:none}?
-{choice}
-{item}{scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}Fire element{/item}
-{item}{scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}Lightning element{/item}
-{item}{scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}Ice element{/item}
-{item}{scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}Earth element{/item}
-{item}{scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}Water element{/item}
-{item}{scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}Wind element{/item}
-{item}{scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}Holy element{/item}
-{item}{scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}Dark element{/item}
-{item}Cleanse binding{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 54}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}{color:gold}Fire{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 55}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}{color:gold}Lightning{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 56}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}{color:gold}Ice{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 57}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}{color:gold}Earth{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 58}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}{color:gold}Water{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 59}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}{color:gold}Wind{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 60}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}{color:gold}Holy{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 61}
-{instant}Researcher
-To bind the {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}{color:gold}Dark{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
-the following reagents are required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed?
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 62}
-{instant}Researcher
-I must warn you...{wait}
-Unbinding an element once altered is no simple task.{wait}
-To cleanse the {color:gold}{macro:7,0,1,0}{color:none} of its current essence,
-the following reagents will be required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-{choice}
-Shall we proceed with the cleansing?
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 63}
-{instant}Researcher
-Hmm... you lack the required reagents
-or sufficient gil to proceed.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 64}
-{instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none}
-absorbs heat in perfect balance.{wait}
-The {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}Fire element burns bright and steady,
-its passion tempered by perfect control.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 65}
-{instant}Researcher
-Impeccable... the {color:gold}{macro:7,0,1,0}{color:none}
-channels lightning with no resistance.{wait}
-The {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}Lightning element surges and dances,
-swift power bound in measured rhythm.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 66}
-{instant}Researcher
-Remarkable... the {color:gold}{macro:7,0,1,0}{color:none}
-crystallizes as the cold seals it firm.{wait}
-The {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}Ice element settles pure and clear,
-its stillness gleaming with silent strength.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 67}
-{instant}Researcher
-Wonderful... the {color:gold}{macro:7,0,1,0}{color:none}
-settles into a strong and firm bond.{wait}
-The {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}Earth element stands calm and sure,
-unyielding, steadfast, and resolute.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 68}
-{instant}Researcher
-Great... the {color:gold}{macro:7,0,1,0}{color:none}
-adapts smooth and perfectly balanced.{wait}
-The {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}Water element flows soft and true,
-ever adapting, yet never astray.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 69}
-{instant}Researcher
-Perfect... the {color:gold}{macro:7,0,1,0}{color:none}
-resonates lightly, full of motion.{wait}
-The {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}Wind element drifts light and free,
-its motion graceful, its form unseen.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 70}
-{instant}Researcher
-Admirable... the {color:gold}{macro:7,0,1,0}{color:none}
-accepts the light with pure grace.{wait}
-The {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}Holy element shines calm and pure,
-a flawless light untouched by doubt.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 71}
-{instant}Researcher
-Splendid... the {color:gold}{macro:7,0,1,0}{color:none}
-draws in darkness, still and calm.{wait}
-The {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}Dark element stirs deep and quiet,
-a power veiled, yet perfectly bound.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 72}
-{instant}Researcher
-Complete... the {color:gold}{macro:7,0,1,0}{color:none}
-is cleansed of all prior essence.{wait}
-Residual energy fades, core now stable.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 73}
-{instant}Researcher
-Let us see... adding the reagents...{waitn1:2}
-Adjusting infusion ratios...{waitn1:2}
-Reagents now stabilizing...{waitn1:2}
-Almost there...
-{/dialog}
-
-{dialog 74}
-{speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
-{choice}
-{item}Range{/item}
-{item}Charge Time{/item}
-{item}Attack Power{/item}
-{item}Evade{/item}
-{item}Knockback Chance{/item}
-{item}Combo/Critical Chance{/item}
-{item}On Hit Rate{/item}
-{item}Max HP{/item}
-{item}Max MP{/item}
-{item}Strength{/item}
-{item}Magick Power{/item}
-{item}Vitality{/item}
-{item}Speed{/item}
-{item}Cleanse refinement{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 75}
-{speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
-{choice}
-{item}Evade{/item}
-{item}Magick Evade{/item}
-{item}Max HP{/item}
-{item}Max MP{/item}
-{item}Strength{/item}
-{item}Magick Power{/item}
-{item}Vitality{/item}
-{item}Speed{/item}
-{item}Cleanse refinement{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 76}
-{speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
-{choice}
-{item}Defense{/item}
-{item}Magick Resist{/item}
-{item}Max HP{/item}
-{item}Max MP{/item}
-{item}Strength{/item}
-{item}Magick Power{/item}
-{item}Vitality{/item}
-{item}Speed{/item}
-{item}Cleanse refinement{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 77}
-{speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
-{choice}
-{item}Attack Power{/item}
-{item}Evade{/item}
-{item}On Hit Rate{/item}
-{item}Max HP{/item}
-{item}Max MP{/item}
-{item}Strength{/item}
-{item}Magick Power{/item}
-{item}Vitality{/item}
-{item}Speed{/item}
-{item}Cleanse refinement{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 78}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Range{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 79}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Charge Time{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight decrease by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate decrease by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great decrease by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 80}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Attack Power{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 81}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}On Hit Rate{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 82}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Knockback Chance{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 83}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Combo/Critical Chance{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 84}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Evade{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 85}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Evade{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 86}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Magick Evade{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 87}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Defense{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 88}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Magick Resist{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 89}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Max HP{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 90}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Max MP{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 91}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Strength{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 92}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Magick Power{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 93}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Vitality{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 94}
-{instant}Researcher
-Which reagents will refine the {color:lightblue}Speed{color:none} formula?
-{choice}
-{item}{color:lightblue}Alchemical Refinement{color:none}, slight increase by {color:gold}{macro:8,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Stabilized Distillation{color:none}, moderate increase by {color:gold}{macro:9,0,0,0}{color:none}{/item}
-{item}{color:lightblue}Catalytic Transmutation{color:none}, great increase by {color:gold}{macro:10,0,0,0}{color:none}{/item}
-{item}Back.{/item}
-{/choice}
-{/dialog}
-
-{dialog 95}
-{instant}Researcher
-We shall apply {color:lightblue}Alchemical Refinement{color:none}
-to the {color:gold}{macro:7,0,1,0}{color:none}.
-A simple process, for modest reagents.{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-Shall we proceed?
-{choice}
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 96}
-{instant}Researcher
-We shall employ {color:lightblue}Stabilized Distillation{color:none}
-on the {color:gold}{macro:7,0,1,0}{color:none}.
-A refined method, for stable reagents.{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-Shall we proceed?
-{choice}
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 97}
-{instant}Researcher
-We shall invoke {color:lightblue}Catalytic Transmutation{color:none}
-upon the {color:gold}{macro:7,0,1,0}{color:none}.
-An advanced process, for superior reagents.{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-Shall we proceed?
-{choice}
-{item}Let's do it!{/item}
-{item}Changed my mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 98}
-{instant}Researcher
-I must caution you...{wait}
-Undoing a refinement is a delicate process.{wait}
-To cleanse the {color:gold}{macro:7,0,1,0}{color:none} of its current refinement,
-the following reagents will be required:{wait}
-{color:lightblue}{macro:3,0,0,0} {macro:0,0,1,0}{color:none}, {color:lightblue}{macro:4,0,0,0} {macro:1,0,1,0}{color:none}, {color:lightblue}{macro:5,0,0,0} {macro:2,0,1,0}{color:none}, and {color:lightblue}{macro:12,0,0,0}{color:none} gil.
-Shall we proceed with the cleansing?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 99}
-{instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} adapted to refinement.
-{color:lightblue}Range{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Its reach now extends farther with steady precision.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 100}
-{instant}Researcher
-Splendid... the {color:gold}{macro:7,0,1,0}{color:none} synchronized successfully.
-{color:lightblue}Charge Time{color:none} decreased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Energy gathers faster without
-destabilizing the flow.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 101}
-{instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} absorbed the change.
-{color:lightblue}Attack Power{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Each strike now lands
-with greater force.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 102}
-{instant}Researcher
-Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} refined its trigger.
-{color:lightblue}On Hit Rate{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Effects now activate
-with greater consistency.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 103}
-{instant}Researcher
-Brilliant... the {color:gold}{macro:7,0,1,0}{color:none} stabilized its force.
-{color:lightblue}Knockback Chance{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Impacts now push enemies
-back more reliably.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 104}
-{instant}Researcher
-Perfect... the {color:gold}{macro:7,0,1,0}{color:none} aligned its momentum.
-{color:lightblue}Critical Rate{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Critical strikes now
-emerge more naturally.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 105}
-{instant}Researcher
-Exceptional... the {color:gold}{macro:7,0,1,0}{color:none} adapted its balance.
-{color:lightblue}Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Weapon strikes are avoided
-with improved timing.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 106}
-{instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} refined its guard.
-{color:lightblue}Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Shielded movements now
-react more efficiently.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 107}
-{instant}Researcher
-Admirable... the {color:gold}{macro:7,0,1,0}{color:none} tuned its ward.
-{color:lightblue}Magick Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Arcane attacks are deflected
-more precisely.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 108}
-{instant}Researcher
-Flawless... the {color:gold}{macro:7,0,1,0}{color:none} reinforced its frame.
-{color:lightblue}Defense{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Incoming physical damage is
-reduced more effectively.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 109}
-{instant}Researcher
-Splendid... the {color:gold}{macro:7,0,1,0}{color:none} strengthened its ward.
-{color:lightblue}Magick Resist{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Magick damage is mitigated
-with greater reliability.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 110}
-{instant}Researcher
-Impeccable... the {color:gold}{macro:7,0,1,0}{color:none} reinforced its vitality.
-{color:lightblue}Max HP{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Endurance and survivability
-are noticeably improved.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 111}
-{instant}Researcher
-Excellent... the {color:gold}{macro:7,0,1,0}{color:none} expanded its reserves.
-{color:lightblue}Max MP{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Magick can now be sustained
-for longer periods.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 112}
-{instant}Researcher
-Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} focused its power.
-{color:lightblue}Strength{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Physical actions now
-carry greater weight.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 113}
-{instant}Researcher
-Brilliant... the {color:gold}{macro:7,0,1,0}{color:none} boosted its flow.
-{color:lightblue}Magick Power{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Spells now manifest
-with greater potency.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 114}
-{instant}Researcher
-Perfect... the {color:gold}{macro:7,0,1,0}{color:none} hardened its core.
-{color:lightblue}Vitality{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Damage is endured
-with greater resilience.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 115}
-{instant}Researcher
-Exceptional... the {color:gold}{macro:7,0,1,0}{color:none} quickened its pace.
-{color:lightblue}Speed{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
-Movement and reactions
-feel noticeably sharper.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 116}
-{instant}Researcher
-Complete... the {color:gold}{macro:7,0,1,0}{color:none} has been
-fully cleansed of its refinement.{wait}
-The alchemical imprint dissolves,
-restoring the item to
-a neutral state.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 117}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears a refined quality.
-{color:lightblue}Alchemical Refinement{color:none} marks are present.{wait}
-I observe signs the formula was employed,
-yet the precise attribute remains veiled.{wait}
-It seems shifted from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.
-This overwrites the current formula. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 118}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears a refined quality.
-{color:lightblue}Stabilized Distillation{color:none} marks are present.{wait}
-I observe signs the formula was employed,
-yet the precise attribute remains veiled.{wait}
-It seems shifted from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.
-This overwrites the current formula. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 119}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears a refined quality.
-{color:lightblue}Catalytic Transmutation{color:none} marks are present.{wait}
-I observe signs the formula was employed,
-yet the precise attribute remains veiled.{wait}
-It seems shifted from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.
-This overwrites the current formula. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 120}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-Residual warmth lingers within the structure.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}{color:gold}Fire{color:none}.
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 121}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-A swift residual charge remains present.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}{color:gold}Lightning{color:none}.
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 122}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-Preserved cold clings to its surface.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}{color:gold}Ice{color:none}.
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 123}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-Its weight and stability are unmistakable.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}{color:gold}Earth{color:none}.
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 124}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-A fluid resonance flows through it.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}{color:gold}Water{color:none}.
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 125}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-Air moves freely within its core.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}{color:gold}Wind{color:none}.{wait}
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 126}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-A pure and unwavering radiance shines.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}{color:gold}Holy{color:none}
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 127}
-{instant}Researcher
-Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
-A faint shadow pulses within its core.{wait}
-I observe signs of a binding to {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}{color:gold}Dark{color:none}.
-This overwrites the current essence. Proceed?
-{choice}
-{item}Do it!{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 128}
-{instant}Researcher
-Let me begin...{waitn1:2}
-Reagents align, impurities fade...{waitn1:2}
-Flow stabilizes, energy minimal...{waitn1:2}
-Structure... steady...
-{/dialog}
-
-{dialog 129}
-{instant}Researcher
-Proceeding carefully...{waitn1:2}
-Vessels steady, heat drives distillation...{waitn1:2}
-Essence separates, traces fade...{waitn1:2}
-Distillate... stable...
-{/dialog}
-
-{dialog 130}
-{instant}Researcher
-Focus now...{waitn1:2}
-Catalyst reacts, bonds shift...{waitn1:2}
-Matrix adapts, transformation holds...{waitn1:2}
-Synchronization... almost...
-{/dialog}
-
-{dialog 131}
-{instant}Researcher
-Wait... I see no traces of bound essence...{waitn1:2}
-It appears {color:gold}{macro:7,0,1,0}{color:none} holds no element binded.
-Nothing can be done with it.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
-{/dialog}
-
-{dialog 132}
-{instant}Researcher
-Wait... I see no traces of alchemical process...{waitn1:2}
-It seems {color:gold}{macro:7,0,1,0}{color:none} bears no refined qualities.
-Nothing can be done with it.{wait}
-What would you like to do now?
-{choice}
-{item}Try another.{/item}
-{item}That is all.{/item}
-{/choice}
+{instant}Now I'll change them to{wait}
+scrach_var_1, scrach_var_2 and scrach_var_3
+{color:gold}{macro:0,0,0,0}, {macro:1,0,0,0} and {macro:2,0,0,0}
 {/dialog}
