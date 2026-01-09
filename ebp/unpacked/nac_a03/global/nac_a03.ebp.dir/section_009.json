@@ -1,0 +1,899 @@
+{
+  "First Info List": {
+    "First Info 0": {
+      "Label": "cam_nac_subev_03_ex",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 425912319,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 265.82,
+            "Y": 25.8,
+            "Z": 106.33,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 267.63,
+            "Y": 26.33,
+            "Z": 103.22,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 1,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 265.82,
+            "Y": 25.8,
+            "Z": 106.33,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 267.63,
+            "Y": 26.33,
+            "Z": 103.22,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    },
+    "First Info 1": {
+      "Label": "cam_nac_subev_03",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 1243391,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 266.89,
+            "Y": 27.67,
+            "Z": 100.61,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 267.47,
+            "Y": 26.24,
+            "Z": 103.11,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 1,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 266.89,
+            "Y": 27.67,
+            "Z": 100.61,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 267.47,
+            "Y": 26.24,
+            "Z": 103.11,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    },
+    "First Info 2": {
+      "Label": "cam_nac_subev_04_ex",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 1243391,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 287.81,
+            "Y": 25.57,
+            "Z": 127.99,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 290.43,
+            "Y": 25.88,
+            "Z": 129.55,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 1,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 287.81,
+            "Y": 25.57,
+            "Z": 127.99,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 290.43,
+            "Y": 25.88,
+            "Z": 129.55,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    },
+    "First Info 3": {
+      "Label": "cam_nac_subev_04",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 1243391,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 291.49,
+            "Y": 28.06,
+            "Z": 127.59,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 290.46,
+            "Y": 25.85,
+            "Z": 129.6,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 1,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 291.49,
+            "Y": 28.06,
+            "Z": 127.59,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 290.46,
+            "Y": 25.85,
+            "Z": 129.6,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    },
+    "First Info 4": {
+      "Label": "cam_nac_subev_jony",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 1243391,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 296.44672,
+            "Y": 24.577297,
+            "Z": 138.76007,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 297.0469,
+            "Y": 27.09558,
+            "Z": 135.8971,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            200,
+            200,
+            200,
+            32768,
+            32769,
+            32770,
+            200,
+            200,
+            200,
+            200,
+            200,
+            200,
+            200
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 200,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 296.44672,
+            "Y": 24.577297,
+            "Z": 138.76007,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 296.23047,
+            "Y": 25.435467,
+            "Z": 135.00304,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    },
+    "First Info 5": {
+      "Label": "cam_nac_subev_jony_02",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 1243391,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 298.28192,
+            "Y": 25.361383,
+            "Z": 136.32103,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 282.66306,
+            "Y": 26.73954,
+            "Z": 130.69084,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            32771,
+            32772,
+            32773,
+            32774,
+            32775,
+            32776,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 300,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 298.35208,
+            "Y": 25.088026,
+            "Z": 135.41418,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 283.03903,
+            "Y": 31.368298,
+            "Z": 139.38179,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    },
+    "First Info 6": {
+      "Label": "cam_nac_subev_jony_03",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 1243391,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 293.0983,
+            "Y": 24.926523,
+            "Z": 139.08478,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 297.41354,
+            "Y": 25.752613,
+            "Z": 134.08006,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 1,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 293.0983,
+            "Y": 24.926523,
+            "Z": 139.08478,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 297.41354,
+            "Y": 25.752613,
+            "Z": 134.08006,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    },
+    "First Info 7": {
+      "Label": "cam_nac_subev_jony_04",
+      "Flags": 2147516416,
+      "Unknown 0": 0,
+      "Unknown 1": 0,
+      "Unknown 2": 1243391,
+      "Entries": {
+        "Entry 0": {
+          "Type": 1,
+          "Camera": {
+            "X": 298.03574,
+            "Y": 26.113674,
+            "Z": 133.51886,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 291.1045,
+            "Y": 24.737312,
+            "Z": 141.669,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        },
+        "Entry 1": {
+          "Type": 2,
+          "Unknown 6": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "Unknown 7": [
+            0,
+            0
+          ],
+          "Unknown 8": 1,
+          "Unknown 9": 0,
+          "Unknown 10": 0,
+          "Unused 2?": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Type": 1,
+          "Camera": {
+            "X": 298.03574,
+            "Y": 26.113674,
+            "Z": 133.51886,
+            "W": 1
+          },
+          "View Angle": {
+            "X": 291.1045,
+            "Y": 24.737312,
+            "Z": 141.669,
+            "W": 1
+          },
+          "Roll (Degrees)": 0,
+          "Vertical Fov (Degrees)": 45,
+          "Unknown 3": 0,
+          "Unknown 4": 0,
+          "Unknown 5": 1,
+          "Unused 0?": 0,
+          "Unused 1?": 0
+        }
+      }
+    }
+  },
+  "Second Info List": {
+    "Second Info 0": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 200,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.000705719,
+          "Unknown 16": -0.0016479492,
+          "Unknown 17": 89.79686,
+          "Unknown 18": 0,
+          "Unknown 19": -0.17596878,
+          "Unknown 20": 0.39228165,
+          "Unknown 21": 0.28368717,
+          "Unknown 22": 0,
+          "Unknown 23": 0.44897956
+        },
+        "Entry 1": {
+          "Unknown 15": 0.0002746582,
+          "Unknown 16": 0.0005950928,
+          "Unknown 17": 110.20322,
+          "Unknown 18": 89.79591,
+          "Unknown 19": -0.33684784,
+          "Unknown 20": 0.17369574,
+          "Unknown 21": 0.66315204,
+          "Unknown 22": 0.50000006,
+          "Unknown 23": 0.55102044
+        }
+      }
+    },
+    "Second Info 1": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 200,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.000705719,
+          "Unknown 16": -0.0016479492,
+          "Unknown 17": 89.79686,
+          "Unknown 18": 0,
+          "Unknown 19": -0.17596878,
+          "Unknown 20": 0.39228165,
+          "Unknown 21": 0.28368717,
+          "Unknown 22": 0,
+          "Unknown 23": 0.44897956
+        },
+        "Entry 1": {
+          "Unknown 15": 0.0002746582,
+          "Unknown 16": 0.0005950928,
+          "Unknown 17": 110.20322,
+          "Unknown 18": 89.79591,
+          "Unknown 19": -0.33684784,
+          "Unknown 20": 0.17369574,
+          "Unknown 21": 0.66315204,
+          "Unknown 22": 0.50000006,
+          "Unknown 23": 0.55102044
+        }
+      }
+    },
+    "Second Info 2": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 200,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.000705719,
+          "Unknown 16": -0.0016479492,
+          "Unknown 17": 89.79686,
+          "Unknown 18": 0,
+          "Unknown 19": -0.17596878,
+          "Unknown 20": 0.39228165,
+          "Unknown 21": 0.28368717,
+          "Unknown 22": 0,
+          "Unknown 23": 0.44897956
+        },
+        "Entry 1": {
+          "Unknown 15": 0.0002746582,
+          "Unknown 16": 0.0005950928,
+          "Unknown 17": 110.20322,
+          "Unknown 18": 89.79591,
+          "Unknown 19": -0.33684784,
+          "Unknown 20": 0.17369574,
+          "Unknown 21": 0.66315204,
+          "Unknown 22": 0.50000006,
+          "Unknown 23": 0.55102044
+        }
+      }
+    },
+    "Second Info 3": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 300,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.0023345947,
+          "Unknown 16": -0.0030212402,
+          "Unknown 17": 300.00067,
+          "Unknown 18": 0,
+          "Unknown 19": -1.2331283,
+          "Unknown 20": 1.4662567,
+          "Unknown 21": 0.76687163,
+          "Unknown 22": 0,
+          "Unknown 23": 1
+        }
+      }
+    },
+    "Second Info 4": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 300,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.0023345947,
+          "Unknown 16": -0.0030212402,
+          "Unknown 17": 300.00067,
+          "Unknown 18": 0,
+          "Unknown 19": -1.2331283,
+          "Unknown 20": 1.4662567,
+          "Unknown 21": 0.76687163,
+          "Unknown 22": 0,
+          "Unknown 23": 1
+        }
+      }
+    },
+    "Second Info 5": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 300,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.0023345947,
+          "Unknown 16": -0.0030212402,
+          "Unknown 17": 300.00067,
+          "Unknown 18": 0,
+          "Unknown 19": -1.2331283,
+          "Unknown 20": 1.4662567,
+          "Unknown 21": 0.76687163,
+          "Unknown 22": 0,
+          "Unknown 23": 1
+        }
+      }
+    },
+    "Second Info 6": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 300,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.0023345947,
+          "Unknown 16": -0.0030212402,
+          "Unknown 17": 300.00067,
+          "Unknown 18": 0,
+          "Unknown 19": -1.2331283,
+          "Unknown 20": 1.4662567,
+          "Unknown 21": 0.76687163,
+          "Unknown 22": 0,
+          "Unknown 23": 1
+        }
+      }
+    },
+    "Second Info 7": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 300,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.0023345947,
+          "Unknown 16": -0.0030212402,
+          "Unknown 17": 300.00067,
+          "Unknown 18": 0,
+          "Unknown 19": -1.2331283,
+          "Unknown 20": 1.4662567,
+          "Unknown 21": 0.76687163,
+          "Unknown 22": 0,
+          "Unknown 23": 1
+        }
+      }
+    },
+    "Second Info 8": {
+      "Unknown 11": 0,
+      "Unknown 12": 0,
+      "Unknown 13": 300,
+      "Unknown 14": 1,
+      "Entries": {
+        "Entry 0": {
+          "Unknown 15": 0.0023345947,
+          "Unknown 16": -0.0030212402,
+          "Unknown 17": 300.00067,
+          "Unknown 18": 0,
+          "Unknown 19": -1.2331283,
+          "Unknown 20": 1.4662567,
+          "Unknown 21": 0.76687163,
+          "Unknown 22": 0,
+          "Unknown 23": 1
+        }
+      }
+    }
+  },
+  "Third Info List": {}
+}

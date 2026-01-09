@@ -1,0 +1,36 @@
+{
+  "Camera Mappings": {
+    "Camera Mapping 0": {
+      "Label": "cam_nac_subev_03_ex",
+      "Link": 0
+    },
+    "Camera Mapping 1": {
+      "Label": "cam_nac_subev_03",
+      "Link": 1
+    },
+    "Camera Mapping 2": {
+      "Label": "cam_nac_subev_04_ex",
+      "Link": 2
+    },
+    "Camera Mapping 3": {
+      "Label": "cam_nac_subev_04",
+      "Link": 3
+    },
+    "Camera Mapping 4": {
+      "Label": "cam_nac_subev_jony",
+      "Link": 4
+    },
+    "Camera Mapping 5": {
+      "Label": "cam_nac_subev_jony_02",
+      "Link": 5
+    },
+    "Camera Mapping 6": {
+      "Label": "cam_nac_subev_jony_03",
+      "Link": 6
+    },
+    "Camera Mapping 7": {
+      "Label": "cam_nac_subev_jony_04",
+      "Link": 7
+    }
+  }
+}
