@@ -1,0 +1,134 @@
+{
+  "Navigation Icons": {
+    "Group 0": {
+      "Entries": {}
+    },
+    "Group 1": {
+      "Entries": {}
+    },
+    "Group 2": {
+      "Entries": {}
+    },
+    "Group 3": {
+      "Entries": {}
+    },
+    "Group 4": {
+      "Entries": {}
+    },
+    "Group 5": {
+      "Entries": {
+        "Entry 0": {
+          "Line Position X": 65,
+          "Line Position Y": 37,
+          "Icon Position X": 80,
+          "Icon Position Y": 22,
+          "Icon Link": 10,
+          "Required Map Flag": 0,
+          "Unused 0?": [
+            0,
+            1,
+            32,
+            3
+          ]
+        },
+        "Entry 1": {
+          "Line Position X": 80,
+          "Line Position Y": 22,
+          "Icon Position X": 80,
+          "Icon Position Y": 22,
+          "Icon Link": 14,
+          "Required Map Flag": 0,
+          "Unused 0?": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Line Position X": 39,
+          "Line Position Y": 45,
+          "Icon Position X": 50,
+          "Icon Position Y": 16,
+          "Icon Link": 3,
+          "Required Map Flag": 0,
+          "Unused 0?": [
+            0,
+            3,
+            3,
+            0
+          ]
+        },
+        "Entry 3": {
+          "Line Position X": 55,
+          "Line Position Y": 59,
+          "Icon Position X": 85,
+          "Icon Position Y": 56,
+          "Icon Link": 4,
+          "Required Map Flag": 0,
+          "Unused 0?": [
+            0,
+            3,
+            4,
+            0
+          ]
+        }
+      }
+    },
+    "Group 6": {
+      "Entries": {}
+    },
+    "Group 7": {
+      "Entries": {}
+    },
+    "Group 8": {
+      "Entries": {}
+    },
+    "Group 9": {
+      "Entries": {
+        "Entry 0": {
+          "Line Position X": 80,
+          "Line Position Y": 18,
+          "Icon Position X": 80,
+          "Icon Position Y": 18,
+          "Icon Link": 17,
+          "Required Map Flag": 0,
+          "Unused 0?": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 1": {
+          "Line Position X": 28,
+          "Line Position Y": 19,
+          "Icon Position X": 28,
+          "Icon Position Y": 19,
+          "Icon Link": 17,
+          "Required Map Flag": 0,
+          "Unused 0?": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Entry 2": {
+          "Line Position X": 50,
+          "Line Position Y": 43,
+          "Icon Position X": 50,
+          "Icon Position Y": 43,
+          "Icon Link": 17,
+          "Required Map Flag": 0,
+          "Unused 0?": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    }
+  }
+}

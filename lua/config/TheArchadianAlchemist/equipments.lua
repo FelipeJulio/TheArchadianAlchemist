@@ -1,5 +1,5 @@
 -- @description: each value represents the id of the equipment that will be loaded into the list according to each subcategory.
-local equipment = {
+local equipments = {
     sword = { -- sword
     4097, -- broadsword
     4098, -- longsword
@@ -480,4 +480,4 @@ local equipment = {
     }
 }
 
-return equipment
+return equipments

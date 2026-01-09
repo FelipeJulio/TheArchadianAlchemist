@@ -1,310 +1,645 @@
 {format:ebp}
 
 {dialog 0}
-{instant}{npc:963}
-Hello, I'm the Chopmaster. Help you with aught?
-{choice}
-{item}Trade pine chops for sandalwood.{/item}
-{item}What are pine and sandalwood chops?{/item}
-{item}Just passing through.{/item}
-{/choice}
 {/dialog}
 
 {dialog 1}
-{instant}{npc:963}
-Aught else I can help you with?
-{choice}
-{item}Trade pine chops for sandalwood.{/item}
-{item}What are pine and sandalwood chops?{/item}
-{item}Just passing through.{/item}
-{/choice}
+{instant}{npc:687}
+Headed for the aerodrome? Begging your pardon,
+but we're expecting a fleet arrival today. No
+civilian use of the facility allowed.
 {/dialog}
 
 {dialog 2}
-{instant}{npc:963}
-Looks like you've nary a chop to your name.
-Are you sure you belong here in the City?
-{/dialog}
-
-{dialog 3}
-{instant}{npc:963}
-Ah, {macro:0,0,1,0} chops, I see. With just {macro:4,0,1,0} more
-you'll qualify to ride a cab.
-{/dialog}
-
-{dialog 4}
-{instant}{npc:963}
-Ah, {macro:0,0,1,0} chop, I see. With just {macro:4,0,1,0} more
-you'll qualify to ride a cab.
-{/dialog}
-
-{dialog 5}
-{instant}{npc:963}
-Ah, {macro:0,0,1,0} chops, I see. With just {macro:4,0,1,0} more
-you'll qualify to ride a cab.
-{/dialog}
-
-{dialog 6}
-{instant}{npc:963}
-Ah, you've come by {macro:0,0,1,0} chops, I see.
-Very good, you qualify to ride a cab.{wait}
-Just {macro:3,0,1,0} more, and you can trade them in for
-a sandalwood chop. Those with sandalwood
-may ride cabs, {italic}and{/italic} get into Central.
-{/dialog}
-
-{dialog 7}
-{instant}{npc:963}
-Ah, you've come by {macro:0,0,1,0} chops, I see.
-Very good, you qualify to ride a cab.{wait}
-Just {macro:3,0,1,0} more, and you can trade them in for
-a sandalwood chop. Those with sandalwood
-may ride cabs, {italic}and{/italic} get into Central.
-{/dialog}
-
-{dialog 8}
-{instant}{npc:963}
-Very well, here's your sandalwood chop.
-{/dialog}
-
-{dialog 9}
-{instant}{npc:963}
-Congratulations on getting your sandalwood.
-This designates you as a most promising ardent.
-Why, you might even make gentry one day.{wait}
-Those with sandalwood may ride cabs, and get
-into Central.
-{/dialog}
-
-{dialog 10}
-{instant}{npc:963}
-Ah, I see you've already got your sandalwood.
-You won't be needing to do any business with me,
-then.
-{/dialog}
-
-{dialog 11}
-{instant}{npc:963}
-Here in Archades, people spend their whole lives
-trying to get their hands on pine chops and, if
-they're lucky, a chop of fine sandalwood.{wait}
-Gil, they're only good for the buying and selling
-of goods. You can have all the gil in the world
-and it won't buy you respect.{wait}
-Only chops of pine, or a chop of sandal will win
-you that.{wait}
-You see, the chops represent your contribution
-to the greater good of the Empire.{wait}
-Common citizens might come by pinewood chops
-enough during their daily lives, but it takes a
-soldier, or some great deed to earn sandalwood.
-{/dialog}
-
-{dialog 12}
-{instant}{npc:963}
-Best of luck to you.
-{/dialog}
-
-{dialog 13}
-{instant}{npc:963}
-You've some business with me?
+{instant}{npc:687}
+You looking for the aerodrome?{wait}
+I'll take you. Civilians are only allowed in
+sections of the fortress.
 {choice}
-{item}I'd like to buy a chop.{/item}
-{item}No, it's nothing.{/item}
-{/choice}
-{/dialog}
-
-{dialog 14}
-{instant}{npc:963}
-Well, let's see...{wait}
-Look, I shouldn't be telling you this, but it {italic}is{/italic}
-possible to buy chops. Not officially, mind you.{wait}
-It's a malboro eat malboro world here in the City,
-and there're people who will do just about
-anything for a few gil. Even sell their chops.{wait}
-We're happy to buy what chops come up for sale,
-of course, meaning...
-{/dialog}
-
-{dialog 15}
-{instant}{npc:963}
-They're not cheap, but this is the price.
-{choice}
-{item}Purchase one pinewood chop for {macro:0,0,0,0} gil.{/item}
-{item}Never mind.{/item}
-{/choice}
-{/dialog}
-
-{dialog 16}
-{instant}{npc:963}
-Many thanks, sir.
-{/dialog}
-
-{dialog 17}
-{instant}{npc:963}
-Ah, you seem to lack the necessary funds.
-{/dialog}
-
-{dialog 18}
-{instant}{npc:762}
-Welcome, welcome. I'm sure you'll find our
-selection of magicks befitting of the Empire's
-finest magickal emporium.
-{/dialog}
-
-{dialog 19}
-{instant}{npc:733}
-Where could my {color:lightblue2}moonsilver medallion{rgb:gray} be? Where?
-{choice}
-{item}Inquire about the medallion.{/item}
-{item}Leave.{/item}
-{/choice}
-{/dialog}
-
-{dialog 20}
-{instant}{npc:733}
-Hrmm...
-{/dialog}
-
-{dialog 21}
-{instant}{npc:733}
-You would hear of my plight? Hrmm... It is sad,
-though common. I needed money. Unthinking, I sold
-my {color:lightblue2}moonsilver medallion{rgb:gray}.{wait}
-I must have it back. I have need of it...but the man
-to whom I sold it, one {color:gold2}Otto{color:none}, is missing.
-{/dialog}
-
-{dialog 22}
-{/dialog}
-
-{dialog 23}
-{instant}{npc:733}
-Do not make me speak of this again. It is shame to
-me. I sold my {color:lightblue2}moonsilver medallion{rgb:gray} for money.{wait}
-Though it be a symbol of a love that endures,
-unlike love, it has a price.{wait}
-I must have it back. I have need of it... But the man
-to whom I sold it, one {color:gold2}Otto{color:none}, is missing.
-{/dialog}
-
-{dialog 24}
-{instant}{npc:733}
-I have asked that you not make me speak of this.
-I told you, I sold the {color:lightblue2}moonsilver medallion{rgb:gray} for...{wait}
-What? You have found the medallion?{wait}
-Might I...Might I please...?
-{choice}
-{item}Give him the {color:lightblue2}moonsilver medallion{color:none}.{/item}
+{item}Go along.{/item}
 {item}Decline.{/item}
 {/choice}
 {/dialog}
 
+{dialog 3}
+{instant}{npc:687}
+Right, then. This way.
+{/dialog}
+
+{dialog 4}
+{instant}{npc:687}
+If you want to go to the aerodrome, speak with
+me. You'll need an escort.
+{/dialog}
+
+{dialog 5}
+{instant}{npc:679}
+Longest serving merchant in Nalbina, right here!
+Loved for years, and business's never been better!
+Take a look!
+{/dialog}
+
+{dialog 6}
+{instant}{npc:681}
+The Imperials have taken a liking to our shop.
+Business is great! Care for a weapon or two?
+{/dialog}
+
+{dialog 7}
+{instant}{npc:687}
+I've heard rumors of the creatures that lurk in
+the lands about Nalbina. Childrens' tales,
+compared to the legendary fiends of Archadia!{wait}
+For instance, did you know that a great palace
+lies buried deep within the earth to the south of
+the capital? Well, within that palace...{wait}
+...there sleeps a terrible wyrm! Frightening, isn't
+it? And if it really exists...there's a fight best
+avoided. Let sleeping wyrms lie, as they say!
+{/dialog}
+
+{dialog 8}
+{instant}{npc:687}
+You there, you sure you aren't a Rozarrian spy,
+hmm? No, on second thought, you don't look
+clever enough to be a spy. Carry on.
+{/dialog}
+
+{dialog 9}
+{instant}{npc:687}
+You report any shops you see selling stolen
+goods, son.{wait}
+...I didn't join the army for this bloody drudgery.
+What happened to glory?{wait}
+I'm part of Lord Vayne's Western Armada, here to
+protect the homeland from the reaching arms of
+Rozarria, and I'm patrolling street stalls!{wait}
+Should've taken that Rabanastre posting when
+I had the chance...
+{/dialog}
+
+{dialog 10}
+{instant}{npc:687}
+You report any shops you see selling stolen
+goods, son.{wait}
+Can you believe I'm here doing this, every day?
+There I was part of the Western Armada, glorious!
+Victorious!{wait}
+This war better start soon. I want to be a shield
+for the homeland, and a sword, striking down
+those Rozarrian barbarians!
+{/dialog}
+
+{dialog 11}
+{instant}{npc:687}
+My predecessor was transferred, leaving me to
+patrol the stalls, looking for stolen goods...
+quite a task, I assure you!{wait}
+Hard times have driven shopkeepers to desperate
+measures out here in the provinces.
+{/dialog}
+
+{dialog 12}
+{instant}{npc:674}
+Hold, there! No further, boy. Leave the sweating
+to the stonemasons, eh?
+{/dialog}
+
+{dialog 13}
+{instant}{npc:674}
+Hold, there! You may be the "Hero of Nalbina,"
+but you'll go no further.{wait}
+We're under orders to finish the repairs to the
+fortress walls before war comes, and these
+Imperials mean business.
+{/dialog}
+
+{dialog 14}
+{instant}{npc:676}
+What? Don't know what kind of shop I'm running?
+Well...truth be told, I'm a little unclear on
+that myself. I sell...boxes? Yeah. Boxes.{wait}
+I pick up boxes no one needs, and I sell 'em.
+What? It's a living. {italic}(snort){/italic}
+{/dialog}
+
+{dialog 15}
+{instant}{npc:676}
+Sold a box to an Imperial the other day. Heard he
+took it with 'im on some Leviathingy...then that
+up and disappeared! Wonder where it went to.
+{/dialog}
+
+{dialog 16}
+{instant}{npc:676}
+My boxes're selling like {italic}popular{/italic} boxes to them
+Imperials! Wait, you think they're usin' 'em
+to fight with? Are they usin' 'em for...{italic}evil?{/italic}
+{/dialog}
+
+{dialog 17}
+{instant}{npc:688}
+I was complaining to that fellow over there about
+how rough I had it, and he gave me this suit of
+armor to put on...{wait}
+It's hot, it's heavy, people are yelling at me...
+All right, I get it, I get it! It's tough being
+an Imperial. Now can I please take this off?
+{/dialog}
+
+{dialog 18}
+{instant}{npc:688}
+Hey, don't be fooled by appearances...I ain't
+no Imperial. This armor belongs to this guy next
+to me. He puts it on me so he can loaf off!{wait}
+It's hot, it's heavy... Okay, so it's tough being an
+Imperial, I get it. Come to think of it, those Judges
+wear armor, too, but they don't complain...{wait}
+'Less they're saying it real quiet-like behind
+those scary masks of theirs.
+{/dialog}
+
+{dialog 19}
+{instant}{npc:688}
+Hey, don't be fooled by appearances...I ain't
+no Imperial. This armor belongs to this guy next
+to me. He puts it on me so he can loaf off...{wait}
+At least he used to. Now that war's a-comin' he
+doesn't get to relax quite so much. It's hard
+being an Imperial, I guess...
+{/dialog}
+
+{dialog 20}
+{instant}{npc:1069}
+A friend of mine's kept in the dungeons here,
+so me and my buddy came to help him...{wait}
+'Cept my buddy looked so needy, they thought he
+was a stonemason and put him to work! Now what
+do I do?
+{/dialog}
+
+{dialog 21}
+{instant}{npc:1069}
+I heard a rumor that someone escaped from the
+dungeons here, but it weren't my friend.{wait}
+See, I'm not really a stonemason. I came with my
+buddy to get a friend out of the dungeons...{wait}
+Maybe if he comes out on forced labor we'll get
+to see 'im. That'd be nice.
+{/dialog}
+
+{dialog 22}
+{instant}{npc:1069}
+I'm not really a stonemason, see. I'm just here
+{italic}pretending{/italic} to work, waiting for my chance
+to get a friend out of the dungeons.{wait}
+Not that I'd be much help if a chance {italic}did{/italic} come
+along...this work's exhausting!
+{/dialog}
+
+{dialog 23}
+{instant}{npc:1069}
+Yaaaar, it's hot! Retreat for the shade!
+Retreeeeeat!
+{/dialog}
+
+{dialog 24}
+{instant}{npc:1069}
+Hmph. We got mistaken for stonemasons on
+account of my buddy's grim appearance, that's
+why. Now we gotta work out here...
+{/dialog}
+
 {dialog 25}
-{instant}{npc:733}
-I am...in great need. It is a very important
-medallion to me... Please.
+{instant}{npc:1069}
+I've kinda gotten used to the heat, you know.
 {/dialog}
 
 {dialog 26}
-{instant}{npc:733}
-I thank you. Without this I would have been in
-great disfavor with the Frog King... But, what is
-this? It is broken...?{wait}
-No...this is most unusual. A piece has been taken
-away, yet the medallion is somehow stronger. This
-warmth...this is true love.{wait}
-I believe this medallion has been in the presence
-of a great love. Though its form be diminished,
-it is rather as if it had been made whole.{wait}
-I return now to the King. I am in your debt.
-My gratitude be with you.
+{instant}{npc:1069}
+We didn't come here as no stonemasons. We came
+to rescue one of our friends stuck in the dungeons!{wait}
+But...my stupid seeq buddy got mistaken for a
+worker...and here we are.
 {/dialog}
 
 {dialog 27}
-{instant}{npc:733}
-The medallion appears broken, but nothing could
-be more untrue. I will take this medallion, steeped
-in love, back to the Frog King of Nabudis.
+{instant}{npc:1069}
+I came here with my seeq buddy to spring a friend
+out of the dungeons...but my stupid {italic}buddy{/italic} got
+mistaken for a stonemason, so here we are...{wait}
+'Course, we started getting good at the work,
+and now the foreman thinks we're some elite
+crew... What're we {italic}doing!?{/italic}
 {/dialog}
 
 {dialog 28}
-{instant}{npc:928}
-Sweetling, had you heard? My good friend Otto's
-gone missing.
+{instant}{npc:1069}
+I came here with my seeq buddy to spring a friend
+out of the dungeons...but my stupid {italic}buddy{/italic} got
+us trapped here workin' as stonemasons.{wait}
+Anyhow, now that it seems like Rozarria's going
+to invade, I figure it's time to be off...'cept we
+can't just leave our friend in the dungeon! Tch.
 {/dialog}
 
 {dialog 29}
-{instant}{npc:929}
-Oh, I heard, I heard. Fell in love with a—pardon
-me—{italic}tart{/italic} down in Old Archades, they say? He
-always was a character.
+{instant}{npc:1069}
+Wh-What? What is it? I'm still on break...
 {/dialog}
 
 {dialog 30}
-{instant}{npc:713}
-Shh! Don't talk to me!
+{instant}{npc:1069}
+Listen here, swinesnout, it's your stupid fault
+we got mistaken for stonemasons. And no, it's
+{italic}not{/italic} making us better people, okay? Gah!
 {/dialog}
 
 {dialog 31}
-{instant}{npc:713}
-You...I met you in Nalbina, did I not? Don't you
-remember me? I'm July, the streetear.{wait}
-Why, thanks to you, I received a fine reward from
-the wife of an Imperial particularly unfond of
-chocobos.{wait}
-In fact, I owe you my gratitude. Here.
+{instant}{npc:1069}
+You know...I'm getting used to the heat here,
+too.
 {/dialog}
 
 {dialog 32}
-{instant}{npc:713}
-So long, then. Hmm? What am I doing now? I work
-for an inquiry agency, as a matter of fact. The
-coin is good, but it's wearisome work, really.
 {/dialog}
 
 {dialog 33}
-{instant}{npc:713}
-Once I've finished this posting, I'm off to make
-some inquiries in Rabanastre.{wait}
-A man here—an Imperial, actually—had his coin
-pouch stolen by a pickpocket in the market there,
-and he wants it back. Good luck, eh? So long!
+{instant}{npc:691}
+You've done it. You've stopped the Roblon.{wait}
+I was afraid to tell you before, but the Roblon...
+was made by my son. When I heard its description,
+I knew it could be no other.{wait}
+My son died two years ago in the war. Without its
+master, the Roblon must have begun its rampage in
+the ruins of Nabudis.
 {/dialog}
 
 {dialog 34}
-{instant}{npc:1078}
-Bah! You must think me foolish. I doubt it not.
-I {italic}am{/italic} a fool. I should never have left her behind
-in Old Archades to come here...{wait}
-She always dreamed of a place where we could be
-happy together...and it made her sad. She would
-spend hours gazing into the distance...{wait}
-Me? I gazed up at the City, so sure it held
-the answer...that I was destined for greatness...
-But {italic}that{/italic} was the most foolish dream of all.
+{instant}{npc:691}
+Hey there! Jovy!
 {/dialog}
 
 {dialog 35}
+{instant}{npc:673}
+Ah, Morgen. What is it? Make any progress on
+that golem hunt of yours?
 {/dialog}
 
 {dialog 36}
-Something Shiny
+{instant}{npc:691}
+An astute guess! But much more than progress...{wait}
+The hunt is finished, thanks to this boy!{wait}
+You're still young yourself, Jovy. Isn't it high
+time you—
 {/dialog}
 
 {dialog 37}
+{instant}{npc:673}
+{italic}(snort){/italic}
 {/dialog}
 
 {dialog 38}
+{instant}{npc:691}
+Wouldn't even let me finish my sentence. Good of
+him to take an interest in the troubles of an old
+man, but he can be an odd one, that Jovy.{wait}
+But it's to you I owe my thanks. And a bounty,
+I believe. Here you go, boy. Thank you.
 {/dialog}
 
 {dialog 39}
+{instant}{npc:691}
+Hm? Mighty young to be hunting marks, aren't
+you, boy? Well, good for you, I say!{wait}
+I heard a party of adventurers who had recently
+passed through the Nabreus Deadlands mention
+seeing a hellish golem.{wait}
+Please...Nabradia was once my home. I cannot
+bear to see it profaned so. And this golem...
+No. No, surely it is not...{wait}
+Would you kill this golem for an old man?
+{choice}
+{item}Accept{/item}
+{item}Decline{/item}
+{/choice}
 {/dialog}
 
 {dialog 40}
+{instant}{npc:691}
+Yes, that's the spirit. Never lose it. Now, as
+for this golem, it roams somewhere beyond tall
+grasses and a bank of thick fog.{wait}
+It is known as the {color:gold2}Roblon{color:none}. It was my son, who—
+no, no. Go now, and take care.
+{/dialog}
+
+{dialog 41}
+{instant}{npc:691}
+What's the matter? Get cold feet, my boy?
+I'm usually a good judge of character, but
+I overestimated you...
+{/dialog}
+
+{dialog 42}
+{instant}{npc:691}
+I've heard a hellish golem roams the Nabreus
+Deadlands.{wait}
+Please...Nabradia was once my home. I cannot
+bear to see it profaned so. And this golem...
+No. No, surely it is not...{wait}
+Would you kill this golem for an old man?
+{choice}
+{item}Accept{/item}
+{item}Decline{/item}
+{/choice}
+{/dialog}
+
+{dialog 43}
+{instant}{npc:691}
+A party of adventurers who had passed through
+Nalbina mentioned seeing a hellish golem known
+as the {color:gold2}Roblon{color:none}.{wait}
+The Roblon roams the {color:gold}Nabreus Deadlands{color:none} beyond
+a place of tall grasses and a bank of thick fog.
+You must put an end to this terror.
+{/dialog}
+
+{dialog 44}
+{instant}{npc:691}
+My son and I developed that golem for the good
+of Nabradia. We never meant for it to do harm...{wait}
+That seems a different life now. Hard to believe
+so much has happened in these two short years.
+{/dialog}
+
+{dialog 45}
+{instant}{npc:690}
+Oh hoh! You've slain Goliath! Tell me everything
+about it, and don't leave out a thing!{wait}
+Yes, yes...amazing! I've not seen or heard the like!
+{/dialog}
+
+{dialog 46}
+{instant}{npc:690}
+Ah, Jovy! What timing! Listen to this!
+{/dialog}
+
+{dialog 47}
+{instant}{npc:673}
+Yes, master Barrong, what is it?
+More news of your "secret" bestiary?
+{/dialog}
+
+{dialog 48}
+{instant}{npc:690}
+No need to be sarcastic, Jovy. But yes, it's
+about the bestiary. I've finally added that page
+on Goliath!{wait}
+Incredible, no? He's the one who helped me
+gather the information I needed. Your plan to
+use hunters worked perfectly!
+{/dialog}
+
+{dialog 49}
+{instant}{npc:673}
+{italic}(snort){/italic}
+{/dialog}
+
+{dialog 50}
+{instant}{npc:690}
+I'll never understand that Jovy. Well, I'll show
+him the bestiary later, I suppose.{wait}
+I never thought I'd see such a rare beast
+grace the pages of my bestiary...I couldn't
+be happier! Thanks!
+{/dialog}
+
+{dialog 51}
+{instant}{npc:690}
+Oh yes, that last adventurer was good, quite
+good. My pages grow in number, heh heh heh.
+{/dialog}
+
+{dialog 52}
+{instant}{npc:690}
+!?{wait}
+Y-You! You were watching me! Here to send me
+back to my workshop, are you?{wait}
+What's this... You're just an ordinary adventurer.
+Ah yes, an adventurer. An adventurer...
+{/dialog}
+
+{dialog 53}
+{instant}{npc:690}
+Could I chew your ear for a moment? I promise
+not to hold you long.{wait}
+I am a writer of bestiaries by hobby and trade.
+Nalbina is an excellent place to pick the brains
+of wandering adventurers as they pass.{wait}
+The trouble comes in learning of more rare,
+powerful beasts. Half who see them run, and the
+other half never make it back. Quite a quandary.{wait}
+So the idea struck me to petition hunts for
+these monsters...not bad, eh?{wait}
+Oh, you're here about my bill for {color:gold2}Goliath{color:none}?
+Splendid! Splendid!{wait}
+You're willing to go and fight this monster, eh?
+{choice}
+{item}Accept{/item}
+{item}Decline{/item}
+{/choice}
+{/dialog}
+
+{dialog 54}
+{instant}{npc:690}
+There's a good lad! I'll tell you what I know,
+though it's precious little.{wait}
+{color:gold2}Goliath{color:none} is a golem that walks the halls of the
+{color:gold}Necrohol of Nabudis{color:none}. They say it's most
+easily found when entering from the Deadlands.{wait}
+It's fierce, and dangerous. But what's a little
+danger in exchange for another page to add to my
+bestiary, eh? Good luck!
+{/dialog}
+
+{dialog 55}
+{instant}{npc:690}
+Krah! Who asked you, anyway!
+{/dialog}
+
+{dialog 56}
+{instant}{npc:690}
+I've been interested in writing bestiaries since
+I was just a boy. That's why I need to find out
+more about {color:gold2}Goliath{color:none}!{wait}
+You're willing to go and fight this monster, eh?
+{choice}
+{item}Accept{/item}
+{item}Decline{/item}
+{/choice}
+{/dialog}
+
+{dialog 57}
+{instant}{npc:690}
+My bestiary won't be complete until I've written
+a page about {color:gold2}Goliath{color:none}.{wait}
+It's been spotted in the {color:gold}Necrohol of Nabudis{color:none}, near
+the entrance to the Deadlands.{wait}
+Don't worry, I'm sure it's nothing you can't
+handle! Hurry back now...I want to hear every
+little detail!
+{/dialog}
+
+{dialog 58}
+{instant}{npc:690}
+Don't talk to anyone but Jovy and me about the
+bestiary, all right? I'm not ready to show it to
+anyone else yet. What if they laughed?
+{/dialog}
+
+{dialog 59}
+{instant}{npc:673}
+Y-You know what? Y-You're my new hero!
+{/dialog}
+
+{dialog 60}
+{instant}{npc:673}
+Y-Y'know what? Four years ago, in Rabanastre,
+I got accused of stealing, but I didn't steal
+nothin', honest! {italic}(snort){/italic}{wait}
+The chap what saved me back then, he's my
+{italic}original{/italic} hero.{wait}
+My original hero, he had just lost his parents.
+Sad, huh? But he was still looking out for his
+younger brother. Nice guy! {italic}(snort){/italic}
+{/dialog}
+
+{dialog 61}
+{instant}{npc:673}
+...Bu-Bu-But my hero, he got wrapped up in that
+business with King Raminas's assassination...and
+he...he's gone now. {italic}Bu hweeeeee!{/italic}{wait}
+I lost the strength to go on... But two years
+passed, and I got to thinkin' I'd like to see
+the place where my hero passed away, see. Here.
+{/dialog}
+
+{dialog 62}
+{instant}{npc:673}
+But when I got here, they thought I was a
+stonemason, and put me to laborin'! {italic}(snort){/italic}
+{/dialog}
+
+{dialog 63}
+{instant}{npc:673}
+B-But, y'know, I made a lot of friends here.
+Oh, they're all really nice. And they tell great
+stories! {italic}(snort){/italic}
+{/dialog}
+
+{dialog 64}
+{instant}{npc:673}
+One day, I realized that the guy who always goes
+to hunt the marks my friends post, he's you!
+{italic}(snort){/italic}{wait}
+Seeing you out there, bagging all those marks,
+well, it inspired me! {italic}(snort){/italic} You're my new hero!
+{italic}Bu hweeeeee!{/italic}
+{/dialog}
+
+{dialog 65}
+{instant}{npc:673}
+By the time you've finished your journey,
+I hope to have the repairs to the fortress done,
+and be back in Rabanastre! {italic}(snort){/italic}{wait}
+When times get rough, just remember you're my...
+no, you're {italic}all Nalbina's{/italic} hero!
+{italic}Bu hweeeeee!{/italic}
+{/dialog}
+
+{dialog 66}
+{instant}{npc:673}
+Well, back to work! {italic}(snort){/italic}
+{/dialog}
+
+{dialog 67}
+{instant}{npc:673}
+Hey, hero! You know, you look a {italic}bit{/italic} like the
+original hero. But you're much better, don't
+worry!{wait}
+Okay, you get out there and do your hero things!
+I'll be here doing my, uh, work things!
+{italic}Bu hweeeeee!{/italic}
+{/dialog}
+
+{dialog 68}
+{instant}{npc:673}
+I-I'm a new recruit here, so I gotta work hard,
+or, or else they won't {italic}(snort){/italic} feed me!
+{italic}Bu hweeeeeeee!{/italic}
+{/dialog}
+
+{dialog 69}
+{instant}{npc:673}
+{italic}(snort squeal sniff){/italic}{wait}
+M-My hero, he's g-gone... {italic}Bu hweeeeeeee!{/italic}
+{/dialog}
+
+{dialog 70}
+{instant}{npc:673}
+Mrrph. {italic}(snort){/italic} I may still be new, but I'm a real
+good worker now, I is!
+{/dialog}
+
+{dialog 71}
+{instant}{npc:673}
+I-I'm new here...b-but I can run widdout restin'
+too much these days! I feel great! {italic}Bu hweeeeee!{/italic}
+{/dialog}
+
+{dialog 72}
+{instant}{npc:673}
+Snarf?{wait}
+Buu buu buu... {italic}Bu hweeeeee!{/italic}
+{/dialog}
+
+{dialog 73}
+{instant}{npc:673}
+How goes the adventuring, hero? Everyone in
+town tells tales of your mark hunts, y'know!
+{italic}(snort){/italic}
+{/dialog}
+
+{dialog 74}
+Smithery Banner
+{/dialog}
+
+{dialog 75}
+{speed}Smithery Banner
+Come and see our most impressive range of
+hand-picked, top-quality weapons!
+{/dialog}
+
+{dialog 76}
+Armorer Banner
+{/dialog}
+
+{dialog 77}
+{speed}Armorer Banner
+The oldest shop of its kind in Nalbina!
+Offering you protectives with the best service
+tradition and experience can offer!
+{/dialog}
+
+{dialog 78}
+{speed}{btn3:confirm}{scale:80}{vpos:-3} Skip
+{/dialog}
+
+{dialog 79}
 {instant}Researcher
 Welcome, my friend... pray, tell me,{wait}
-what alchemy shall we perform today?
+What alchemy shall we perform today?
 {choice}
 {item}Alter its very essence{/item}
 {item}Alter its qualities{/item}
@@ -312,21 +647,21 @@ what alchemy shall we perform today?
 {/choice}
 {/dialog}
 
-{dialog 41}
+{dialog 80}
 {instant}Researcher
 You wish to alter its essence?
 Very well...{wait}
 Then, let us bind an element.
 {/dialog}
 
-{dialog 42}
+{dialog 81}
 {instant}Researcher
 You wish to refine its qualities?
 So be it...{wait}
 Then, we shall refine its attributes.
 {/dialog}
 
-{dialog 43}
+{dialog 82}
 {speed}Now, which shall we begin with?
 {choice}
 {item}Weapon{/item}
@@ -336,7 +671,7 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 44}
+{dialog 83}
 {speed}Now, which shall we begin with?
 {choice}
 {item}Weapon{/item}
@@ -350,7 +685,7 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 45}
+{dialog 84}
 {speed}What type of weapon?
 {choice}
 {item}Sword{/item}
@@ -375,7 +710,7 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 46}
+{dialog 85}
 {speed}What type of Armor?
 {choice}
 {item}Heavy Armor{/item}
@@ -386,7 +721,7 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 47}
+{dialog 86}
 {speed}What type of Helm?
 {choice}
 {item}Heavy Helm{/item}
@@ -397,7 +732,7 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 48}
+{dialog 87}
 {speed}What type of Accessory?
 {choice}
 {item}Belt{/item}
@@ -413,7 +748,7 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 49}
+{dialog 88}
 {speed}What type of Ammunition?
 {choice}
 {item}Arrow{/item}
@@ -425,7 +760,7 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 50}
+{dialog 89}
 {speed}And which shall it be, then?
 {choice}
 {item}{macro:0,0,1,0}{/item}
@@ -463,20 +798,20 @@ Then, we shall refine its attributes.
 {/choice}
 {/dialog}
 
-{dialog 51}
+{dialog 90}
 {instant}Researcher
-Very well. Should your gear need work,{wait}
+Very well. Should your gear need work,
 you know where to find me.{wait}
 I shall handle it with care.
 {/dialog}
 
-{dialog 52}
+{dialog 91}
 {instant}Researcher
-Hm... it seems you lack an item suited{wait}
-for refinement within this class.
+Hm... it seems you lack suitable gear.
+Return once you've omething to work with.
 {/dialog}
 
-{dialog 53}
+{dialog 92}
 {speed}Which element shall be bound to {color:gold}{macro:7,0,1,0}{color:none}?
 {choice}
 {item}{size:0,0}{macro:14,0,0,0}{size:10,10}{scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}Fire element{/item}
@@ -492,7 +827,7 @@ for refinement within this class.
 {/choice}
 {/dialog}
 
-{dialog 54}
+{dialog 93}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}{color:gold}Fire{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -504,7 +839,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 55}
+{dialog 94}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}{color:gold}Lightning{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -516,7 +851,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 56}
+{dialog 95}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}{color:gold}Ice{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -528,7 +863,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 57}
+{dialog 96}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}{color:gold}Earth{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -540,7 +875,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 58}
+{dialog 97}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}{color:gold}Water{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -552,7 +887,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 59}
+{dialog 98}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}{color:gold}Wind{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -564,7 +899,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 60}
+{dialog 99}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}{color:gold}Holy{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -576,7 +911,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 61}
+{dialog 100}
 {instant}Researcher
 To bind the {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}{color:gold}Dark{color:none} element to the {color:gold}{macro:7,0,1,0}{color:none},
 the following reagents are required:{wait}
@@ -588,7 +923,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 62}
+{dialog 101}
 {instant}Researcher
 I must warn you...{wait}
 Unbinding an element once altered is no simple task.{wait}
@@ -602,7 +937,7 @@ Shall we proceed with the cleansing?
 {/choice}
 {/dialog}
 
-{dialog 63}
+{dialog 102}
 {instant}Researcher
 Hmm... you lack the required reagents
 or sufficient gil to proceed.{wait}
@@ -613,7 +948,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 64}
+{dialog 103}
 {instant}Researcher
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none}
 absorbs heat in perfect balance.{wait}
@@ -626,7 +961,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 65}
+{dialog 104}
 {instant}Researcher
 Impeccable... the {color:gold}{macro:7,0,1,0}{color:none}
 channels lightning with no resistance.{wait}
@@ -639,7 +974,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 66}
+{dialog 105}
 {instant}Researcher
 Remarkable... the {color:gold}{macro:7,0,1,0}{color:none}
 crystallizes as the cold seals it firm.{wait}
@@ -652,7 +987,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 67}
+{dialog 106}
 {instant}Researcher
 Wonderful... the {color:gold}{macro:7,0,1,0}{color:none}
 settles into a strong and firm bond.{wait}
@@ -665,7 +1000,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 68}
+{dialog 107}
 {instant}Researcher
 Great... the {color:gold}{macro:7,0,1,0}{color:none}
 adapts smooth and perfectly balanced.{wait}
@@ -678,7 +1013,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 69}
+{dialog 108}
 {instant}Researcher
 Perfect... the {color:gold}{macro:7,0,1,0}{color:none}
 resonates lightly, full of motion.{wait}
@@ -691,7 +1026,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 70}
+{dialog 109}
 {instant}Researcher
 Admirable... the {color:gold}{macro:7,0,1,0}{color:none}
 accepts the light with pure grace.{wait}
@@ -704,7 +1039,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 71}
+{dialog 110}
 {instant}Researcher
 Splendid... the {color:gold}{macro:7,0,1,0}{color:none}
 draws in darkness, still and calm.{wait}
@@ -717,7 +1052,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 72}
+{dialog 111}
 {instant}Researcher
 Complete... the {color:gold}{macro:7,0,1,0}{color:none}
 is cleansed of all prior essence.{wait}
@@ -729,7 +1064,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 73}
+{dialog 112}
 {instant}Researcher
 Let us see... adding the reagents...{waitn1:2}
 Adjusting infusion ratios...{waitn1:2}
@@ -737,7 +1072,7 @@ Reagents now stabilizing...{waitn1:2}
 Almost there...
 {/dialog}
 
-{dialog 74}
+{dialog 113}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
 {item}{size:0,0}{macro:22,0,0,0}{size:10,10}Range{/item}
@@ -758,7 +1093,7 @@ Almost there...
 {/choice}
 {/dialog}
 
-{dialog 75}
+{dialog 114}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
 {item}{size:0,0}{macro:29,0,0,0}{size:10,10}Evade{/item}
@@ -774,7 +1109,7 @@ Almost there...
 {/choice}
 {/dialog}
 
-{dialog 76}
+{dialog 115}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
 {item}{size:0,0}{macro:31,0,0,0}{size:10,10}Defense{/item}
@@ -790,7 +1125,7 @@ Almost there...
 {/choice}
 {/dialog}
 
-{dialog 77}
+{dialog 116}
 {speed}Which quality of {color:gold}{macro:0,0,1,0}{color:none} shall we refine?
 {choice}
 {item}{size:0,0}{macro:24,0,0,0}{size:10,10}Attack Power{/item}
@@ -807,7 +1142,7 @@ Almost there...
 {/choice}
 {/dialog}
 
-{dialog 78}
+{dialog 117}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Range{color:none} formula?
 {choice}
@@ -818,7 +1153,7 @@ Which reagents will refine the {color:lightblue}Range{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 79}
+{dialog 118}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Charge Time{color:none} formula?
 {choice}
@@ -829,7 +1164,7 @@ Which reagents will refine the {color:lightblue}Charge Time{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 80}
+{dialog 119}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Attack Power{color:none} formula?
 {choice}
@@ -840,7 +1175,7 @@ Which reagents will refine the {color:lightblue}Attack Power{color:none} formula
 {/choice}
 {/dialog}
 
-{dialog 81}
+{dialog 120}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}On Hit Rate{color:none} formula?
 {choice}
@@ -851,7 +1186,7 @@ Which reagents will refine the {color:lightblue}On Hit Rate{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 82}
+{dialog 121}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Knockback Chance{color:none} formula?
 {choice}
@@ -862,7 +1197,7 @@ Which reagents will refine the {color:lightblue}Knockback Chance{color:none} for
 {/choice}
 {/dialog}
 
-{dialog 83}
+{dialog 122}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Combo/Critical Chance{color:none} formula?
 {choice}
@@ -873,7 +1208,7 @@ Which reagents will refine the {color:lightblue}Combo/Critical Chance{color:none
 {/choice}
 {/dialog}
 
-{dialog 84}
+{dialog 123}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {choice}
@@ -884,7 +1219,7 @@ Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 85}
+{dialog 124}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {choice}
@@ -895,7 +1230,7 @@ Which reagents will refine the {color:lightblue}Evade{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 86}
+{dialog 125}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Magick Evade{color:none} formula?
 {choice}
@@ -906,7 +1241,7 @@ Which reagents will refine the {color:lightblue}Magick Evade{color:none} formula
 {/choice}
 {/dialog}
 
-{dialog 87}
+{dialog 126}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Defense{color:none} formula?
 {choice}
@@ -917,7 +1252,7 @@ Which reagents will refine the {color:lightblue}Defense{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 88}
+{dialog 127}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Magick Resist{color:none} formula?
 {choice}
@@ -928,7 +1263,7 @@ Which reagents will refine the {color:lightblue}Magick Resist{color:none} formul
 {/choice}
 {/dialog}
 
-{dialog 89}
+{dialog 128}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Max HP{color:none} formula?
 {choice}
@@ -939,7 +1274,7 @@ Which reagents will refine the {color:lightblue}Max HP{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 90}
+{dialog 129}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Max MP{color:none} formula?
 {choice}
@@ -950,7 +1285,7 @@ Which reagents will refine the {color:lightblue}Max MP{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 91}
+{dialog 130}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Strength{color:none} formula?
 {choice}
@@ -961,7 +1296,7 @@ Which reagents will refine the {color:lightblue}Strength{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 92}
+{dialog 131}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Magick Power{color:none} formula?
 {choice}
@@ -972,7 +1307,7 @@ Which reagents will refine the {color:lightblue}Magick Power{color:none} formula
 {/choice}
 {/dialog}
 
-{dialog 93}
+{dialog 132}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Vitality{color:none} formula?
 {choice}
@@ -983,7 +1318,7 @@ Which reagents will refine the {color:lightblue}Vitality{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 94}
+{dialog 133}
 {instant}Researcher
 Which reagents will refine the {color:lightblue}Speed{color:none} formula?
 {choice}
@@ -994,7 +1329,7 @@ Which reagents will refine the {color:lightblue}Speed{color:none} formula?
 {/choice}
 {/dialog}
 
-{dialog 95}
+{dialog 134}
 {instant}Researcher
 We shall apply {color:lightblue}Alchemical Refinement{color:none}
 to the {color:gold}{macro:7,0,1,0}{color:none}.
@@ -1007,7 +1342,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 96}
+{dialog 135}
 {instant}Researcher
 We shall employ {color:lightblue}Stabilized Distillation{color:none}
 on the {color:gold}{macro:7,0,1,0}{color:none}.
@@ -1020,7 +1355,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 97}
+{dialog 136}
 {instant}Researcher
 We shall invoke {color:lightblue}Catalytic Transmutation{color:none}
 upon the {color:gold}{macro:7,0,1,0}{color:none}.
@@ -1033,7 +1368,7 @@ Shall we proceed?
 {/choice}
 {/dialog}
 
-{dialog 98}
+{dialog 137}
 {instant}Researcher
 I must caution you...{wait}
 Undoing a refinement is a delicate process.{wait}
@@ -1047,7 +1382,7 @@ Shall we proceed with the cleansing?
 {/choice}
 {/dialog}
 
-{dialog 99}
+{dialog 138}
 {instant}Researcher
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none} adapted to refinement.
 {color:lightblue}Range{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1059,7 +1394,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 100}
+{dialog 139}
 {instant}Researcher
 Splendid... the {color:gold}{macro:7,0,1,0}{color:none} synchronized successfully.
 {color:lightblue}Charge Time{color:none} decreased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1072,7 +1407,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 101}
+{dialog 140}
 {instant}Researcher
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none} absorbed the change.
 {color:lightblue}Attack Power{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1085,7 +1420,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 102}
+{dialog 141}
 {instant}Researcher
 Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} refined its trigger.
 {color:lightblue}On Hit Rate{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1098,7 +1433,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 103}
+{dialog 142}
 {instant}Researcher
 Brilliant... the {color:gold}{macro:7,0,1,0}{color:none} stabilized its force.
 {color:lightblue}Knockback Chance{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1111,7 +1446,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 104}
+{dialog 143}
 {instant}Researcher
 Perfect... the {color:gold}{macro:7,0,1,0}{color:none} aligned its momentum.
 {color:lightblue}Critical Rate{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1124,7 +1459,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 105}
+{dialog 144}
 {instant}Researcher
 Exceptional... the {color:gold}{macro:7,0,1,0}{color:none} adapted its balance.
 {color:lightblue}Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1137,7 +1472,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 106}
+{dialog 145}
 {instant}Researcher
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none} refined its guard.
 {color:lightblue}Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1150,7 +1485,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 107}
+{dialog 146}
 {instant}Researcher
 Admirable... the {color:gold}{macro:7,0,1,0}{color:none} tuned its ward.
 {color:lightblue}Magick Evade{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1163,7 +1498,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 108}
+{dialog 147}
 {instant}Researcher
 Flawless... the {color:gold}{macro:7,0,1,0}{color:none} reinforced its frame.
 {color:lightblue}Defense{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1176,7 +1511,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 109}
+{dialog 148}
 {instant}Researcher
 Splendid... the {color:gold}{macro:7,0,1,0}{color:none} strengthened its ward.
 {color:lightblue}Magick Resist{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1189,7 +1524,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 110}
+{dialog 149}
 {instant}Researcher
 Impeccable... the {color:gold}{macro:7,0,1,0}{color:none} reinforced its vitality.
 {color:lightblue}Max HP{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1202,7 +1537,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 111}
+{dialog 150}
 {instant}Researcher
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none} expanded its reserves.
 {color:lightblue}Max MP{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1215,7 +1550,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 112}
+{dialog 151}
 {instant}Researcher
 Remarkable... the {color:gold}{macro:7,0,1,0}{color:none} focused its power.
 {color:lightblue}Strength{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1228,7 +1563,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 113}
+{dialog 152}
 {instant}Researcher
 Brilliant... the {color:gold}{macro:7,0,1,0}{color:none} boosted its flow.
 {color:lightblue}Magick Power{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1241,7 +1576,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 114}
+{dialog 153}
 {instant}Researcher
 Perfect... the {color:gold}{macro:7,0,1,0}{color:none} hardened its core.
 {color:lightblue}Vitality{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1254,7 +1589,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 115}
+{dialog 154}
 {instant}Researcher
 Exceptional... the {color:gold}{macro:7,0,1,0}{color:none} quickened its pace.
 {color:lightblue}Speed{color:none} increased from {color:lightblue}{macro:1,0,0,0}{color:none} to {color:lightblue}{macro:2,0,0,0}{color:none}.{wait}
@@ -1267,7 +1602,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 116}
+{dialog 155}
 {instant}Researcher
 Complete... the {color:gold}{macro:7,0,1,0}{color:none} has been
 fully cleansed of its refinement.{wait}
@@ -1281,7 +1616,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 117}
+{dialog 156}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears a refined quality.
 {color:lightblue}Alchemical Refinement{color:none} marks are present.{wait}
@@ -1295,7 +1630,7 @@ This overwrites the current formula. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 118}
+{dialog 157}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears a refined quality.
 {color:lightblue}Stabilized Distillation{color:none} marks are present.{wait}
@@ -1309,7 +1644,7 @@ This overwrites the current formula. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 119}
+{dialog 158}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears a refined quality.
 {color:lightblue}Catalytic Transmutation{color:none} marks are present.{wait}
@@ -1323,7 +1658,7 @@ This overwrites the current formula. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 120}
+{dialog 159}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 Residual warmth lingers within the structure.{wait}
@@ -1335,7 +1670,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 121}
+{dialog 160}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 A swift residual charge remains present.{wait}
@@ -1347,7 +1682,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 122}
+{dialog 161}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 Preserved cold clings to its surface.{wait}
@@ -1359,7 +1694,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 123}
+{dialog 162}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 Its weight and stability are unmistakable.{wait}
@@ -1371,7 +1706,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 124}
+{dialog 163}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 A fluid resonance flows through it.{wait}
@@ -1383,7 +1718,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 125}
+{dialog 164}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 Air moves freely within its core.{wait}
@@ -1395,7 +1730,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 126}
+{dialog 165}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 A pure and unwavering radiance shines.{wait}
@@ -1407,7 +1742,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 127}
+{dialog 166}
 {instant}Researcher
 Behold, {color:gold}{macro:7,0,1,0}{color:none} bears an elemental bond.
 A faint shadow pulses within its core.{wait}
@@ -1419,7 +1754,7 @@ This overwrites the current essence. Proceed?
 {/choice}
 {/dialog}
 
-{dialog 128}
+{dialog 167}
 {instant}Researcher
 Let me begin...{waitn1:2}
 Reagents align, impurities fade...{waitn1:2}
@@ -1427,7 +1762,7 @@ Flow stabilizes, energy minimal...{waitn1:2}
 Structure... steady...
 {/dialog}
 
-{dialog 129}
+{dialog 168}
 {instant}Researcher
 Proceeding carefully...{waitn1:2}
 Vessels steady, heat drives distillation...{waitn1:2}
@@ -1435,7 +1770,7 @@ Essence separates, traces fade...{waitn1:2}
 Distillate... stable...
 {/dialog}
 
-{dialog 130}
+{dialog 169}
 {instant}Researcher
 Focus now...{waitn1:2}
 Catalyst reacts, bonds shift...{waitn1:2}
@@ -1443,7 +1778,7 @@ Matrix adapts, transformation holds...{waitn1:2}
 Synchronization... almost...
 {/dialog}
 
-{dialog 131}
+{dialog 170}
 {instant}Researcher
 Wait... I see no traces of bound essence...{waitn1:2}
 It appears {color:gold}{macro:7,0,1,0}{color:none} holds no element binded.
@@ -1455,7 +1790,7 @@ What would you like to do now?
 {/choice}
 {/dialog}
 
-{dialog 132}
+{dialog 171}
 {instant}Researcher
 Wait... I see no traces of alchemical process...{waitn1:2}
 It seems {color:gold}{macro:7,0,1,0}{color:none} bears no refined qualities.
@@ -1465,4 +1800,104 @@ What would you like to do now?
 {item}Try another.{/item}
 {item}That is all.{/item}
 {/choice}
+{/dialog}
+
+{dialog 172}
+{instant}Researcher
+Ah... another day in this barren hold.
+The war is done, yet its scent remains.{wait}
+They say Nalbina is reborn, and perhaps so,
+but for those who serve, little has changed.{wait}
+I was sent from Archades to aid the troops,
+yet the supply chain lies in ruin.{wait}
+Without reagents, there is no progress.
+I've awaited shipments for months.{wait}
+My apologies, but I can do nothing now.
+{/dialog}
+
+{dialog 173}
+{instant}Researcher
+Ah... you again. A traveler, no doubt?
+Passing through, as all others do.{wait}
+They once claimed this post fit research,
+yet truth be told, it was but exile.{wait}
+At first they sent reagents to appease,
+now only dust and silence remain.{wait}
+And without reagents, there is no alchemy.
+{choice}
+{item}Maybe I can help.{/item}
+{item}Sounds like your problem.{/item}
+{/choice}
+{/dialog}
+
+{dialog 174}
+{instant}Researcher
+Heh... aye, I suppose it is indeed.
+Can't blame you. None care for this place.{wait}
+The war ended for some, not for all.{wait}
+We shall meet again, traveler.
+Mayhap things will change... or fade away.
+{/dialog}
+
+{dialog 175}
+{instant}Researcher
+You would aid me? Hah... bold indeed.
+With proper reagents, I shall restore my work.{wait}
+Yet there is always a cost.
+See him there? Lurking for his {italic}"cut"{/italic}, no doubt.
+To keep them quiet, I must buy their silence.
+{color:lightblue}{macro:12,0,0,0}{color:none} gil shall suffice.{wait}
+A high price, I know... but peace is never cheap.
+Shall you place faith in an old dreamer?
+{choice}
+{item}I'll handle it.{/item}
+{item}I'm out!{/item}
+{/choice}
+{/dialog}
+
+{dialog 176}
+{instant}Researcher
+Heh... aye, fair enough. 'Tis no small sum.
+But giving up is what they expect of us.{wait}
+Should you change your mind, you'll find me here,
+amid empty flasks and hollow hopes.{wait}
+Sometimes, I think only dust remains.
+{/dialog}
+
+{dialog 177}
+{instant}Researcher
+Ah... it seems you lack the coin.
+Return when you do, I shall be ready.{wait}
+Eager, even, to begin once more.
+{/dialog}
+
+{dialog 178}
+{instant}Researcher
+Excellent. I knew I could count on you.
+With this, the workshop shall breathe again.{wait}
+I'll call on old allies and gather my tools.
+Return later, and you shall see progress.{wait}
+Perhaps science yet endures in Nalbina.
+{/dialog}
+
+{dialog 179}
+{instant}Researcher
+Ah, too soon. Preparations remain.
+Rare parts, costly reagents,{wait}
+and soldiers too curious for comfort.
+Return in due time. It shall be worth it.
+{/dialog}
+
+{dialog 180}
+{instant}Researcher
+At last! The workshop lives once more!
+The reagents stir, the formulas awaken.{wait}
+Now begins the true art of alchemy.
+I can refine essences, distill metals,{wait}
+and weave the threads of transmutation.
+All depends on what you bring, traveler.{wait}
+Now then... shall we see what alchemy can do?
+{/dialog}
+
+{dialog 181}
 {/dialog}
