@@ -11,7 +11,7 @@ option unknownScriptId = 1;
 option weatherProbability = {100, 0, 0};
 option trapOffset = 0x0;
 
-//======================================================================
+//====================0x38==================================================
 //               Global and scratchpad variable imports               //
 //======================================================================
 import global   short   シナリオフラグ = 0x00;
@@ -47,9 +47,11 @@ import scratch1   u_char		unlocked_tiers = 0x49;
 import scratch1   u_char		flow_check_attribute = 0x4B;
 import scratch1   u_char		flow_check_element = 0x4E;
 import scratch1   u_char		flow_poll_mode = 0x4A;
-import scratch1   int				unlocked_main_quest_gill[1] = 0x33;
-import scratch1   u_char		unlocked_main_quest = 0x37;
-import scratch1   u_char		unlocked_elements[8] = 0x36; // For subcategories 1-8 (fire, lightning, ice, earth, water, wind, holy, dark)
+import scratch1   u_char    show_popup = 0x29;              // 0 = nada, 1 = mostrar popup 181
+import scratch1   u_char    supply_notification = 0x2A;     // 0 = nada, 1/2/3 = mostrar diálogo 182/183/18
+import scratch1   int				unlocked_main_quest_gill[1] = 0x2B; // gill ammount to change unlocked_main_quest to 2
+import scratch1   u_char		unlocked_main_quest = 0x2F; // 0 nothin, 1 can start the quest
+import scratch1   u_char		unlocked_elements[8] = 0x30; // For subcategories 1-8 (fire, lightning, ice, earth, water, wind, holy, dark)
 import scratch1   u_char		unlocked_attributes[17] = 0x38; // For subcategories 10-26 (reusing same space as elements)
 
 // selected flags
@@ -75,6 +77,7 @@ import scratch1   u_short		upgrade_gil[1] = 0x70;
 
 // loaded equipment list
 import scratch1   u_short		equipment_list[31] = 0x76;
+
 
 actor __MJ_CTRL000(0)
 {
@@ -1524,6 +1527,41 @@ actor フェード(0)
 	function フェードまち()
 	{
 		fadesync_d3(2);
+		return;
+	}
+}
+
+actor Alchemist_Utility(0)
+{
+
+	function init()
+	{
+		return;
+	}
+
+	function main(1)
+	{
+		return;
+	}
+
+	function Notify()
+	{
+		musictrans(-1, 30, 32);
+		setstatuserrorctrldenystatus_by_menu(1);
+		seteventtimestop(1);
+		moveblurcaptureonce();
+		movebluraplpha(1);
+		moveblurfade(15);
+		moveblurfadesync();
+		sebsoundplay(0, 40);
+		wait(6);
+		mes(0, 0x01000000 | 181, 0x03c0, 0x021c, 0, 0, 4, 1);
+		messync(0, 1);
+		wait(6);
+		musictrans(-1, 30, 127);
+		moveblurclearfade(15);
+		moveblurfadesync();
+		seteventtimestop(0);
 		return;
 	}
 }
@@ -5200,14 +5238,34 @@ actor NPC_Alchemist(6) {
     goto cleanup;
 
   dialog_180:
+	  unlocked_main_quest = 4;
     amese(0, 0x01000000 | 180);
     messync(0, 1);
-    unlocked_main_quest = 4;
+		wait(16);
     goto dialog_79;
 
   // @description: main menu
   dialog_79:
     flow_poll_mode = 1;
+
+    if (show_popup == 1) {
+			sysReqew(0, Alchemist_Utility::Notify);
+			show_popup = 0;
+
+			if (supply_notification == 1) {
+					amese(0, 0x01000000 | 182);
+					messync(0, 1);
+					supply_notification = 0;
+			} else if (supply_notification == 2) {
+					amese(0, 0x01000000 | 183);
+					messync(0, 1);
+					supply_notification = 0;
+			} else if (supply_notification == 3) {
+					amese(0, 0x01000000 | 184);
+					messync(0, 1);
+					supply_notification = 0;
+			}
+		}
 
     setmeswinline(0, 4);
     askpos(0, 0, 1);

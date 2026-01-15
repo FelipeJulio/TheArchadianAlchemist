@@ -1,8 +1,13 @@
 local questline = {
-    overrideEvents = true,
+    overrideEvents = false,
     mainQuest = {
-        id = 1000,
-        gill = 100000
+        startQuest = {
+            id = 1000,
+            gill = 100000
+        },
+        finishQuest = {
+            id = 1001
+        }
     },
     elementalExchange = {
         [1] = {

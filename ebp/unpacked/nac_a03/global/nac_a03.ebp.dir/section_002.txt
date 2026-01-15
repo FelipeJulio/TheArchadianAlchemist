@@ -638,8 +638,9 @@ tradition and experience can offer!
 
 {dialog 79}
 {instant}Researcher
-Welcome, my friend... pray, tell me,{wait}
-What alchemy shall we perform today?
+The workshop is ready, in full swing.
+So then, pray tell me, adventurer,
+what alchemy shall we perform today?
 {choice}
 {item}Alter its very essence{/item}
 {item}Alter its qualities{/item}
@@ -808,7 +809,7 @@ I shall handle it with care.
 {dialog 91}
 {instant}Researcher
 Hm... it seems you lack suitable gear.
-Return once you've omething to work with.
+Return once you've something to work with.
 {/dialog}
 
 {dialog 92}
@@ -944,7 +945,7 @@ or sufficient gil to proceed.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -957,7 +958,7 @@ its passion tempered by perfect control.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -970,7 +971,7 @@ swift power bound in measured rhythm.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -983,7 +984,7 @@ its stillness gleaming with silent strength.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -996,7 +997,7 @@ unyielding, steadfast, and resolute.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1009,7 +1010,7 @@ ever adapting, yet never astray.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1022,7 +1023,7 @@ its motion graceful, its form unseen.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1035,7 +1036,7 @@ a flawless light untouched by doubt.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1048,7 +1049,7 @@ a power veiled, yet perfectly bound.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1060,7 +1061,7 @@ Residual energy fades, core now stable.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1068,7 +1069,7 @@ What would you like to do now?
 {instant}Researcher
 Let us see... adding the reagents...{waitn1:2}
 Adjusting infusion ratios...{waitn1:2}
-Reagents now stabilizing...{waitn1:2}
+Stabilizing the reagents...{waitn1:2}
 Almost there...
 {/dialog}
 
@@ -1390,7 +1391,7 @@ Its reach now extends farther with steady precision.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1403,7 +1404,7 @@ destabilizing the flow.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1416,7 +1417,7 @@ with greater force.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1429,7 +1430,7 @@ with greater consistency.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1442,7 +1443,7 @@ back more reliably.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1455,7 +1456,7 @@ emerge more naturally.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1468,7 +1469,7 @@ with improved timing.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1481,7 +1482,7 @@ react more efficiently.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1494,7 +1495,7 @@ more precisely.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1507,7 +1508,7 @@ reduced more effectively.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1520,7 +1521,7 @@ with greater reliability.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1533,7 +1534,7 @@ are noticeably improved.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1546,7 +1547,7 @@ for longer periods.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1559,7 +1560,7 @@ carry greater weight.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1572,7 +1573,7 @@ with greater potency.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1585,7 +1586,7 @@ with greater resilience.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1598,7 +1599,7 @@ feel noticeably sharper.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1612,7 +1613,7 @@ a neutral state.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1781,12 +1782,12 @@ Synchronization... almost...
 {dialog 170}
 {instant}Researcher
 Wait... I see no traces of bound essence...{waitn1:2}
-It appears {color:gold}{macro:7,0,1,0}{color:none} holds no element binded.
+It appears {color:gold}{macro:7,0,1,0}{color:none} holds no elemental bond.
 Nothing can be done with it.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
@@ -1798,14 +1799,14 @@ Nothing can be done with it.{wait}
 What would you like to do now?
 {choice}
 {item}Try another.{/item}
-{item}That is all.{/item}
+{item}That will be all.{/item}
 {/choice}
 {/dialog}
 
 {dialog 172}
 {instant}Researcher
 Ah... another day in this barren hold.
-The war is done, yet its scent remains.{wait}
+The war is done, yet its scent lingers.{wait}
 They say Nalbina is reborn, and perhaps so,
 but for those who serve, little has changed.{wait}
 I was sent from Archades to aid the troops,
@@ -1819,11 +1820,16 @@ My apologies, but I can do nothing now.
 {instant}Researcher
 Ah... you again. A traveler, no doubt?
 Passing through, as all others do.{wait}
+Few linger long in Nalbina's shadow,
+and fewer still find reason to return.{wait}
+And speaking of reasons... I have many,
+wearied as I am by this place.{wait}
 They once claimed this post fit research,
 yet truth be told, it was but exile.{wait}
 At first they sent reagents to appease,
 now only dust and silence remain.{wait}
 And without reagents, there is no alchemy.
+Even my tools have grown weary here.
 {choice}
 {item}Maybe I can help.{/item}
 {item}Sounds like your problem.{/item}
@@ -1842,9 +1848,9 @@ Mayhap things will change... or fade away.
 {dialog 175}
 {instant}Researcher
 You would aid me? Hah... bold indeed.
-With proper reagents, I shall restore my work.{wait}
+With proper reagents, I shall resume my work.{wait}
 Yet there is always a cost.
-See him there? Lurking for his {italic}"cut"{/italic}, no doubt.
+See that soldier there? Lurking for his {italic}"cut"{/italic}, no doubt.
 To keep them quiet, I must buy their silence.
 {color:lightblue}{macro:12,0,0,0}{color:none} gil shall suffice.{wait}
 A high price, I know... but peace is never cheap.
@@ -1874,7 +1880,11 @@ Eager, even, to begin once more.
 {dialog 178}
 {instant}Researcher
 Excellent. I knew I could count on you.
-With this, the workshop shall breathe again.{wait}
+With this, my lab shall breathe again.{wait}
+You shall not regret this, I'll prove my worth.
+Soon you'll witness the true splendor of my craft.{wait}
+Ah, it has been long since these halls knew purpose.
+Mayhap fate smiles upon us once more.{wait}
 I'll call on old allies and gather my tools.
 Return later, and you shall see progress.{wait}
 Perhaps science yet endures in Nalbina.
@@ -1890,7 +1900,10 @@ Return in due time. It shall be worth it.
 
 {dialog 180}
 {instant}Researcher
-At last! The workshop lives once more!
+At long last, all is ready.
+It took some effort to gather my tools and reagents.
+Feels less a lab and more a humble workshop, eh?{wait}
+Hmm... perhaps I'll call it that from now on.
 The reagents stir, the formulas awaken.{wait}
 Now begins the true art of alchemy.
 I can refine essences, distill metals,{wait}
@@ -1900,4 +1913,29 @@ Now then... shall we see what alchemy can do?
 {/dialog}
 
 {dialog 181}
+{instant}New supplies have arrived at the workshop!
+{/dialog}
+
+{dialog 182}
+{instant}Researcher
+Ah... new tools and utensils just arrived.
+Some flasks and crude stabilizers, yet useful.{wait}
+The workshop stirs, if only faintly.
+{/dialog}
+
+{dialog 183}
+{instant}Researcher
+At last! Finer tools have just arrived!
+Schematics, formulas, and proper instruments.{wait}
+The workshop truly begins to take shape.
+{/dialog}
+
+{dialog 184}
+{instant}Researcher
+Incredible! Master tools have just arrived!
+Diagrams, catalysts, and a true athanor stand ready.{wait}
+At last... the workshop stands in full splendor.
+{/dialog}
+
+{dialog 185}
 {/dialog}
