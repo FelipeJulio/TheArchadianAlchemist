@@ -1,0 +1,212 @@
+-- Made By FehDead
+local equipment = {}
+
+local pairs = pairs
+local mem
+local mappings
+local elementNames
+local attributeDefs
+local constants
+
+equipment.state = {}
+
+function equipment.get(id)
+    if not equipment.validateId(id) then
+        return nil
+    end
+
+    local idx = id - constants.equipmentBaseId
+    return bpack.section13[idx]
+end
+
+function equipment.validateId(id)
+    return id and id > 0
+end
+
+function equipment._readElement(eq, elementId)
+    if not (elementId and elementId >= 1 and elementId <= 8) then
+        return nil
+    end
+
+    local name = elementNames[elementId]
+    if not name then
+        return nil
+    end
+
+    local elements = eq and eq.elements
+    return (elements and elements[name]) or 0
+end
+
+function equipment._readAttribute(eq, attributeId)
+    if not (attributeId and attributeId >= 10 and attributeId <= 26) then
+        return nil
+    end
+
+    local attr = attributeDefs[attributeId]
+    if not attr then
+        return nil
+    end
+
+    local name, typ, offset = attr[1], attr[2], attr[3]
+
+    if typ == "direct" then
+        return eq[name] or 0
+    elseif typ == "linked" then
+        if not eq.attributePointer then
+            return nil
+        end
+
+        local addr = eq.attributePointer + offset
+        if name == "maxHp" or name == "maxMp" then
+            return mem.readU16(addr, nil)
+        else
+            return mem.readU8(addr, nil)
+        end
+    end
+
+    return nil
+end
+
+function equipment.read(id, key, subid)
+    local eq = equipment.get(id)
+    if not eq then
+        return nil
+    end
+
+    if key == "element" then
+        return equipment._readElement(eq, subid)
+    elseif key == "attribute" then
+        return equipment._readAttribute(eq, subid)
+    end
+
+    return nil
+end
+
+function equipment.applyElement(eq, elementId, value)
+    local name = elementNames[elementId]
+    if not name then
+        return false
+    end
+
+    if not eq.elements then
+        eq.elements = {}
+    end
+
+    eq.elements[name] = value
+    return true
+end
+
+function equipment.applyAttribute(eq, attributeId, value)
+    local attr = attributeDefs[attributeId]
+    if not attr then
+        return false
+    end
+
+    local name, typ, offset = attr[1], attr[2], attr[3]
+
+    if typ == "direct" then
+        eq[name] = value
+    elseif typ == "linked" and eq.attributePointer then
+        local addr = eq.attributePointer + offset
+        if name == "maxHp" or name == "maxMp" then
+            mem.writeU16(addr, nil, value)
+        else
+            mem.writeU8(addr, nil, value)
+        end
+    end
+
+    return true
+end
+
+function equipment.write(id, key, subid, value)
+    local eq = equipment.get(id)
+    if not eq then
+        return false
+    end
+
+    if key == "element" then
+        if not (subid and subid >= 1 and subid <= 8) then
+            return false
+        end
+        return equipment.applyElement(eq, subid, value)
+    elseif key == "attribute" then
+        if not (subid and subid >= 10 and subid <= 26) then
+            return false
+        end
+        return equipment.applyAttribute(eq, subid, value)
+    end
+
+    return false
+end
+
+function equipment.update(id, key, value)
+    if not equipment.validateId(id) then
+        return
+    end
+
+    if not equipment.state[id] then
+        equipment.state[id] = {}
+    end
+
+    if value == nil then
+        equipment.state[id][key] = nil
+    else
+        equipment.state[id][key] = value
+    end
+end
+
+function equipment.getState(id)
+    if not equipment.validateId(id) then
+        return nil
+    end
+    return equipment.state[id]
+end
+
+function equipment.clearAllElements(id)
+    local eq = equipment.get(id)
+    if not eq or not eq.elements then
+        return
+    end
+
+    for elementId = 1, 8 do
+        local name = elementNames[elementId]
+        if name then
+            eq.elements[name] = 0
+        end
+    end
+end
+
+function equipment.clearState()
+    equipment.state = {}
+end
+
+function equipment.setState(state)
+    equipment.state = state or {}
+end
+
+function equipment.initialize(deps)
+    if not deps then
+        print("ERROR [TAA EQUIPMENT] Dependencies not provided")
+        return false
+    end
+
+    if not deps.memory then
+        print("ERROR [TAA EQUIPMENT] Memory not provided")
+        return false
+    end
+
+    if not deps.mappings then
+        print("ERROR [TAA EQUIPMENT] Mappings not provided")
+        return false
+    end
+
+    mem = deps.memory
+    mappings = deps.mappings
+    elementNames = mappings.element
+    attributeDefs = mappings.attribute
+    constants = mappings.constants
+
+    return true
+end
+
+return equipment
