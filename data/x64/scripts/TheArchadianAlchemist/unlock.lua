@@ -76,10 +76,19 @@ function unlock.mainQuest(base, addrs, questline, symbolsModule)
             mem.flags.set(base, addrs.flow.mainQuestStatus, 3)
             unlock.questStatus.mainQuestStatus = 3
         end
-    elseif currentStatus == 3 then
-        unlock.questStatus.mainQuestStatus = 3
-    elseif currentStatus == 4 then
-        unlock.questStatus.mainQuestStatus = 4
+    elseif currentStatus == 3 or currentStatus == 4 then
+        if finishQuestId and progress < finishQuestId then
+            if startQuestId and progress >= startQuestId then
+                mem.flags.set(base, addrs.flow.mainQuestStatus, 1)
+                mem.writeU32(base, addrs.flow.mainQuestGill, startQuestGill)
+                unlock.questStatus.mainQuestStatus = 1
+            else
+                mem.flags.set(base, addrs.flow.mainQuestStatus, 0)
+                unlock.questStatus.mainQuestStatus = 0
+            end
+        else
+            unlock.questStatus.mainQuestStatus = currentStatus
+        end
     end
 
     local finalStatus = mem.flags.get(base, addrs.flow.mainQuestStatus)
@@ -220,6 +229,16 @@ function unlock.notification(base, addrs)
 
     local lastTierLevel = unlock.questStatus.lastTierLevel
     local lastMessageLevel = unlock.questStatus.lastMessageLevel
+
+    if actualTierLevel < lastTierLevel then
+        unlock.questStatus.lastTierLevel = actualTierLevel
+        lastTierLevel = actualTierLevel
+    end
+
+    if actualMessageLevel < lastMessageLevel then
+        unlock.questStatus.lastMessageLevel = actualMessageLevel
+        lastMessageLevel = actualMessageLevel
+    end
 
     if actualTierLevel > lastTierLevel then
         mem.flags.set(base, addrs.flow.showPopup, 1)
