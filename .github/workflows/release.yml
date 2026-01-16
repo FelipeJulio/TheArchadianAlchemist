@@ -1,0 +1,104 @@
+name: Create Release Zip
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Compute version (strip leading 'v')
+        id: version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}   # "v1.0.0"
+          TAG=${TAG#v}                   # "1.0.0"
+          echo "version=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Update version in Info.xml
+        run: |
+          sed -i "s|<Version>.*</Version>|<Version>${{ steps.version.outputs.version }}</Version>|" fomod/Info.xml
+
+      - name: Commit version bump
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add fomod/Info.xml
+          if ! git diff --cached --quiet; then
+            git commit -m "ci: bump Info.xml to version ${{ steps.version.outputs.version }}"
+            git push origin HEAD:${{ github.event.release.target_commitish }}
+          fi
+
+      - name: Append changelog from release info
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          RELEASE_TITLE="${{ github.event.release.name }}"
+          RELEASE_BODY="${{ github.event.release.body }}"
+          DATE=$(date +"%Y-%m-%d")
+
+          echo -e "\n## [$VERSION] - $DATE" >> temp_changelog.md
+
+          if [ -n "$RELEASE_BODY" ]; then
+            echo -e "\n$RELEASE_BODY\n" >> temp_changelog.md
+          fi
+
+          if [ -f CHANGELOG.md ]; then
+            awk '
+              /^## \[Unreleased\]/ {
+                print;
+                print "";
+                print "## [" VERSION "] - " DATE;
+                if (BODY != "") {
+                  print "";
+                  print BODY;
+                }
+                next
+              }
+              1' VERSION="$VERSION" DATE="$DATE" BODY="$RELEASE_BODY" CHANGELOG.md > CHANGELOG.tmp
+          else
+            cat temp_changelog.md > CHANGELOG.tmp
+          fi
+
+          mv CHANGELOG.tmp CHANGELOG.md
+          rm temp_changelog.md
+
+      - name: Commit updated changelog
+        run: |
+          git add CHANGELOG.md
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: update CHANGELOG.md for v${{ steps.version.outputs.version }}"
+            git push origin HEAD:${{ github.event.release.target_commitish }}
+          fi
+
+      - name: List repository contents
+        run: ls -R
+
+      - name: Compress data and fomod folders
+        run: |
+          REPO=${{ github.event.repository.name }}
+          VERSION=${{ steps.version.outputs.version }}
+          ZIP_NAME="$REPO-$VERSION.zip"
+          if [ -d "data" ] && [ -d "fomod" ]; then
+            zip -r "$ZIP_NAME" data fomod
+          else
+            echo "Folders 'data' or 'fomod' not found."
+            exit 1
+          fi
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ github.event.repository.name }}-${{ steps.version.outputs.version }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
