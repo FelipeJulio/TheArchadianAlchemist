@@ -7,7 +7,7 @@ local questline = {
             gill = 100000
         },
         finishQuest = {
-            id = 1001
+            id = 1250
         }
     },
     elementalExchange = {
