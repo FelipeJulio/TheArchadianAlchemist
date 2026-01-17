@@ -5105,11 +5105,9 @@ actor NPC_Alchemist(6) {
 					continue;
 			}
 
-			sysLookata(-1);
 			motionplay_bb(0x10000000, 20);
 			wait(1);
 			motionsync_282(1);
-			sysLookata(1);
       wait((rand_29(90) + 90));
     }
     return;
@@ -5163,6 +5161,7 @@ actor NPC_Alchemist(6) {
 
     sethpmenu(0);
     ucoff();
+		lookatoff();
     settrapshowstatus(0);
     sysRturna(-1);
     if (isturn()) {
@@ -5214,6 +5213,7 @@ actor NPC_Alchemist(6) {
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
+		sysLookata(NAC_A03_NPC13);
 
     local_choice = aaske(0, 0x01000000 | 175);
 
@@ -5246,16 +5246,19 @@ actor NPC_Alchemist(6) {
     goto dialog_178;
 
   dialog_176:
+		lookatoff();
     amese(0, 0x01000000 | 176);
     messync(0, 1);
     goto cleanup;
 
   dialog_177:
+		lookatoff();
     amese(0, 0x01000000 | 177);
     messync(0, 1);
     goto cleanup;
 
   dialog_178:
+		lookatoff();
     sebsoundplay(0, 38);
     amese(0, 0x01000000 | 178);
     messync(0, 1);

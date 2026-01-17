@@ -638,9 +638,9 @@ tradition and experience can offer!
 
 {dialog 79}
 {instant}Thorne
-The workshop is ready, in full swing.{wait}
-So then, pray tell me, adventurer,
-what alchemy shall we perform today?
+The workshop is ready and in full swing.
+Pray tell me, adventurer...{wait}
+What alchemy shall we perform today?
 {choice}
 {item}Alter its very essence{/item}
 {item}Alter its qualities{/item}
@@ -1824,12 +1824,13 @@ Few linger long in Nalbina's shadow,
 and fewer still find reason to return.{wait}
 And speaking of reasons... I have many,
 wearied as I am by this place.{wait}
-They once claimed this post fit research,
+They once claimed this post fit for research,
 yet truth be told, it was but exile.{wait}
 At first they sent reagents to appease,
 now only dust and silence remain.{wait}
-And without reagents, there is no alchemy.
-Even my tools have grown weary here.
+No shipments, no answers, no excuses.
+Even my tools have grown weary here.{wait}
+And without supply, there is no alchemy.
 {choice}
 {item}Maybe I can help.{/item}
 {item}Sounds like your problem.{/item}
@@ -1848,12 +1849,12 @@ Mayhap things will change... or fade away.
 {dialog 175}
 {instant}Forgotten Researcher
 You would aid me? Hah... bold indeed.
-With proper reagents, I shall resume my work.{wait}
-Yet there is always a cost.
+With proper reagents, I shall resume my work.
+Yet there is always a cost.{wait}
 See that soldier there? Lurking for his {italic}"cut"{/italic}, no doubt.
-To keep them quiet, I must buy their silence.
-{color:lightblue}{macro:12,0,0,0}{color:none} gil shall suffice.{wait}
-A high price, I know... but peace is never cheap.
+To keep them quiet, I must buy their silence.{wait}
+{color:lightblue}{macro:12,0,0,0}{color:none} gil shall suffice.
+A high price, I know... but peace is never cheap.{wait}
 Shall you place faith in an old dreamer?
 {choice}
 {item}I'll handle it.{/item}
