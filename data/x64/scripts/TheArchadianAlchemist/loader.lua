@@ -1,8 +1,6 @@
 -- Made By FehDead
 local loader = {}
 
-local mathMin = math.min
-local ipairs = ipairs
 local mem
 local helpers
 local mappings
@@ -20,29 +18,29 @@ function loader.dispatch(base, addrs, config)
         return false
     end
 
-    local flowStatus = mem.flags.get(base, addrs.flow.status)
-    local categoryId = mem.flags.get(base, addrs.selected.category)
-    local subcategoryId = mem.flags.get(base, addrs.selected.subcategory)
-    local tierId = mem.flags.get(base, addrs.selected.tier)
+    local flowStatus = mem.flags.get(base, addrs.flow.talkStatus)
+    local categoryId = mem.flags.get(base, addrs.selected.selectedCategory)
+    local subcategoryId = mem.flags.get(base, addrs.selected.selectedSubcategory)
+    local tierId = mem.flags.get(base, addrs.selected.selectedTier)
 
     if flowStatus == 3 then
-        mem.writeU16(base, addrs.obtained.tier1, 0)
-        mem.writeU16(base, addrs.obtained.tier2, 0)
-        mem.writeU16(base, addrs.obtained.tier3, 0)
+        mem.writeU16(base, addrs.refinement.tier1AttributeValue, 0)
+        mem.writeU16(base, addrs.refinement.tier2AttributeValue, 0)
+        mem.writeU16(base, addrs.refinement.tier3AttributeValue, 0)
     end
 
     if categoryId and categoryId ~= 0 then
-        loader.equipment(base, addrs.equipments.list, categoryId, config)
+        loader.equipment(base, addrs.load.equipmentList, categoryId, config)
     end
 
     if flowStatus == 3 then
         if helpers.validateRange(tierId, constants.tierMin, constants.tierMax) then
-            loader.upgrade(base, addrs.equipments.upgrades, subcategoryId, tierId, categoryId, config, flowStatus)
+            loader.upgrade(base, addrs.load.upgradeList, subcategoryId, tierId, categoryId, config, flowStatus)
         elseif subcategoryId then
             if subcategoryId == constants.removeId then
-                loader.upgrade(base, addrs.equipments.upgrades, subcategoryId, nil, categoryId, config, flowStatus)
+                loader.upgrade(base, addrs.load.upgradeList, subcategoryId, nil, categoryId, config, flowStatus)
             elseif helpers.validateRange(subcategoryId, constants.attributeMin, constants.attributeMax) then
-                loader.tier(base, addrs.obtained, subcategoryId, categoryId, config)
+                loader.tier(base, addrs, subcategoryId, categoryId, config)
             end
         end
     elseif flowStatus == 2 then
@@ -50,7 +48,7 @@ function loader.dispatch(base, addrs, config)
         if subcategoryId then
             if helpers.validateRange(subcategoryId, constants.elementMin, constants.elementMax) or subcategoryId ==
                 constants.removeId then
-                loader.upgrade(base, addrs.equipments.upgrades, subcategoryId, nil, categoryId, config, flowStatus)
+                loader.upgrade(base, addrs.load.upgradeList, subcategoryId, nil, categoryId, config, flowStatus)
             end
         end
     end
@@ -59,10 +57,6 @@ function loader.dispatch(base, addrs, config)
 end
 
 function loader.equipment(base, offset, categoryId, config)
-    if not helpers.hasConfig(config, "equipment") then
-        return false
-    end
-
     local equipmentList = config.equipment[categoryId]
     if not equipmentList then
         return false
@@ -72,7 +66,7 @@ function loader.equipment(base, offset, categoryId, config)
 
     mem.clear(base, offset, 62)
 
-    local maxItems = mathMin(#equipmentList, 31)
+    local maxItems = math.min(#equipmentList, 31)
     for i = 1, maxItems do
         mem.writeU16(baseAddr + ((i - 1) * 2), nil, equipmentList[i])
     end
@@ -81,10 +75,6 @@ function loader.equipment(base, offset, categoryId, config)
 end
 
 function loader.upgrade(base, offset, subcategoryId, tierId, categoryId, config, flowStatus)
-    if not config then
-        return false
-    end
-
     if flowStatus == 3 and (not categoryId or categoryId == 0) then
         return false
     end
@@ -153,10 +143,6 @@ function loader._getUpgradeData(subcategoryId, tierId, categoryId, config, flowS
 end
 
 function loader.tier(base, addrs, attributeId, categoryId, config)
-    if not helpers.hasConfig(config, "attributes") then
-        return false
-    end
-
     local attr = helpers.getNestedValue(config, "attributes", categoryId, attributeId)
     if not attr then
         return false
@@ -166,29 +152,29 @@ function loader.tier(base, addrs, attributeId, categoryId, config)
     local tier2 = loader.getTierValue(attr, 2)
     local tier3 = loader.getTierValue(attr, 3)
 
-    mem.writeU16(base, addrs.tier1, tier1)
-    mem.writeU16(base, addrs.tier2, tier2)
-    mem.writeU16(base, addrs.tier3, tier3)
+    mem.writeU16(base, addrs.refinement.tier1AttributeValue, tier1)
+    mem.writeU16(base, addrs.refinement.tier2AttributeValue, tier2)
+    mem.writeU16(base, addrs.refinement.tier3AttributeValue, tier3)
 
     return true
 end
 
 function loader.results(base, addrs, refinement)
     if refinement then
-        mem.writeU8(base, addrs.currentAttribute, refinement.id)
-        mem.writeU16(base, addrs.initial, refinement.initial)
-        mem.writeU16(base, addrs.extra, refinement.extra or 0)
-        mem.writeU16(base, addrs.total, refinement.total)
+        mem.writeU8(base, addrs.current.currentAttribute, refinement.id)
+        mem.writeU16(base, addrs.refinement.defaultAttributeValue, refinement.initial)
+        mem.writeU16(base, addrs.refinement.extraAttributeValue, refinement.extra or 0)
+        mem.writeU16(base, addrs.refinement.totalAttributeValue, refinement.total)
     else
-        mem.writeU8(base, addrs.currentAttribute, 0)
-        mem.writeU16(base, addrs.initial, 0)
-        mem.writeU16(base, addrs.extra, 0)
-        mem.writeU16(base, addrs.total, 0)
+        mem.writeU8(base, addrs.current.currentAttribute, 0)
+        mem.writeU16(base, addrs.refinement.defaultAttributeValue, 0)
+        mem.writeU16(base, addrs.refinement.extraAttributeValue, 0)
+        mem.writeU16(base, addrs.refinement.totalAttributeValue, 0)
     end
 end
 
 function loader.getTierValue(attr, tier)
-    if not attr or not helpers.validateRange(tier, constants.tierMin, constants.tierMax) then
+    if not attr then
         return 0
     end
 
@@ -222,26 +208,6 @@ function loader.validateUpgrades(upgrades)
 end
 
 function loader.initialize(deps)
-    if not deps then
-        print("ERROR [TAA LOADER] Dependencies not provided")
-        return false
-    end
-
-    if not deps.memory then
-        print("ERROR [TAA LOADER] Memory not provided")
-        return false
-    end
-
-    if not deps.helpers then
-        print("ERROR [TAA LOADER] Helpers not provided")
-        return false
-    end
-
-    if not deps.mappings then
-        print("ERROR [TAA LOADER] Mappings not provided")
-        return false
-    end
-
     mem = deps.memory
     helpers = deps.helpers
     mappings = deps.mappings

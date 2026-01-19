@@ -64,24 +64,9 @@ end
 mem.flags = flags
 
 function mem.initialize()
-    if isInitialized then
-        return true
-    end
-
-    if not memory then
-        print("ERROR [TAA MEMORY] Memory API not available")
-        return false
-    end
-
     memoryU8 = memory.u8
     memoryU16 = memory.u16
     memoryU32 = memory.u32
-
-    if not memoryU8 or not memoryU16 or not memoryU32 then
-        print("ERROR [TAA MEMORY] Memory arrays not available")
-        return false
-    end
-
     return true
 end
 

@@ -92,7 +92,7 @@ function controller.dispatch(flowEvent, base, addrs, config)
     end
 
     if flowEvent == flowEvents.equipmentSelected then
-        mem.flags.clear(base, addrs.flow.selected)
+        mem.flags.clear(base, addrs.flow.selectedIntention)
         return
     end
 
@@ -105,13 +105,13 @@ function controller.dispatch(flowEvent, base, addrs, config)
 
     if flowEvent == flowEvents.checkAttribute then
         local refinement = attribute.get(base, addrs)
-        loader.results(base, addrs.obtained, refinement)
+        loader.results(base, addrs, refinement)
         mem.flags.clear(base, addrs.flow.checkAttribute)
         return
     end
 
     if flowEvent == flowEvents.result then
-        local flowStatus = mem.flags.get(base, addrs.flow.status)
+        local flowStatus = mem.flags.get(base, addrs.flow.talkStatus)
 
         if flowStatus == 2 then
             element.apply(base, addrs)
@@ -119,8 +119,8 @@ function controller.dispatch(flowEvent, base, addrs, config)
             attribute.apply(base, addrs, config, loader)
         end
 
-        if symbols and symbols.triggerRefresh then
-            symbols.triggerRefresh(symbols.dd)
+        if symbols then
+            symbols.triggerRefresh()
         end
 
         return
@@ -156,46 +156,6 @@ function controller.setConfig(config)
 end
 
 function controller.initialize(deps)
-    if not deps then
-        print("ERROR [TAA CONTROLLER] Dependencies not provided")
-        return false
-    end
-
-    if not deps.memory then
-        print("ERROR [TAA CONTROLLER] Memory not provided")
-        return false
-    end
-
-    if not deps.flow then
-        print("ERROR [TAA CONTROLLER] Flow not provided")
-        return false
-    end
-
-    if not deps.loader then
-        print("ERROR [TAA CONTROLLER] Loader not provided")
-        return false
-    end
-
-    if not deps.element then
-        print("ERROR [TAA CONTROLLER] Element not provided")
-        return false
-    end
-
-    if not deps.attribute then
-        print("ERROR [TAA CONTROLLER] Attribute not provided")
-        return false
-    end
-
-    if not deps.unlock then
-        print("ERROR [TAA CONTROLLER] Unlock not provided")
-        return false
-    end
-
-    if not deps.mappings then
-        print("ERROR [TAA CONTROLLER] Mappings not provided")
-        return false
-    end
-
     mem = deps.memory
     flow = deps.flow
     loader = deps.loader

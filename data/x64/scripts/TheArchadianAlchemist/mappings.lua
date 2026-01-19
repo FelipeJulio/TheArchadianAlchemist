@@ -6,42 +6,47 @@ mappings.addresses = {
     locationId = 0x021654C4,
     storyProgress = 0x2164480,
     flow = {
-        status = 0x50,
-        selected = 0x51,
-        success = 0x52,
-        reset = 0x53,
-        loadEquipment = 0x54,
-        checkElement = 0x4E,
-        checkAttribute = 0x4B,
-        pollMode = 0x4A,
-        unlockedTiers = 0x49,
-        showPopup = 0x29,
-        supplyNotification = 0x2A,
-        mainQuestGill = 0x2B,
-        mainQuestStatus = 0x2F,
-        unlockedElements = 0x30,
-        unlockedAttributes = 0x38
+        pollMode = 0x64,
+        checkAttribute = 0x65,
+        checkElement = 0x66,
+        talkStatus = 0x67,
+        selectedIntention = 0x68,
+        confirmedIntention = 0x69,
+        resetFlow = 0x6A,
+        loadEquipment = 0x6B
     },
-    pollMode = 0x4A,
+    notification = {
+        showTierMessage = 0x6C,
+        showSupplyMessage = 0x6D
+    },
+    quest = {
+        unlockedTiers = 0x6E,
+        mainQuestStatus = 0x6F,
+        unlockedElements = 0x70,
+        unlockedAttributes = 0x78,
+        mainQuestGil = 0x90
+    },
     selected = {
-        category = 0x55,
-        subcategory = 0x56,
-        equipmentId = 0x57,
-        tier = 0x5A
+        selectedCategory = 0x89,
+        selectedSubcategory = 0x8A,
+        selectedTier = 0x8B,
+        selectedEquipmentId = 0x8E
     },
-    obtained = {
-        initial = 0x5B,
-        extra = 0x5D,
-        total = 0x5F,
-        tier1 = 0x61,
-        tier2 = 0x63,
-        tier3 = 0x65,
-        currentElement = 0x4F,
-        currentAttribute = 0x4C
+    refinement = {
+        defaultAttributeValue = 0x94,
+        extraAttributeValue = 0x96,
+        totalAttributeValue = 0x98,
+        tier1AttributeValue = 0x9A,
+        tier2AttributeValue = 0x9C,
+        tier3AttributeValue = 0x9E
     },
-    equipments = {
-        upgrades = 0x67,
-        list = 0x76
+    current = {
+        currentElement = 0x8C,
+        currentAttribute = 0x8D
+    },
+    load = {
+        upgradeList = 0xA0,
+        equipmentList = 0xB0
     }
 }
 

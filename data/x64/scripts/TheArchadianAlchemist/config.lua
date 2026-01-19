@@ -1,11 +1,6 @@
 -- Made By FehDead
 local config = {}
 
-local pairs = pairs
-local ipairs = ipairs
-local type = type
-local tableInsert = table.insert
-
 local helpers
 local mappings
 
@@ -124,7 +119,7 @@ function config.attribute(rawAttributesByCategory, attributeNameToId)
                         if i == #attributeData and type(item) == "number" then
                             gil = item
                         else
-                            tableInsert(items, item)
+                            table.insert(items, item)
                         end
                     end
                 end
@@ -216,21 +211,6 @@ function config.parse(rawConfig)
 end
 
 function config.initialize(deps)
-    if not deps then
-        print("ERROR [TAA CONFIG] Dependencies not provided")
-        return false
-    end
-
-    if not deps.helpers then
-        print("ERROR [TAA CONFIG] Helpers not provided")
-        return false
-    end
-
-    if not deps.mappings then
-        print("ERROR [TAA CONFIG] Mappings not provided")
-        return false
-    end
-
     helpers = deps.helpers
     mappings = deps.mappings
 

@@ -12,9 +12,9 @@ local attributeDefs
 local constants
 
 function attribute.get(base, addrs)
-    local equipmentId = mem.readU16(base, addrs.selected.equipmentId)
+    local equipmentId = mem.readU16(base, addrs.selected.selectedEquipmentId)
 
-    if not (equipmentId and equipmentId > 0) then
+    if not (equipmentId > 0) then
         return nil
     end
 
@@ -32,19 +32,15 @@ function attribute.set(base, addrs, tier, config)
         return false
     end
 
-    local attributeId = mem.flags.get(base, addrs.selected.subcategory)
-    local equipmentId = mem.readU16(base, addrs.selected.equipmentId)
-    local categoryId = mem.flags.get(base, addrs.selected.category)
+    local attributeId = mem.flags.get(base, addrs.selected.selectedSubcategory)
+    local equipmentId = mem.readU16(base, addrs.selected.selectedEquipmentId)
+    local categoryId = mem.flags.get(base, addrs.selected.selectedCategory)
 
-    if not (equipmentId and equipmentId > 0) then
+    if not (equipmentId > 0) then
         return false
     end
 
     if not helpers.validateRange(attributeId, constants.attributeMin, constants.attributeMax) then
-        return false
-    end
-
-    if not helpers.validateRange(tier, constants.tierMin, constants.tierMax) then
         return false
     end
 
@@ -101,9 +97,9 @@ function attribute.set(base, addrs, tier, config)
 end
 
 function attribute.remove(base, addrs)
-    local equipmentId = mem.readU16(base, addrs.selected.equipmentId)
+    local equipmentId = mem.readU16(base, addrs.selected.selectedEquipmentId)
 
-    if not (equipmentId and equipmentId > 0) then
+    if not (equipmentId > 0) then
         return false
     end
 
@@ -126,12 +122,12 @@ function attribute.remove(base, addrs)
 end
 
 function attribute.apply(base, addrs, config, loaderModule)
-    local success = mem.flags.get(base, addrs.flow.success)
-    local subcategory = mem.flags.get(base, addrs.selected.subcategory)
-    local tier = mem.flags.get(base, addrs.selected.tier)
-    local equipmentId = mem.readU16(base, addrs.selected.equipmentId)
+    local confirmedIntention = mem.flags.get(base, addrs.flow.confirmedIntention)
+    local subcategory = mem.flags.get(base, addrs.selected.selectedSubcategory)
+    local tier = mem.flags.get(base, addrs.selected.selectedTier)
+    local equipmentId = mem.readU16(base, addrs.selected.selectedEquipmentId)
 
-    if success ~= 1 then
+    if confirmedIntention ~= 1 then
         return false
     end
 
@@ -143,12 +139,12 @@ function attribute.apply(base, addrs, config, loaderModule)
 
             local refinement = attribute.get(base, addrs)
             if loaderModule and loaderModule.results then
-                loaderModule.results(base, addrs.obtained, refinement)
+                loaderModule.results(base, addrs, refinement)
             end
         end
     end
 
-    mem.flags.set(base, addrs.flow.success, 0)
+    mem.flags.set(base, addrs.flow.confirmedIntention, 0)
     return true
 end
 
@@ -170,31 +166,6 @@ function attribute.validateAccess(subid, key)
 end
 
 function attribute.initialize(deps)
-    if not deps then
-        print("ERROR [TAA ATTRIBUTE] Dependencies not provided")
-        return false
-    end
-
-    if not deps.memory then
-        print("ERROR [TAA ATTRIBUTE] Memory not provided")
-        return false
-    end
-
-    if not deps.equipment then
-        print("ERROR [TAA ATTRIBUTE] Equipment not provided")
-        return false
-    end
-
-    if not deps.helpers then
-        print("ERROR [TAA ATTRIBUTE] Helpers not provided")
-        return false
-    end
-
-    if not deps.mappings then
-        print("ERROR [TAA ATTRIBUTE] Mappings not provided")
-        return false
-    end
-
     mem = deps.memory
     equipment = deps.equipment
     helpers = deps.helpers

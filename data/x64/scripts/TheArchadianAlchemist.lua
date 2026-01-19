@@ -1,23 +1,4 @@
 -- Made By FehDead
--- =====================
--- THE ARCHADIAN ALCHEMIST 3 - ORCHESTRATOR
--- =====================
--- =====================
--- CACHE DE FUNÇÕES GLOBAIS
--- =====================
-local pairs = pairs
-local ipairs = ipairs
-local tonumber = tonumber
-local type = type
-local stringFormat = string.format
-local collectgarbage = collectgarbage
-local setmetatable = setmetatable
-local loadfile = loadfile
-local pcall = pcall
-
--- =====================
--- PATH CONFIGURATION
--- =====================
 local paths = {
     core = {
         mappings = "scripts/TheArchadianAlchemist/mappings.lua",
@@ -89,8 +70,8 @@ local symbols = {
 
 function symbols.register()
     if not memory or not memory.alloc or not memory.registerGlobalSymbol then
-        print("WARN [TAA SYMBOLS] Memory API not available")
-        return false
+        print("ERROR [TAA] Memory API not available")
+        return
     end
 
     for i = 1, #symbols.taa do
@@ -99,8 +80,6 @@ function symbols.register()
         memory.registerGlobalSymbol(symbolName, addr)
         symbols.addresses[symbolName] = addr
     end
-
-    return true
 end
 
 function symbols.getValue(name)
@@ -146,12 +125,10 @@ function handlers.onLoad(filepath, savedData)
     equipment.state = equipment.state or {}
 
     if savedData and type(savedData) == "table" then
-
         if savedData.equipments then
             handlers._loadEquipmentState(savedData.equipments)
             handlers._restoreEquipmentState()
         elseif not savedData.questStatus then
-
             handlers._loadEquipmentState(savedData)
             handlers._restoreEquipmentState()
         end
@@ -160,7 +137,7 @@ function handlers.onLoad(filepath, savedData)
             unlock.setQuestStatus(savedData.questStatus)
         end
 
-        symbols.triggerRefresh(symbols.dd)
+        symbols.triggerRefresh()
     end
 end
 
@@ -189,9 +166,9 @@ end
 
 function handlers._restoreEquipmentState()
     for equipmentId, state in pairs(equipment.state) do
-        if state and state.element and state.element.id then
+        if state.element and state.element.id then
             local elementId = state.element.id
-            if elementId and elementId >= 1 and elementId <= 8 then
+            if elementId >= 1 and elementId <= 8 then
                 for id = 1, 8 do
                     equipment.write(equipmentId, "element", id, 0)
                 end
@@ -199,19 +176,14 @@ function handlers._restoreEquipmentState()
             end
         end
 
-        if state and state.attributes and state.attributes.id then
+        if state.attributes and state.attributes.id then
             local attributeId = state.attributes.id
             local total = state.attributes.total
-            if attributeId and attributeId >= 10 and attributeId <= 26 and total then
+            if attributeId >= 10 and attributeId <= 26 and total then
                 equipment.write(equipmentId, "attribute", attributeId, total)
             end
         end
     end
-end
-
-function handlers.onExit()
-    memory.unregisterAllSymbols()
-    collectgarbage()
 end
 
 function handlers.onLocation(locationId)
@@ -270,159 +242,85 @@ local function loadModule(path)
     }))
 
     if not chunk then
-        print("[TAA LOAD ERROR] loadfile failed:", path)
-        print("[TAA LOAD ERROR] reason:", tostring(err))
+        print("ERROR [TAA] Failed to load file: " .. path .. ": " .. tostring(err))
         return nil
     end
 
     local ok, result = pcall(chunk)
     if not ok then
-        print("[TAA LOAD ERROR] pcall failed:", path)
-        print("[TAA LOAD ERROR] reason:", tostring(result))
+        print("ERROR [TAA] Failed to execute file: " .. path .. ": " .. tostring(result))
         return nil
     end
 
     return result
 end
 
-local function loadAllModules()
-    mappings = loadModule(paths.core.mappings)
-    if not mappings then
-        print("ERROR [TAA] Failed to load: mappings")
-        return false
+local function initialize()
+    local modules = {}
+    for key, path in pairs(paths.core) do
+        local loaded = loadModule(path)
+        if not loaded then
+            print("ERROR [TAA] Failed to load: " .. key)
+            return false
+        end
+        modules[key] = loaded
     end
 
-    helpers = loadModule(paths.core.helpers)
-    if not helpers then
-        print("ERROR [TAA] Failed to load: helpers")
-        return false
-    end
+    mappings = modules.mappings
+    helpers = modules.helpers
+    mem = modules.memory
+    config = modules.config
+    equipment = modules.equipment
+    element = modules.element
+    attribute = modules.attribute
+    unlock = modules.unlock
+    loader = modules.loader
+    flow = modules.flow
+    controller = modules.controller
 
-    mem = loadModule(paths.core.memory)
-    if not mem then
-        print("ERROR [TAA] Failed to load: memory")
-        return false
-    end
+    mem.initialize()
 
-    config = loadModule(paths.core.config)
-    if not config then
-        print("ERROR [TAA] Failed to load: config")
-        return false
-    end
-
-    equipment = loadModule(paths.core.equipment)
-    if not equipment then
-        print("ERROR [TAA] Failed to load: equipment")
-        return false
-    end
-
-    element = loadModule(paths.core.element)
-    if not element then
-        print("ERROR [TAA] Failed to load: element")
-        return false
-    end
-
-    attribute = loadModule(paths.core.attribute)
-    if not attribute then
-        print("ERROR [TAA] Failed to load: attribute")
-        return false
-    end
-
-    unlock = loadModule(paths.core.unlock)
-    if not unlock then
-        print("ERROR [TAA] Failed to load: unlock")
-        return false
-    end
-
-    loader = loadModule(paths.core.loader)
-    if not loader then
-        print("ERROR [TAA] Failed to load: loader")
-        return false
-    end
-
-    flow = loadModule(paths.core.flow)
-    if not flow then
-        print("ERROR [TAA] Failed to load: flow")
-        return false
-    end
-
-    controller = loadModule(paths.core.controller)
-    if not controller then
-        print("ERROR [TAA] Failed to load: controller")
-        return false
-    end
-
-    return true
-end
-
-local function initializeModules()
-    if not mem.initialize() then
-        print("ERROR [TAA] Memory initialization failed")
-        return false
-    end
-
-    if not config.initialize({
+    config.initialize({
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Config initialization failed")
-        return false
-    end
+    })
 
-    if not equipment.initialize({
+    equipment.initialize({
         memory = mem,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Equipment initialization failed")
-        return false
-    end
+    })
 
-    if not element.initialize({
+    element.initialize({
         memory = mem,
         equipment = equipment,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Element initialization failed")
-        return false
-    end
+    })
 
-    if not attribute.initialize({
+    attribute.initialize({
         memory = mem,
         equipment = equipment,
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Attribute initialization failed")
-        return false
-    end
+    })
 
-    if not unlock.initialize({
+    unlock.initialize({
         memory = mem,
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Unlock initialization failed")
-        return false
-    end
+    })
 
-    if not loader.initialize({
+    loader.initialize({
         memory = mem,
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Loader initialization failed")
-        return false
-    end
+    })
 
-    if not flow.initialize({
+    flow.initialize({
         memory = mem,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Flow initialization failed")
-        return false
-    end
+    })
 
-    if not controller.initialize({
+    controller.initialize({
         memory = mem,
         flow = flow,
         loader = loader,
@@ -431,27 +329,9 @@ local function initializeModules()
         unlock = unlock,
         symbols = symbols,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Controller initialization failed")
-        return false
-    end
+    })
 
     controller.setSymbols(symbols)
-
-    return true
-end
-
-local function initialize()
-
-    if not loadAllModules() then
-        print("ERROR [TAA] Failed to load modules")
-        return false
-    end
-
-    if not initializeModules() then
-        print("ERROR [TAA] Failed to initialize modules")
-        return false
-    end
 
     handlers.loadConfig()
 
@@ -463,8 +343,8 @@ local MIN_VERSION = {1, 7, 1}
 print("The Archadian Alchemist: Applying patch.")
 
 if not (checkMinVersion and checkMinVersion(table.unpack(MIN_VERSION))) then
-    print(string.format("The Archadian Alchemist: Couldn't apply patch, LUA Loader v%d.%d.%d or higher required.",
-        table.unpack(MIN_VERSION)))
+    print(
+        string.format("The Archadian Alchemist: Couldn't apply patch, LUA Loader v%d.%d.%d or higher required.", table.unpack(MIN_VERSION)))
     return
 end
 
@@ -496,5 +376,6 @@ event.registerEventAsync("onMapJump", function(locationId)
 end)
 
 event.registerEventAsync("exit", function()
-    return handlers.onExit()
+    memory.unregisterAllSymbols()
+    collectgarbage()
 end)

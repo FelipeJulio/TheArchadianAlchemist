@@ -9,9 +9,9 @@ local elementNames
 local constants
 
 function element.get(base, addrs)
-    local equipmentId = mem.readU16(base, addrs.selected.equipmentId)
+    local equipmentId = mem.readU16(base, addrs.selected.selectedEquipmentId)
 
-    if not (equipmentId and equipmentId > 0) then
+    if not (equipmentId > 0) then
         return 0
     end
 
@@ -29,16 +29,16 @@ function element.get(base, addrs)
 end
 
 function element.write(base, addrs, elementId)
-    mem.flags.set(base, addrs.obtained.currentElement, elementId or 0)
+    mem.flags.set(base, addrs.current.currentElement, elementId or 0)
 end
 
 function element.set(base, addrs, elementId)
-    if not (elementId and elementId >= 1 and elementId <= 8) then
+    if not (elementId >= 1 and elementId <= 8) then
         return false
     end
 
-    local equipmentId = mem.readU16(base, addrs.selected.equipmentId)
-    if not (equipmentId and equipmentId > 0) then
+    local equipmentId = mem.readU16(base, addrs.selected.selectedEquipmentId)
+    if not (equipmentId > 0) then
         return false
     end
 
@@ -60,9 +60,9 @@ function element.set(base, addrs, elementId)
 end
 
 function element.remove(base, addrs)
-    local equipmentId = mem.readU16(base, addrs.selected.equipmentId)
+    local equipmentId = mem.readU16(base, addrs.selected.selectedEquipmentId)
 
-    if not (equipmentId and equipmentId > 0) then
+    if not (equipmentId > 0) then
         return false
     end
 
@@ -81,10 +81,10 @@ function element.remove(base, addrs)
 end
 
 function element.apply(base, addrs)
-    local success = mem.flags.get(base, addrs.flow.success)
-    local subcategory = mem.flags.get(base, addrs.selected.subcategory)
+    local confirmedIntention = mem.flags.get(base, addrs.flow.confirmedIntention)
+    local subcategory = mem.flags.get(base, addrs.selected.selectedSubcategory)
 
-    if success ~= 1 then
+    if confirmedIntention ~= 1 then
         return false
     end
 
@@ -94,12 +94,12 @@ function element.apply(base, addrs)
         element.set(base, addrs, subcategory)
     end
 
-    mem.flags.set(base, addrs.flow.success, 0)
+    mem.flags.set(base, addrs.flow.confirmedIntention, 0)
     return true
 end
 
 function element.clearAll(equipmentId)
-    if not (equipmentId and equipmentId > 0) then
+    if not (equipmentId > 0) then
         return
     end
 
@@ -109,26 +109,6 @@ function element.clearAll(equipmentId)
 end
 
 function element.initialize(deps)
-    if not deps then
-        print("ERROR [TAA ELEMENT] Dependencies not provided")
-        return false
-    end
-
-    if not deps.memory then
-        print("ERROR [TAA ELEMENT] Memory not provided")
-        return false
-    end
-
-    if not deps.equipment then
-        print("ERROR [TAA ELEMENT] Equipment not provided")
-        return false
-    end
-
-    if not deps.mappings then
-        print("ERROR [TAA ELEMENT] Mappings not provided")
-        return false
-    end
-
     mem = deps.memory
     equipment = deps.equipment
     mappings = deps.mappings

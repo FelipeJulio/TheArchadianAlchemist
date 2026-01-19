@@ -1,11 +1,6 @@
 -- Made By FehDead
 local helpers = {}
 
-local type = type
-local tonumber = tonumber
-local pairs = pairs
-local ipairs = ipairs
-
 function helpers.isTable(value)
     return type(value) == "table"
 end

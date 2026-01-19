@@ -1,7 +1,6 @@
 -- Made By FehDead
 local equipment = {}
 
-local pairs = pairs
 local mem
 local mappings
 local elementNames
@@ -24,7 +23,7 @@ function equipment.validateId(id)
 end
 
 function equipment._readElement(eq, elementId)
-    if not (elementId and elementId >= 1 and elementId <= 8) then
+    if not (elementId >= 1 and elementId <= 8) then
         return nil
     end
 
@@ -38,7 +37,7 @@ function equipment._readElement(eq, elementId)
 end
 
 function equipment._readAttribute(eq, attributeId)
-    if not (attributeId and attributeId >= 10 and attributeId <= 26) then
+    if not (attributeId >= 10 and attributeId <= 26) then
         return nil
     end
 
@@ -125,12 +124,12 @@ function equipment.write(id, key, subid, value)
     end
 
     if key == "element" then
-        if not (subid and subid >= 1 and subid <= 8) then
+        if not (subid >= 1 and subid <= 8) then
             return false
         end
         return equipment.applyElement(eq, subid, value)
     elseif key == "attribute" then
-        if not (subid and subid >= 10 and subid <= 26) then
+        if not (subid >= 10 and subid <= 26) then
             return false
         end
         return equipment.applyAttribute(eq, subid, value)
@@ -185,21 +184,6 @@ function equipment.setState(state)
 end
 
 function equipment.initialize(deps)
-    if not deps then
-        print("ERROR [TAA EQUIPMENT] Dependencies not provided")
-        return false
-    end
-
-    if not deps.memory then
-        print("ERROR [TAA EQUIPMENT] Memory not provided")
-        return false
-    end
-
-    if not deps.mappings then
-        print("ERROR [TAA EQUIPMENT] Mappings not provided")
-        return false
-    end
-
     mem = deps.memory
     mappings = deps.mappings
     elementNames = mappings.element
