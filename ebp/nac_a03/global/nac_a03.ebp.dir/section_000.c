@@ -1,10 +1,10 @@
 // File size: 49888 Bytes
-// Author:    t-hirose
+// Author:    t-hirose & FehDead
 // Source:    nac_a03.src
 // Date:      00/00 00:00
 // Binary:    E:\ff12-tools\The.Insurgents.Workshop.v1.0.1 - Copia\files\source\plan_map\nac_a\nac_a03\global\nac_a03.ebp.dir\section_000.bin
 
-option authorName = "t-hirose";
+option authorName = "t-hirose & FehDead";
 option fileName = "nac_a03.src";
 option spawnOrder = {-1, 1, -1, -1, -1, -1, -1, -1};
 option unknownScriptId = 1;
@@ -38,47 +38,51 @@ import scratch1 u_char  scratch1_var_1 = 0xc0;
 //======================================================================
 
 // flow flags
-import scratch1   u_char		flow_status = 0x50;
-import scratch1   u_char		flow_selected = 0x51;
-import scratch1   u_char		flow_success = 0x52;
-import scratch1   u_char		flow_reset = 0x53;
-import scratch1   u_char		flow_load_equipment = 0x54;
-import scratch1   u_char		unlocked_tiers = 0x49;
-import scratch1   u_char		flow_check_attribute = 0x4B;
-import scratch1   u_char		flow_check_element = 0x4E;
-import scratch1   u_char		flow_poll_mode = 0x4A;
-import scratch1   u_char    show_popup = 0x29;              // 0 = nada, 1 = mostrar popup 181
-import scratch1   u_char    supply_notification = 0x2A;     // 0 = nada, 1/2/3 = mostrar diálogo 182/183/18
-import scratch1   int				unlocked_main_quest_gill[1] = 0x2B; // gill ammount to change unlocked_main_quest to 2
-import scratch1   u_char		unlocked_main_quest = 0x2F; // 0 nothin, 1 can start the quest
-import scratch1   u_char		unlocked_elements[8] = 0x30; // For subcategories 1-8 (fire, lightning, ice, earth, water, wind, holy, dark)
-import scratch1   u_char		unlocked_attributes[17] = 0x38; // For subcategories 10-26 (reusing same space as elements)
+import scratch1   u_char		flow_poll_mode = 0x64;
+import scratch1   u_char		flow_check_attribute = 0x65;
+import scratch1   u_char		flow_check_element = 0x66;
+import scratch1   u_char		flow_talk_status = 0x67;
+import scratch1   u_char		flow_selected_intention = 0x68;
+import scratch1   u_char		flow_confirmed_intention = 0x69;
+import scratch1   u_char		flow_reset_flow = 0x6A;
+import scratch1   u_char		flow_load_equipment = 0x6B;
+
+// notification flags
+import scratch1   u_char		notification_show_tier_message = 0x6C;
+import scratch1   u_char		notification_show_supply_message = 0x6D;
+
+// quest flags
+import scratch1   u_char		quest_unlocked_tiers = 0x6E;
+import scratch1   u_char		quest_main_quest_status = 0x6F;
+import scratch1   u_char		quest_unlocked_elements[8] = 0x70;
+import scratch1   u_char		quest_unlocked_attributes[17] = 0x78;
+import scratch1   int				quest_main_quest_gil[1] = 0x90;
 
 // selected flags
-import scratch1   u_char		selected_category = 0x55;
-import scratch1   u_char		selected_subcategory = 0x56;
-import scratch1   short			selected_equipment_id = 0x57;
-import scratch1   u_char		selected_tier = 0x5A;
+import scratch1   u_char		selected_category = 0x89;
+import scratch1   u_char		selected_subcategory = 0x8A;
+import scratch1   u_char		selected_tier = 0x8B;
+import scratch1   short			selected_equipment_id = 0x8E;
 
-// obtainer values from lua
-import scratch1   short			obtained_initial = 0x5B;
-import scratch1   short			obtained_extra = 0x5D;
-import scratch1   short			obtained_total = 0x5F;
-import scratch1   short			obtained_tier1 = 0x61;
-import scratch1   short			obtained_tier2 = 0x63;
-import scratch1   short			obtained_tier3 = 0x65;
-import scratch1   u_char		obtained_current_attribute = 0x4C;
-import scratch1   u_char		obtained_current_element = 0x4F;
+// current values from checkElement/checkAttribute
+import scratch1   u_char		current_element = 0x8C;
+import scratch1   u_char		current_attribute = 0x8D;
 
-// loaded upgrade list
-import scratch1   u_short		upgrade_item_ids[3] = 0x67;
-import scratch1   u_char		upgrade_item_qtys[3] = 0x6D;
-import scratch1   u_short		upgrade_gil[1] = 0x70;
+// refinement values from lua
+import scratch1   short			refinement_default_attribute_value = 0x94;
+import scratch1   short			refinement_extra_attribute_value = 0x96;
+import scratch1   short			refinement_total_attribute_value = 0x98;
+import scratch1   short			refinement_tier1_attribute_value = 0x9A;
+import scratch1   short			refinement_tier2_attribute_value = 0x9C;
+import scratch1   short			refinement_tier3_attribute_value = 0x9E;
 
-// loaded equipment list
-import scratch1   u_short		equipment_list[31] = 0x76;
+// loaded upgrade list from lua
+import scratch1   u_short		load_upgrade_item_ids[3] = 0xA0;
+import scratch1   u_char		load_upgrade_item_qtys[3] = 0xA6;
+import scratch1   u_short		load_upgrade_gil[1] = 0xA9;
 
-
+// loaded equipment list from lua
+import scratch1   u_short		load_equipment_list[31] = 0xB0;
 
 actor __MJ_CTRL000(0)
 {
@@ -5090,8 +5094,8 @@ actor NPC_Alchemist(6) {
     set_shop_name = -1;
 
     while (true) {
-			if (unlocked_main_quest != set_shop_name) {
-					set_shop_name = unlocked_main_quest;
+			if (quest_main_quest_status != set_shop_name) {
+					set_shop_name = quest_main_quest_status;
 
 					if (set_shop_name >= 4) {
 							fieldsignmes(0x01000000 | 186);
@@ -5147,17 +5151,17 @@ actor NPC_Alchemist(6) {
   function talk(2) {
     // @description: dialog handler
 		stop_random_motion = 0;
-    flow_status = 0;
+    flow_talk_status = 0;
     flow_poll_mode = 0;
-    flow_selected = 0;
-    flow_success = 0;
-    flow_reset = 0;
+    flow_selected_intention = 0;
+    flow_confirmed_intention = 0;
+    flow_reset_flow = 0;
     flow_load_equipment = 0;
     selected_category = 0;
     selected_subcategory = 0;
     selected_equipment_id = 0;
     selected_tier = 0;
-    unlocked_tiers = 1;
+    quest_unlocked_tiers = 1;
 
     sethpmenu(0);
     ucoff();
@@ -5172,13 +5176,13 @@ actor NPC_Alchemist(6) {
     setunazukistatus(1);
     setkubifuristatus(1);
 
-		if (unlocked_main_quest == 0) {
+		if (quest_main_quest_status == 0) {
 			goto dialog_172;
-		} else if (unlocked_main_quest == 1) {
+		} else if (quest_main_quest_status == 1) {
 				goto dialog_173;
-		} else if (unlocked_main_quest == 2) {
+		} else if (quest_main_quest_status == 2) {
 				goto dialog_179;
-		} else if (unlocked_main_quest == 3) {
+		} else if (quest_main_quest_status == 3) {
 				goto dialog_180;
 		} else {
 				goto dialog_79;
@@ -5209,7 +5213,7 @@ actor NPC_Alchemist(6) {
     goto cleanup;
 
 	dialog_175:
-		setmesmacro(0, 12, 0, unlocked_main_quest_gill[0]);
+		setmesmacro(0, 12, 0, quest_main_quest_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -5224,17 +5228,17 @@ actor NPC_Alchemist(6) {
       goto dialog_176;
     }
 
-    if (havegill() < unlocked_main_quest_gill[0]) {
+    if (havegill() < quest_main_quest_gil[0]) {
       gillwinclose();
       mesclose(0);
       messync(0, 1);
       goto dialog_177;
     }
 
-    if (unlocked_main_quest_gill[0] > 0) {
-      gillwinstart((-1 * unlocked_main_quest_gill[0]));
+    if (quest_main_quest_gil[0] > 0) {
+      gillwinstart((-1 * quest_main_quest_gil[0]));
       gillwinsync();
-      subgill(unlocked_main_quest_gill[0]);
+      subgill(quest_main_quest_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -5242,7 +5246,7 @@ actor NPC_Alchemist(6) {
     mesclose(0);
     messync(0, 1);
 
-    unlocked_main_quest = 2;
+    quest_main_quest_status = 2;
     goto dialog_178;
 
   dialog_176:
@@ -5270,7 +5274,7 @@ actor NPC_Alchemist(6) {
     goto cleanup;
 
   dialog_180:
-	  unlocked_main_quest = 4;
+	  quest_main_quest_status = 4;
     amese(0, 0x01000000 | 180);
     messync(0, 1);
 		wait(16);
@@ -5280,22 +5284,22 @@ actor NPC_Alchemist(6) {
   dialog_79:
     flow_poll_mode = 1;
 
-    if (show_popup == 1) {
+    if (notification_show_tier_message == 1) {
 			sysReqew(0, Alchemist_Utility::Notify);
-			show_popup = 0;
+			notification_show_tier_message = 0;
 
-			if (supply_notification == 1) {
+			if (notification_show_supply_message == 1) {
 					amese(0, 0x01000000 | 182);
 					messync(0, 1);
-					supply_notification = 0;
-			} else if (supply_notification == 2) {
+					notification_show_supply_message = 0;
+			} else if (notification_show_supply_message == 2) {
 					amese(0, 0x01000000 | 183);
 					messync(0, 1);
-					supply_notification = 0;
-			} else if (supply_notification == 3) {
+					notification_show_supply_message = 0;
+			} else if (notification_show_supply_message == 3) {
 					amese(0, 0x01000000 | 184);
 					messync(0, 1);
-					supply_notification = 0;
+					notification_show_supply_message = 0;
 			}
 		}
 
@@ -5306,10 +5310,10 @@ actor NPC_Alchemist(6) {
     messync(0, 1);
 
     if (local_choice == 0) {
-      flow_status = 2;
+      flow_talk_status = 2;
       goto dialog_80;
     } else if (local_choice == 1) {
-      flow_status = 3;
+      flow_talk_status = 3;
       goto dialog_81;
     } else if (local_choice == 2) {
       goto dialog_90;
@@ -5403,7 +5407,7 @@ actor NPC_Alchemist(6) {
     messync(0, 1);
 
     if (local_choice == 17) {
-      if (flow_status == 2) {
+      if (flow_talk_status == 2) {
         goto dialog_82;
       } else {
         goto dialog_83;
@@ -5432,7 +5436,7 @@ actor NPC_Alchemist(6) {
     mesclose(0);
     messync(0, 1);
     if (local_choice == 3) {
-      if (flow_status == 2) {
+      if (flow_talk_status == 2) {
         goto dialog_82;
       } else {
         goto dialog_83;
@@ -5461,7 +5465,7 @@ actor NPC_Alchemist(6) {
     mesclose(0);
     messync(0, 1);
     if (local_choice == 3) {
-      if (flow_status == 2) {
+      if (flow_talk_status == 2) {
         goto dialog_82;
       } else {
         goto dialog_83;
@@ -5490,7 +5494,7 @@ actor NPC_Alchemist(6) {
     mesclose(0);
     messync(0, 1);
     if (local_choice == 8) {
-      if (flow_status == 2) {
+      if (flow_talk_status == 2) {
         goto dialog_82;
       } else {
         goto dialog_83;
@@ -5519,7 +5523,7 @@ actor NPC_Alchemist(6) {
     mesclose(0);
     messync(0, 1);
     if (local_choice == 4) {
-      if (flow_status == 2) {
+      if (flow_talk_status == 2) {
         goto dialog_82;
       } else {
         goto dialog_83;
@@ -5542,7 +5546,7 @@ actor NPC_Alchemist(6) {
     if (selected_category >= 21 && selected_category <= 23) goto dialog_86;
     if (selected_category >= 24 && selected_category <= 31) goto dialog_87;
     if (selected_category >= 32 && selected_category <= 35) goto dialog_88;
-    if (flow_status == 2)
+    if (flow_talk_status == 2)
       goto dialog_82;
     else
       goto dialog_83;
@@ -5553,12 +5557,12 @@ actor NPC_Alchemist(6) {
     local_count = 0;
     local_equipment_qtty = 0;
     for (local_i = 0; local_i <= 30; local_i++) {
-      if (equipment_list[local_i] == 0) {
+      if (load_equipment_list[local_i] == 0) {
         setaskselectignore(0, local_i);
       } else {
         local_count++;
-        if (haveitem(equipment_list[local_i]) > 0) {
-          setmesmacro(0, local_equipment_qtty, 1, equipment_list[local_i]);
+        if (haveitem(load_equipment_list[local_i]) > 0) {
+          setmesmacro(0, local_equipment_qtty, 1, load_equipment_list[local_i]);
           local_available_indices[local_equipment_qtty] = local_i;
           local_equipment_qtty++;
         } else {
@@ -5592,13 +5596,13 @@ actor NPC_Alchemist(6) {
     }
 
     local_selected_equipment =
-        equipment_list[local_available_indices[local_equipment_index]];
+        load_equipment_list[local_available_indices[local_equipment_index]];
     selected_equipment_id = local_selected_equipment;
-    flow_selected = 1;
+    flow_selected_intention = 1;
 
-    if (flow_status == 2) {
+    if (flow_talk_status == 2) {
       goto dialog_92;
-    } else if (flow_status == 3) {
+    } else if (flow_talk_status == 3) {
       if (selected_category >= 1 && selected_category <= 17) {
         goto dialog_113;
       } else if (selected_category == 36) {
@@ -5658,11 +5662,11 @@ actor NPC_Alchemist(6) {
     local_count = 0;
     local_i = 0;
     while (local_i < 8) {
-      setmesmacro(0, local_macro_id[local_i], 0, unlocked_elements[local_i]);
-      if (unlocked_elements[local_i] == 0) {
+      setmesmacro(0, local_macro_id[local_i], 0, quest_unlocked_elements[local_i]);
+      if (quest_unlocked_elements[local_i] == 0) {
         setaskselectignore(0, local_choice_id[local_i]);
       }
-      if (unlocked_elements[local_i] > 0) {
+      if (quest_unlocked_elements[local_i] > 0) {
         local_count++;
       }
       local_i++;
@@ -5693,7 +5697,7 @@ actor NPC_Alchemist(6) {
     }
 
     if (local_choice >= 0 && local_choice < 8 &&
-        unlocked_elements[local_choice] > 0) {
+        quest_unlocked_elements[local_choice] > 0) {
       selected_subcategory = local_choice_subcategory_id[local_choice];
       if (local_choice == 0) {
         goto dialog_93;
@@ -5721,14 +5725,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -5740,19 +5744,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -5766,14 +5770,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -5785,19 +5789,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -5811,14 +5815,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 6);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -5830,19 +5834,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -5857,14 +5861,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -5876,19 +5880,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -5902,14 +5906,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -5921,19 +5925,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -5947,14 +5951,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -5966,19 +5970,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -5992,14 +5996,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -6011,19 +6015,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -6037,14 +6041,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -6056,19 +6060,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -6082,7 +6086,7 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_check_element = 0;
 
-    if (obtained_current_element == 0) {
+    if (current_element == 0) {
       goto dialog_170;
     }
     goto dialog_101;
@@ -6094,14 +6098,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -6113,19 +6117,19 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
@@ -6139,8 +6143,8 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_check_element = 0;
 
-    if (obtained_current_element >= 1 && obtained_current_element <= 8) {
-      switch (obtained_current_element) {
+    if (current_element >= 1 && current_element <= 8) {
+      switch (current_element) {
         case 1:
           goto dialog_159;
         case 2:
@@ -6312,7 +6316,7 @@ actor NPC_Alchemist(6) {
 
     wait(35);
 
-    if (flow_status == 2) {
+    if (flow_talk_status == 2) {
       switch (selected_subcategory) {
         case 1:
           goto dialog_103;
@@ -6335,7 +6339,7 @@ actor NPC_Alchemist(6) {
         default:
           goto dialog_103;
       }
-    } else if (flow_status == 3) {
+    } else if (flow_talk_status == 3) {
       if (selected_subcategory == 0) {
         goto dialog_155;
       } else {
@@ -6371,9 +6375,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6387,9 +6391,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6403,9 +6407,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6419,9 +6423,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6435,9 +6439,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6451,9 +6455,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6467,9 +6471,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6483,9 +6487,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6499,9 +6503,9 @@ actor NPC_Alchemist(6) {
     if (local_choice == 0) {
       goto dialog_89;
     } else if (local_choice == 1) {
-      flow_success = 1;
+      flow_confirmed_intention = 1;
       wait(16);
-      flow_success = 0;
+      flow_confirmed_intention = 0;
       goto cleanup;
     }
 
@@ -6601,11 +6605,11 @@ actor NPC_Alchemist(6) {
     local_i = 0;
     while (local_i < 13) {
       setmesmacro(0, local_macro_id[local_i], 0,
-                  unlocked_attributes[local_macro_attr[local_i]]);
-      if (unlocked_attributes[local_macro_attr[local_i]] == 0) {
+                  quest_unlocked_attributes[local_macro_attr[local_i]]);
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
         setaskselectignore(0, local_choice_id[local_i]);
       }
-      if (unlocked_attributes[local_macro_attr[local_i]] > 0) {
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
         local_count++;
       }
       local_i++;
@@ -6637,7 +6641,7 @@ actor NPC_Alchemist(6) {
     }
 
     if (local_choice >= 0 && local_choice < 13 &&
-        unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
       selected_subcategory = local_choice_subcategory_id[local_choice];
       if (local_choice == 0) {
         goto dialog_117;
@@ -6720,11 +6724,11 @@ actor NPC_Alchemist(6) {
     local_i = 0;
     while (local_i < 8) {
       setmesmacro(0, local_macro_id[local_i], 0,
-                  unlocked_attributes[local_macro_attr[local_i]]);
-      if (unlocked_attributes[local_macro_attr[local_i]] == 0) {
+                  quest_unlocked_attributes[local_macro_attr[local_i]]);
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
         setaskselectignore(0, local_choice_id[local_i]);
       }
-      if (unlocked_attributes[local_macro_attr[local_i]] > 0) {
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
         local_count++;
       }
       local_i++;
@@ -6744,7 +6748,7 @@ actor NPC_Alchemist(6) {
     }
 
     if (local_choice >= 0 && local_choice < 8 &&
-        unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
       selected_subcategory = local_choice_subcategory_id[local_choice];
       if (local_choice == 0) {
         goto dialog_124;
@@ -6821,11 +6825,11 @@ actor NPC_Alchemist(6) {
     local_i = 0;
     while (local_i < 8) {
       setmesmacro(0, local_macro_id[local_i], 0,
-                  unlocked_attributes[local_macro_attr[local_i]]);
-      if (unlocked_attributes[local_macro_attr[local_i]] == 0) {
+                  quest_unlocked_attributes[local_macro_attr[local_i]]);
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
         setaskselectignore(0, local_choice_id[local_i]);
       }
-      if (unlocked_attributes[local_macro_attr[local_i]] > 0) {
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
         local_count++;
       }
       local_i++;
@@ -6845,7 +6849,7 @@ actor NPC_Alchemist(6) {
     }
 
     if (local_choice >= 0 && local_choice < 8 &&
-        unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
       selected_subcategory = local_choice_subcategory_id[local_choice];
       if (local_choice == 0) {
         goto dialog_126;
@@ -6927,11 +6931,11 @@ actor NPC_Alchemist(6) {
     local_i = 0;
     while (local_i < 9) {
       setmesmacro(0, local_macro_id[local_i], 0,
-                  unlocked_attributes[local_macro_attr[local_i]]);
-      if (unlocked_attributes[local_macro_attr[local_i]] == 0) {
+                  quest_unlocked_attributes[local_macro_attr[local_i]]);
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
         setaskselectignore(0, local_choice_id[local_i]);
       }
-      if (unlocked_attributes[local_macro_attr[local_i]] > 0) {
+      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
         local_count++;
       }
       local_i++;
@@ -6951,7 +6955,7 @@ actor NPC_Alchemist(6) {
     }
 
     if (local_choice >= 0 && local_choice < 9 &&
-        unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
       selected_subcategory = local_choice_subcategory_id[local_choice];
       if (local_choice == 0) {
         goto dialog_119;
@@ -6984,31 +6988,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7039,31 +7043,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7094,31 +7098,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7149,31 +7153,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7204,31 +7208,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7259,31 +7263,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7314,31 +7318,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7369,31 +7373,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7424,31 +7428,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7479,31 +7483,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7534,31 +7538,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7589,31 +7593,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7644,31 +7648,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7699,31 +7703,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7754,31 +7758,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7809,31 +7813,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7864,31 +7868,31 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 8, 0, obtained_tier1);
-    setmesmacro(0, 9, 0, obtained_tier2);
-    setmesmacro(0, 10, 0, obtained_tier3);
-    setmesmacro(0, 11, 0, unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, unlocked_tiers >= 3);
+    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
 
-    if (unlocked_tiers < 1 || obtained_tier1 == 0) {
+    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
     }
-    if (unlocked_tiers < 2 || obtained_tier2 == 0) {
+    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
       setaskselectignore(0, 1);
     }
-    if (unlocked_tiers < 3 || obtained_tier3 == 0) {
+    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
       setaskselectignore(0, 2);
     }
 
     local_count = 0;
-    if (unlocked_tiers >= 1 && obtained_tier1 > 0) {
+    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 2 && obtained_tier2 > 0) {
+    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
       local_count = local_count + 1;
     }
-    if (unlocked_tiers >= 3 && obtained_tier3 > 0) {
+    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
       local_count = local_count + 1;
     }
     local_count = local_count + 1;
@@ -7919,7 +7923,7 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_check_attribute = 0;
 
-    if (obtained_current_attribute >= 10 && obtained_current_attribute <= 26) {
+    if (current_attribute >= 10 && current_attribute <= 26) {
       if (selected_tier == 1) {
         goto dialog_156;
       } else if (selected_tier == 2) {
@@ -7949,14 +7953,14 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -7967,27 +7971,27 @@ actor NPC_Alchemist(6) {
       goto return_to_attribute_menu;
     }
 
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
     mesclose(0);
     messync(0, 1);
-    flow_success = 1;
+    flow_confirmed_intention = 1;
     wait(16);
-    flow_success = 0;
+    flow_confirmed_intention = 0;
     goto dialog_167;
 
   // @description: tier 2 confirmation
@@ -7995,14 +7999,14 @@ actor NPC_Alchemist(6) {
     flow_load_equipment = 1;
     wait(16);
     flow_load_equipment = 0;
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -8012,27 +8016,27 @@ actor NPC_Alchemist(6) {
       messync(0, 1);
       goto return_to_attribute_menu;
     }
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
     mesclose(0);
     messync(0, 1);
-    flow_success = 1;
+    flow_confirmed_intention = 1;
     wait(16);
-    flow_success = 0;
+    flow_confirmed_intention = 0;
     goto dialog_168;
 
   // @description: tier 3 confirmation
@@ -8040,14 +8044,14 @@ actor NPC_Alchemist(6) {
     flow_load_equipment = 1;
     wait(16);
     flow_load_equipment = 0;
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -8057,27 +8061,27 @@ actor NPC_Alchemist(6) {
       messync(0, 1);
       goto return_to_attribute_menu;
     }
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
     mesclose(0);
     messync(0, 1);
-    flow_success = 1;
+    flow_confirmed_intention = 1;
     wait(16);
-    flow_success = 0;
+    flow_confirmed_intention = 0;
     goto dialog_169;
 
   // @description: check existing attribute before remove
@@ -8086,7 +8090,7 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_check_attribute = 0;
 
-    if (obtained_current_attribute == 0) {
+    if (current_attribute == 0) {
       goto dialog_171;
     }
     goto dialog_137;
@@ -8099,14 +8103,14 @@ actor NPC_Alchemist(6) {
     flow_load_equipment = 1;
     wait(16);
     flow_load_equipment = 0;
-    setmesmacro(0, 0, 1, upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, upgrade_item_qtys[2]);
+    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, upgrade_gil[0]);
+    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
     setmeswinline(0, 3);
     askpos(0, 0, 1);
     gillwinopen(havegill());
@@ -8116,27 +8120,27 @@ actor NPC_Alchemist(6) {
       messync(0, 1);
       goto return_to_attribute_menu;
     }
-    if ((haveitem(upgrade_item_ids[0]) < upgrade_item_qtys[0] ||
-         haveitem(upgrade_item_ids[1]) < upgrade_item_qtys[1] ||
-         haveitem(upgrade_item_ids[2]) < upgrade_item_qtys[2]) &&
-        (upgrade_gil[0] > 0 && havegill() < upgrade_gil[0])) {
+    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
       mesclose(0);
       messync(0, 1);
       goto dialog_102;
     }
 
-    if (upgrade_gil[0] > 0) {
-      gillwinstart((-1 * upgrade_gil[0]));
+    if (load_upgrade_gil[0] > 0) {
+      gillwinstart((-1 * load_upgrade_gil[0]));
       gillwinsync();
-      subgill(upgrade_gil[0]);
+      subgill(load_upgrade_gil[0]);
       wait(20);
       gillwinclose();
     }
     mesclose(0);
     messync(0, 1);
-    flow_success = 1;
+    flow_confirmed_intention = 1;
     wait(16);
-    flow_success = 0;
+    flow_confirmed_intention = 0;
     goto dialog_155;
 
   // @description: attribute success dialog route
@@ -8183,8 +8187,8 @@ actor NPC_Alchemist(6) {
   dialog_138:
     flow_poll_mode = 2;
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 138);
@@ -8198,8 +8202,8 @@ actor NPC_Alchemist(6) {
 
   dialog_139:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 139);
@@ -8213,8 +8217,8 @@ actor NPC_Alchemist(6) {
 
   dialog_140:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 140);
@@ -8228,8 +8232,8 @@ actor NPC_Alchemist(6) {
 
   dialog_141:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 141);
@@ -8243,8 +8247,8 @@ actor NPC_Alchemist(6) {
 
   dialog_142:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 142);
@@ -8258,8 +8262,8 @@ actor NPC_Alchemist(6) {
 
   dialog_143:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 143);
@@ -8273,8 +8277,8 @@ actor NPC_Alchemist(6) {
 
   dialog_144:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 144);
@@ -8288,8 +8292,8 @@ actor NPC_Alchemist(6) {
 
   dialog_145:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 145);
@@ -8303,8 +8307,8 @@ actor NPC_Alchemist(6) {
 
   dialog_146:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 146);
@@ -8318,8 +8322,8 @@ actor NPC_Alchemist(6) {
 
   dialog_147:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 147);
@@ -8333,8 +8337,8 @@ actor NPC_Alchemist(6) {
 
   dialog_148:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 148);
@@ -8348,8 +8352,8 @@ actor NPC_Alchemist(6) {
 
   dialog_149:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 149);
@@ -8363,8 +8367,8 @@ actor NPC_Alchemist(6) {
 
   dialog_150:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 150);
@@ -8378,8 +8382,8 @@ actor NPC_Alchemist(6) {
 
   dialog_151:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 151);
@@ -8393,8 +8397,8 @@ actor NPC_Alchemist(6) {
 
   dialog_152:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 152);
@@ -8408,8 +8412,8 @@ actor NPC_Alchemist(6) {
 
   dialog_153:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 153);
@@ -8423,8 +8427,8 @@ actor NPC_Alchemist(6) {
 
   dialog_154:
     setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
     local_choice = aaske(0, 0x01000000 | 154);
@@ -8464,8 +8468,8 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
@@ -8493,8 +8497,8 @@ actor NPC_Alchemist(6) {
     wait(16);
     flow_load_equipment = 0;
 
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
@@ -8521,8 +8525,8 @@ actor NPC_Alchemist(6) {
     flow_load_equipment = 1;
     wait(16);
     flow_load_equipment = 0;
-    setmesmacro(0, 1, 0, obtained_initial);
-    setmesmacro(0, 2, 0, obtained_total);
+    setmesmacro(0, 1, 0, refinement_default_attribute_value);
+    setmesmacro(0, 2, 0, refinement_total_attribute_value);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmeswinline(0, 4);
     askpos(0, 0, 1);
@@ -8587,10 +8591,10 @@ actor NPC_Alchemist(6) {
 
   // @description: cleanup and restore
   cleanup:
-    flow_status = 0;
-    flow_selected = 0;
-    flow_success = 0;
-    flow_reset = 0;
+    flow_talk_status = 0;
+    flow_selected_intention = 0;
+    flow_confirmed_intention = 0;
+    flow_reset_flow = 0;
     flow_load_equipment = 0;
     selected_category = 0;
     selected_subcategory = 0;

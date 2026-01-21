@@ -1,85 +1,69 @@
 -- Made By FehDead
--- =====================
--- THE ARCHADIAN ALCHEMIST 3 - ORCHESTRATOR
--- =====================
--- =====================
--- CACHE DE FUNÇÕES GLOBAIS
--- =====================
-local pairs = pairs
-local ipairs = ipairs
-local tonumber = tonumber
-local type = type
-local stringFormat = string.format
-local collectgarbage = collectgarbage
-local setmetatable = setmetatable
-local loadfile = loadfile
-local pcall = pcall
+local MODULE_BASE = "scripts/TheArchadianAlchemist"
+local CONFIG_BASE = "scripts/config/TheArchadianAlchemist"
 
--- =====================
--- PATH CONFIGURATION
--- =====================
 local paths = {
     core = {
-        mappings = "scripts/TheArchadianAlchemist/mappings.lua",
-        helpers = "scripts/TheArchadianAlchemist/helpers.lua",
-        memory = "scripts/TheArchadianAlchemist/memory.lua",
-        config = "scripts/TheArchadianAlchemist/config.lua",
-        equipment = "scripts/TheArchadianAlchemist/equipment.lua",
-        element = "scripts/TheArchadianAlchemist/element.lua",
-        attribute = "scripts/TheArchadianAlchemist/attribute.lua",
-        unlock = "scripts/TheArchadianAlchemist/unlock.lua",
-        loader = "scripts/TheArchadianAlchemist/loader.lua",
-        flow = "scripts/TheArchadianAlchemist/flow.lua",
-        controller = "scripts/TheArchadianAlchemist/controller.lua"
+        mappings = MODULE_BASE .. "/mappings.lua",
+        helpers = MODULE_BASE .. "/helpers.lua",
+        memory = MODULE_BASE .. "/memory.lua",
+        config = MODULE_BASE .. "/config.lua",
+        equipment = MODULE_BASE .. "/equipment.lua",
+        element = MODULE_BASE .. "/element.lua",
+        attribute = MODULE_BASE .. "/attribute.lua",
+        unlock = MODULE_BASE .. "/unlock.lua",
+        writer = MODULE_BASE .. "/writer.lua",
+        flow = MODULE_BASE .. "/flow.lua",
+        controller = MODULE_BASE .. "/controller.lua"
     },
     config = {
-        directory = "scripts/config/TheArchadianAlchemist/*.lua",
-        equipment = "scripts/config/TheArchadianAlchemist/equipments.lua",
-        element = "scripts/config/TheArchadianAlchemist/elements.lua",
-        questline = "scripts/config/TheArchadianAlchemist/questline.lua",
+        equipment = CONFIG_BASE .. "/equipments.lua",
+        element = CONFIG_BASE .. "/elements.lua",
+        questline = CONFIG_BASE .. "/questline.lua",
         attribute = {
-            [1] = "scripts/config/TheArchadianAlchemist/attributes/weapons/sword.lua",
-            [2] = "scripts/config/TheArchadianAlchemist/attributes/weapons/greatSword.lua",
-            [3] = "scripts/config/TheArchadianAlchemist/attributes/weapons/katana.lua",
-            [4] = "scripts/config/TheArchadianAlchemist/attributes/weapons/ninjaSword.lua",
-            [5] = "scripts/config/TheArchadianAlchemist/attributes/weapons/spear.lua",
-            [6] = "scripts/config/TheArchadianAlchemist/attributes/weapons/pole.lua",
-            [7] = "scripts/config/TheArchadianAlchemist/attributes/weapons/bow.lua",
-            [8] = "scripts/config/TheArchadianAlchemist/attributes/weapons/crossBow.lua",
-            [9] = "scripts/config/TheArchadianAlchemist/attributes/weapons/gun.lua",
-            [10] = "scripts/config/TheArchadianAlchemist/attributes/weapons/dagger.lua",
-            [11] = "scripts/config/TheArchadianAlchemist/attributes/weapons/rod.lua",
-            [12] = "scripts/config/TheArchadianAlchemist/attributes/weapons/staff.lua",
-            [13] = "scripts/config/TheArchadianAlchemist/attributes/weapons/mace.lua",
-            [14] = "scripts/config/TheArchadianAlchemist/attributes/weapons/axe.lua",
-            [15] = "scripts/config/TheArchadianAlchemist/attributes/weapons/hammer.lua",
-            [16] = "scripts/config/TheArchadianAlchemist/attributes/weapons/handBomb.lua",
-            [17] = "scripts/config/TheArchadianAlchemist/attributes/weapons/measure.lua",
-            [18] = "scripts/config/TheArchadianAlchemist/attributes/armors/heavyArmor.lua",
-            [19] = "scripts/config/TheArchadianAlchemist/attributes/armors/lightArmor.lua",
-            [20] = "scripts/config/TheArchadianAlchemist/attributes/armors/mysticArmor.lua",
-            [21] = "scripts/config/TheArchadianAlchemist/attributes/helms/heavyHelm.lua",
-            [22] = "scripts/config/TheArchadianAlchemist/attributes/helms/lightHelm.lua",
-            [23] = "scripts/config/TheArchadianAlchemist/attributes/helms/mysticHelm.lua",
-            [24] = "scripts/config/TheArchadianAlchemist/attributes/accessories/belt.lua",
-            [25] = "scripts/config/TheArchadianAlchemist/attributes/accessories/boot.lua",
-            [26] = "scripts/config/TheArchadianAlchemist/attributes/accessories/bracelet.lua",
-            [27] = "scripts/config/TheArchadianAlchemist/attributes/accessories/collar.lua",
-            [28] = "scripts/config/TheArchadianAlchemist/attributes/accessories/crown.lua",
-            [29] = "scripts/config/TheArchadianAlchemist/attributes/accessories/glove.lua",
-            [30] = "scripts/config/TheArchadianAlchemist/attributes/accessories/pendant.lua",
-            [31] = "scripts/config/TheArchadianAlchemist/attributes/accessories/ring.lua",
-            [32] = "scripts/config/TheArchadianAlchemist/attributes/ammunition/arrow.lua",
-            [33] = "scripts/config/TheArchadianAlchemist/attributes/ammunition/bolt.lua",
-            [34] = "scripts/config/TheArchadianAlchemist/attributes/ammunition/bomb.lua",
-            [35] = "scripts/config/TheArchadianAlchemist/attributes/ammunition/shot.lua",
-            [36] = "scripts/config/TheArchadianAlchemist/attributes/shields/shield.lua"
+            [1] = CONFIG_BASE .. "/attributes/sword.lua",
+            [2] = CONFIG_BASE .. "/attributes/greatSword.lua",
+            [3] = CONFIG_BASE .. "/attributes/katana.lua",
+            [4] = CONFIG_BASE .. "/attributes/ninjaSword.lua",
+            [5] = CONFIG_BASE .. "/attributes/spear.lua",
+            [6] = CONFIG_BASE .. "/attributes/pole.lua",
+            [7] = CONFIG_BASE .. "/attributes/bow.lua",
+            [8] = CONFIG_BASE .. "/attributes/crossBow.lua",
+            [9] = CONFIG_BASE .. "/attributes/gun.lua",
+            [10] = CONFIG_BASE .. "/attributes/dagger.lua",
+            [11] = CONFIG_BASE .. "/attributes/rod.lua",
+            [12] = CONFIG_BASE .. "/attributes/staff.lua",
+            [13] = CONFIG_BASE .. "/attributes/mace.lua",
+            [14] = CONFIG_BASE .. "/attributes/axe.lua",
+            [15] = CONFIG_BASE .. "/attributes/hammer.lua",
+            [16] = CONFIG_BASE .. "/attributes/handBomb.lua",
+            [17] = CONFIG_BASE .. "/attributes/measure.lua",
+            [18] = CONFIG_BASE .. "/attributes/heavyArmor.lua",
+            [19] = CONFIG_BASE .. "/attributes/lightArmor.lua",
+            [20] = CONFIG_BASE .. "/attributes/mysticArmor.lua",
+            [21] = CONFIG_BASE .. "/attributes/heavyHelm.lua",
+            [22] = CONFIG_BASE .. "/attributes/lightHelm.lua",
+            [23] = CONFIG_BASE .. "/attributes/mysticHelm.lua",
+            [24] = CONFIG_BASE .. "/attributes/belt.lua",
+            [25] = CONFIG_BASE .. "/attributes/boot.lua",
+            [26] = CONFIG_BASE .. "/attributes/bracelet.lua",
+            [27] = CONFIG_BASE .. "/attributes/collar.lua",
+            [28] = CONFIG_BASE .. "/attributes/crown.lua",
+            [29] = CONFIG_BASE .. "/attributes/glove.lua",
+            [30] = CONFIG_BASE .. "/attributes/pendant.lua",
+            [31] = CONFIG_BASE .. "/attributes/ring.lua",
+            [32] = CONFIG_BASE .. "/attributes/arrow.lua",
+            [33] = CONFIG_BASE .. "/attributes/bolt.lua",
+            [34] = CONFIG_BASE .. "/attributes/bomb.lua",
+            [35] = CONFIG_BASE .. "/attributes/shot.lua",
+            [36] = CONFIG_BASE .. "/attributes/shield.lua"
         }
-    }
+    },
+    watch = CONFIG_BASE .. "/*.lua"
 }
 
-local mappings, helpers, mem, config, equipment, element, attribute, unlock, loader, flow, controller
-local configData = {}
+local mappings, helpers, mem, config, equipment, element, attribute, unlock, writer, flow, controller
+local loader, handlers, configData = {}, {}, {}
 
 local symbols = {
     taa = {"TAA_QuestStatus", "TAA_ElementStatus", "TAA_AttributeStatus"},
@@ -88,43 +72,28 @@ local symbols = {
 }
 
 function symbols.register()
-    if not memory or not memory.alloc or not memory.registerGlobalSymbol then
-        print("WARN [TAA SYMBOLS] Memory API not available")
-        return false
-    end
-
     for i = 1, #symbols.taa do
-        local symbolName = symbols.taa[i]
-        local addr = memory.alloc(1, true)
-        memory.registerGlobalSymbol(symbolName, addr)
-        symbols.addresses[symbolName] = addr
+        local name = symbols.taa[i]
+        symbols.addresses[name] = memory.alloc(1)
+        memory.registerGlobalSymbol(name, symbols.addresses[name])
     end
-
-    return true
 end
 
-function symbols.getValue(name)
+function symbols.get(name)
     local addr = symbols.addresses[name]
     if not addr then
         addr = memory.getSymbol(name)
         symbols.addresses[name] = addr
     end
-
-    if addr and addr ~= 0 then
-        return memory.u8[addr] or 0
-    end
-    return 0
+    return addr and memory.u8[addr] or 0
 end
 
-function symbols.triggerRefresh()
+function symbols.refresh()
     local addr = memory.getSymbol(symbols.dd)
-
-    if addr and addr ~= 0 then
+    if addr then
         memory.u8[addr] = 1
     end
 end
-
-local handlers = {}
 
 function handlers.onFileChange(filepath, stats, created, deleted)
     if deleted then
@@ -132,7 +101,7 @@ function handlers.onFileChange(filepath, stats, created, deleted)
     end
 
     print("[TAA] Config file changed, reloading...")
-    handlers.loadConfig()
+    loader.config()
 end
 
 function handlers.onSave()
@@ -146,12 +115,10 @@ function handlers.onLoad(filepath, savedData)
     equipment.state = equipment.state or {}
 
     if savedData and type(savedData) == "table" then
-
         if savedData.equipments then
             handlers._loadEquipmentState(savedData.equipments)
             handlers._restoreEquipmentState()
         elseif not savedData.questStatus then
-
             handlers._loadEquipmentState(savedData)
             handlers._restoreEquipmentState()
         end
@@ -160,7 +127,7 @@ function handlers.onLoad(filepath, savedData)
             unlock.setQuestStatus(savedData.questStatus)
         end
 
-        symbols.triggerRefresh(symbols.dd)
+        symbols.refresh()
     end
 end
 
@@ -189,9 +156,9 @@ end
 
 function handlers._restoreEquipmentState()
     for equipmentId, state in pairs(equipment.state) do
-        if state and state.element and state.element.id then
+        if state.element and state.element.id then
             local elementId = state.element.id
-            if elementId and elementId >= 1 and elementId <= 8 then
+            if elementId >= 1 and elementId <= 8 then
                 for id = 1, 8 do
                     equipment.write(equipmentId, "element", id, 0)
                 end
@@ -199,50 +166,51 @@ function handlers._restoreEquipmentState()
             end
         end
 
-        if state and state.attributes and state.attributes.id then
+        if state.attributes and state.attributes.id then
             local attributeId = state.attributes.id
             local total = state.attributes.total
-            if attributeId and attributeId >= 10 and attributeId <= 26 and total then
+            if attributeId >= 10 and attributeId <= 26 and total then
                 equipment.write(equipmentId, "attribute", attributeId, total)
             end
         end
     end
 end
 
-function handlers.onExit()
-    memory.unregisterAllSymbols()
-    collectgarbage()
-end
-
 function handlers.onLocation(locationId)
     controller.location(locationId)
 end
 
-function handlers.loadExternal(path)
+function loader.file(path)
+    if not path then
+        return nil
+    end
+
     local chunk, err = loadfile(path, "t", setmetatable({}, {
         __index = _G
     }))
 
     if not chunk then
+        print("ERROR [TAA] Failed to load file: " .. path .. ": " .. tostring(err))
         return nil
     end
 
     local ok, result = pcall(chunk)
     if not ok then
+        print("ERROR [TAA] Failed to execute file: " .. path .. ": " .. tostring(result))
         return nil
     end
 
     return result
 end
 
-function handlers.loadConfig()
-    local equipmentConfig = handlers.loadExternal(paths.config.equipment) or {}
-    local elementConfig = handlers.loadExternal(paths.config.element) or {}
-    local questlineConfig = handlers.loadExternal(paths.config.questline) or {}
+function loader.config()
+    local equipmentConfig = loader.file(paths.config.equipment) or {}
+    local elementConfig = loader.file(paths.config.element) or {}
+    local questlineConfig = loader.file(paths.config.questline) or {}
 
     local attributeConfigs = {}
     for id, path in pairs(paths.config.attribute) do
-        local attrData = handlers.loadExternal(path)
+        local attrData = loader.file(path)
         if attrData then
             attributeConfigs[id] = attrData
         end
@@ -264,196 +232,85 @@ function handlers.loadConfig()
     return configData
 end
 
-local function loadModule(path)
-    local chunk, err = loadfile(path, "t", setmetatable({}, {
-        __index = _G
-    }))
-
-    if not chunk then
-        print("[TAA LOAD ERROR] loadfile failed:", path)
-        print("[TAA LOAD ERROR] reason:", tostring(err))
-        return nil
+function loader.init()
+    local modules = {}
+    for key, path in pairs(paths.core) do
+        local loaded = loader.file(path)
+        if not loaded then
+            print("ERROR [TAA] Failed to load: " .. key)
+            return false
+        end
+        modules[key] = loaded
     end
 
-    local ok, result = pcall(chunk)
-    if not ok then
-        print("[TAA LOAD ERROR] pcall failed:", path)
-        print("[TAA LOAD ERROR] reason:", tostring(result))
-        return nil
-    end
+    mappings = modules.mappings
+    helpers = modules.helpers
+    mem = modules.memory
+    config = modules.config
+    equipment = modules.equipment
+    element = modules.element
+    attribute = modules.attribute
+    unlock = modules.unlock
+    writer = modules.writer
+    flow = modules.flow
+    controller = modules.controller
 
-    return result
-end
+    mem.initialize()
 
-local function loadAllModules()
-    mappings = loadModule(paths.core.mappings)
-    if not mappings then
-        print("ERROR [TAA] Failed to load: mappings")
-        return false
-    end
-
-    helpers = loadModule(paths.core.helpers)
-    if not helpers then
-        print("ERROR [TAA] Failed to load: helpers")
-        return false
-    end
-
-    mem = loadModule(paths.core.memory)
-    if not mem then
-        print("ERROR [TAA] Failed to load: memory")
-        return false
-    end
-
-    config = loadModule(paths.core.config)
-    if not config then
-        print("ERROR [TAA] Failed to load: config")
-        return false
-    end
-
-    equipment = loadModule(paths.core.equipment)
-    if not equipment then
-        print("ERROR [TAA] Failed to load: equipment")
-        return false
-    end
-
-    element = loadModule(paths.core.element)
-    if not element then
-        print("ERROR [TAA] Failed to load: element")
-        return false
-    end
-
-    attribute = loadModule(paths.core.attribute)
-    if not attribute then
-        print("ERROR [TAA] Failed to load: attribute")
-        return false
-    end
-
-    unlock = loadModule(paths.core.unlock)
-    if not unlock then
-        print("ERROR [TAA] Failed to load: unlock")
-        return false
-    end
-
-    loader = loadModule(paths.core.loader)
-    if not loader then
-        print("ERROR [TAA] Failed to load: loader")
-        return false
-    end
-
-    flow = loadModule(paths.core.flow)
-    if not flow then
-        print("ERROR [TAA] Failed to load: flow")
-        return false
-    end
-
-    controller = loadModule(paths.core.controller)
-    if not controller then
-        print("ERROR [TAA] Failed to load: controller")
-        return false
-    end
-
-    return true
-end
-
-local function initializeModules()
-    if not mem.initialize() then
-        print("ERROR [TAA] Memory initialization failed")
-        return false
-    end
-
-    if not config.initialize({
+    config.initialize({
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Config initialization failed")
-        return false
-    end
+    })
 
-    if not equipment.initialize({
+    equipment.initialize({
         memory = mem,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Equipment initialization failed")
-        return false
-    end
+    })
 
-    if not element.initialize({
+    element.initialize({
         memory = mem,
         equipment = equipment,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Element initialization failed")
-        return false
-    end
+    })
 
-    if not attribute.initialize({
+    attribute.initialize({
         memory = mem,
         equipment = equipment,
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Attribute initialization failed")
-        return false
-    end
+    })
 
-    if not unlock.initialize({
+    unlock.initialize({
         memory = mem,
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Unlock initialization failed")
-        return false
-    end
+    })
 
-    if not loader.initialize({
+    writer.initialize({
         memory = mem,
         helpers = helpers,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Loader initialization failed")
-        return false
-    end
+    })
 
-    if not flow.initialize({
+    flow.initialize({
         memory = mem,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Flow initialization failed")
-        return false
-    end
+    })
 
-    if not controller.initialize({
+    controller.initialize({
         memory = mem,
         flow = flow,
-        loader = loader,
+        writer = writer,
         element = element,
         attribute = attribute,
         unlock = unlock,
         symbols = symbols,
         mappings = mappings
-    }) then
-        print("ERROR [TAA] Controller initialization failed")
-        return false
-    end
+    })
 
     controller.setSymbols(symbols)
 
-    return true
-end
-
-local function initialize()
-
-    if not loadAllModules() then
-        print("ERROR [TAA] Failed to load modules")
-        return false
-    end
-
-    if not initializeModules() then
-        print("ERROR [TAA] Failed to initialize modules")
-        return false
-    end
-
-    handlers.loadConfig()
+    loader.config()
 
     return true
 end
@@ -471,10 +328,10 @@ end
 symbols.register()
 
 event.registerEventAsync("onInitDone", function()
-    initialize()
+    loader.init()
 end)
 
-event.registerFileChangeHandler(paths.config.directory, function(filepath, stats, created, deleted)
+event.registerFileChangeHandler(paths.watch, function(filepath, stats, created, deleted)
     handlers.onFileChange(filepath, stats, created, deleted)
 end, true)
 
@@ -496,5 +353,6 @@ event.registerEventAsync("onMapJump", function(locationId)
 end)
 
 event.registerEventAsync("exit", function()
-    return handlers.onExit()
+    memory.unregisterAllSymbols()
+    collectgarbage()
 end)

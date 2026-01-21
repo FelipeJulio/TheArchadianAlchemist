@@ -1,60 +1,36 @@
 -- Made By FehDead
 local config = {}
 
-local pairs = pairs
-local ipairs = ipairs
-local type = type
-local tableInsert = table.insert
-
 local helpers
 local mappings
 
-local lookupCache = {
-    categoryNameToId = nil,
-    attributeNameToId = nil,
-    elementNameToId = nil
-}
+local lookupCache = {}
 
-function config._buildCategoryLookup()
+local function buildLookup(source, keyExtractor)
     local lookup = {}
-    for categoryId, categoryName in pairs(mappings.equipment) do
-        lookup[categoryName] = categoryId
-    end
-    return lookup
-end
-
-function config._buildAttributeLookup()
-    local lookup = {}
-    for attributeId, attrData in pairs(mappings.attribute) do
-        lookup[attrData[1]] = attributeId
-    end
-    return lookup
-end
-
-function config._buildElementLookup()
-    local lookup = {}
-    for elementId, elementName in pairs(mappings.element) do
-        lookup[elementName] = elementId
+    for id, data in pairs(source) do
+        local key = keyExtractor and keyExtractor(data) or data
+        lookup[key] = id
     end
     return lookup
 end
 
 function config.lookup()
-    if lookupCache.categoryNameToId then
-        return lookupCache.categoryNameToId, lookupCache.attributeNameToId, lookupCache.elementNameToId
+    if lookupCache.category then
+        return lookupCache.category, lookupCache.attribute, lookupCache.element
     end
 
-    lookupCache.categoryNameToId = config._buildCategoryLookup()
-    lookupCache.attributeNameToId = config._buildAttributeLookup()
-    lookupCache.elementNameToId = config._buildElementLookup()
+    lookupCache.category = buildLookup(mappings.equipment)
+    lookupCache.attribute = buildLookup(mappings.attribute, function(d)
+        return d[1]
+    end)
+    lookupCache.element = buildLookup(mappings.element)
 
-    return lookupCache.categoryNameToId, lookupCache.attributeNameToId, lookupCache.elementNameToId
+    return lookupCache.category, lookupCache.attribute, lookupCache.element
 end
 
 function config.clearLookupCache()
-    lookupCache.categoryNameToId = nil
-    lookupCache.attributeNameToId = nil
-    lookupCache.elementNameToId = nil
+    lookupCache = {}
 end
 
 function config.equipment(rawEquipment, categoryNameToId)
@@ -74,16 +50,9 @@ function config.element(rawElements, elementNameToId)
     local parsed = {}
 
     for elementName, elementData in pairs(rawElements or {}) do
-        local elementId = elementNameToId[elementName]
-
+        local elementId = elementNameToId[elementName] or (elementName == "remove" and 9)
         if elementId then
             parsed[elementId] = {
-                gil = elementData.gil,
-                items = elementData.items
-            }
-        elseif elementName == "remove" then
-
-            parsed[9] = {
                 gil = elementData.gil,
                 items = elementData.items
             }
@@ -104,7 +73,6 @@ function config.attribute(rawAttributesByCategory, attributeNameToId)
 
             if attributeId then
                 parsed[categoryId][attributeId] = {}
-
                 for tier = 1, 3 do
                     local tierData = attributeData[tier]
                     if tierData then
@@ -115,20 +83,15 @@ function config.attribute(rawAttributesByCategory, attributeNameToId)
                         }
                     end
                 end
-            elseif attributeName == "remove" then
-                local items = {}
-                local gil = 0
-
-                if type(attributeData) == "table" then
-                    for i, item in ipairs(attributeData) do
-                        if i == #attributeData and type(item) == "number" then
-                            gil = item
-                        else
-                            tableInsert(items, item)
-                        end
+            elseif attributeName == "remove" and type(attributeData) == "table" then
+                local items, gil = {}, 0
+                for i, item in ipairs(attributeData) do
+                    if i == #attributeData and type(item) == "number" then
+                        gil = item
+                    else
+                        table.insert(items, item)
                     end
                 end
-
                 parsed[categoryId][9] = {
                     items = items,
                     gil = gil
@@ -154,10 +117,8 @@ function config._parseQuestlineSection(section, nameToId)
         local tierData = section[tier]
         if tierData then
             parsed.ids[tier] = tierData.id
-
             if tierData.unlocks then
                 parsed.contents[tier] = {}
-
                 for name, flag in pairs(tierData.unlocks) do
                     local id = nameToId[name]
                     if id then
@@ -175,20 +136,19 @@ function config.questline(rawQuestline, elementNameToId, attributeNameToId)
     local parsed = {
         overrideEvents = rawQuestline.overrideEvents or false
     }
+    local mainQuest = rawQuestline.mainQuest
 
-    if rawQuestline.mainQuest then
+    if mainQuest then
         parsed.mainQuest = {}
-
-        if rawQuestline.mainQuest.startQuest then
+        if mainQuest.startQuest then
             parsed.mainQuest.startQuest = {
-                id = rawQuestline.mainQuest.startQuest.id,
-                gill = rawQuestline.mainQuest.startQuest.gill or rawQuestline.mainQuest.startQuest.gil or 0
+                id = mainQuest.startQuest.id,
+                gill = mainQuest.startQuest.gill or mainQuest.startQuest.gil or 0
             }
         end
-
-        if rawQuestline.mainQuest.finishQuest then
+        if mainQuest.finishQuest then
             parsed.mainQuest.finishQuest = {
-                id = rawQuestline.mainQuest.finishQuest.id
+                id = mainQuest.finishQuest.id
             }
         end
     end
@@ -196,7 +156,6 @@ function config.questline(rawQuestline, elementNameToId, attributeNameToId)
     if rawQuestline.elementalExchange then
         parsed.elementalExchange = config._parseQuestlineSection(rawQuestline.elementalExchange, elementNameToId)
     end
-
     if rawQuestline.attributeRefinement then
         parsed.attributeRefinement = config._parseQuestlineSection(rawQuestline.attributeRefinement, attributeNameToId)
     end
@@ -216,21 +175,6 @@ function config.parse(rawConfig)
 end
 
 function config.initialize(deps)
-    if not deps then
-        print("ERROR [TAA CONFIG] Dependencies not provided")
-        return false
-    end
-
-    if not deps.helpers then
-        print("ERROR [TAA CONFIG] Helpers not provided")
-        return false
-    end
-
-    if not deps.mappings then
-        print("ERROR [TAA CONFIG] Mappings not provided")
-        return false
-    end
-
     helpers = deps.helpers
     mappings = deps.mappings
 
