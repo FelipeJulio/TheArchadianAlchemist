@@ -27,12 +27,12 @@ function unlock.mainQuest(base, addrs, questline, symbolsModule)
 
             if currentStatus == 0 and symbolValue >= 1 then
                 mem.flags.set(base, addrs.quest.mainQuestStatus, 1)
-                local startQuestGill = helpers.getNestedValue(questline, "mainQuest", "startQuest", "gill") or 0
-                mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGill)
+                local startQuestGil = helpers.getNestedValue(questline, "mainQuest", "startQuest", "gil") or 0
+                mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGil)
                 unlock.questStatus.mainQuestStatus = 1
             elseif currentStatus == 1 then
-                local startQuestGill = helpers.getNestedValue(questline, "mainQuest", "startQuest", "gill") or 0
-                mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGill)
+                local startQuestGil = helpers.getNestedValue(questline, "mainQuest", "startQuest", "gil") or 0
+                mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGil)
             elseif currentStatus == 2 and symbolValue >= 3 then
                 mem.flags.set(base, addrs.quest.mainQuestStatus, 3)
                 unlock.questStatus.mainQuestStatus = 3
@@ -51,7 +51,7 @@ function unlock.mainQuest(base, addrs, questline, symbolsModule)
     local progress = mem.readU16(addrs.storyProgress, nil)
 
     local startQuestId = helpers.getNestedValue(questline, "mainQuest", "startQuest", "id")
-    local startQuestGill = helpers.getNestedValue(questline, "mainQuest", "startQuest", "gill") or 0
+    local startQuestGil = helpers.getNestedValue(questline, "mainQuest", "startQuest", "gil") or 0
     local finishQuestId = helpers.getNestedValue(questline, "mainQuest", "finishQuest", "id")
 
     if currentStatus == 0 and unlock.questStatus.mainQuestStatus > 0 then
@@ -62,11 +62,11 @@ function unlock.mainQuest(base, addrs, questline, symbolsModule)
     if currentStatus == 0 then
         if startQuestId and progress >= startQuestId then
             mem.flags.set(base, addrs.quest.mainQuestStatus, 1)
-            mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGill)
+            mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGil)
             unlock.questStatus.mainQuestStatus = 1
         end
     elseif currentStatus == 1 then
-        mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGill)
+        mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGil)
     elseif currentStatus == 2 then
         if finishQuestId and progress >= finishQuestId then
             mem.flags.set(base, addrs.quest.mainQuestStatus, 3)
@@ -76,7 +76,7 @@ function unlock.mainQuest(base, addrs, questline, symbolsModule)
         if finishQuestId and progress < finishQuestId then
             if startQuestId and progress >= startQuestId then
                 mem.flags.set(base, addrs.quest.mainQuestStatus, 1)
-                mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGill)
+                mem.writeU32(base, addrs.quest.mainQuestGil, startQuestGil)
                 unlock.questStatus.mainQuestStatus = 1
             else
                 mem.flags.set(base, addrs.quest.mainQuestStatus, 0)

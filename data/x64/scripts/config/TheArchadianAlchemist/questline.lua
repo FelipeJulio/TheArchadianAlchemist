@@ -4,7 +4,7 @@ local questline = {
     mainQuest = {
         startQuest = {
             id = 1250,
-            gill = 100000
+            gil = 100000
         },
         finishQuest = {
             id = 1250

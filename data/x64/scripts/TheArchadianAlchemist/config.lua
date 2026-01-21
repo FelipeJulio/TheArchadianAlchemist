@@ -143,7 +143,7 @@ function config.questline(rawQuestline, elementNameToId, attributeNameToId)
         if mainQuest.startQuest then
             parsed.mainQuest.startQuest = {
                 id = mainQuest.startQuest.id,
-                gill = mainQuest.startQuest.gill or mainQuest.startQuest.gil or 0
+                gil = mainQuest.startQuest.gil or 0
             }
         end
         if mainQuest.finishQuest then
