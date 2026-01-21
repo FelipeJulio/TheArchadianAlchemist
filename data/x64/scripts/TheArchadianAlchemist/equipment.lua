@@ -2,7 +2,6 @@
 local equipment = {}
 
 local mem
-local mappings
 local elementNames
 local attributeDefs
 local constants
@@ -23,7 +22,7 @@ function equipment.validateId(id)
 end
 
 function equipment._readElement(eq, elementId)
-    if not (elementId >= 1 and elementId <= 8) then
+    if elementId < 1 or elementId > 8 then
         return nil
     end
 
@@ -32,12 +31,11 @@ function equipment._readElement(eq, elementId)
         return nil
     end
 
-    local elements = eq and eq.elements
-    return (elements and elements[name]) or 0
+    return (eq and eq.elements and eq.elements[name]) or 0
 end
 
 function equipment._readAttribute(eq, attributeId)
-    if not (attributeId >= 10 and attributeId <= 26) then
+    if attributeId < 10 or attributeId > 26 then
         return nil
     end
 
@@ -50,11 +48,7 @@ function equipment._readAttribute(eq, attributeId)
 
     if typ == "direct" then
         return eq[name] or 0
-    elseif typ == "linked" then
-        if not eq.attributePointer then
-            return nil
-        end
-
+    elseif typ == "linked" and eq.attributePointer then
         local addr = eq.attributePointer + offset
         if name == "maxHp" or name == "maxMp" then
             return mem.readU16(addr, nil)
@@ -74,7 +68,8 @@ function equipment.read(id, key, subid)
 
     if key == "element" then
         return equipment._readElement(eq, subid)
-    elseif key == "attribute" then
+    end
+    if key == "attribute" then
         return equipment._readAttribute(eq, subid)
     end
 
@@ -87,10 +82,7 @@ function equipment.applyElement(eq, elementId, value)
         return false
     end
 
-    if not eq.elements then
-        eq.elements = {}
-    end
-
+    eq.elements = eq.elements or {}
     eq.elements[name] = value
     return true
 end
@@ -124,12 +116,12 @@ function equipment.write(id, key, subid, value)
     end
 
     if key == "element" then
-        if not (subid >= 1 and subid <= 8) then
+        if subid < 1 or subid > 8 then
             return false
         end
         return equipment.applyElement(eq, subid, value)
     elseif key == "attribute" then
-        if not (subid >= 10 and subid <= 26) then
+        if subid < 10 or subid > 26 then
             return false
         end
         return equipment.applyAttribute(eq, subid, value)
@@ -143,15 +135,8 @@ function equipment.update(id, key, value)
         return
     end
 
-    if not equipment.state[id] then
-        equipment.state[id] = {}
-    end
-
-    if value == nil then
-        equipment.state[id][key] = nil
-    else
-        equipment.state[id][key] = value
-    end
+    equipment.state[id] = equipment.state[id] or {}
+    equipment.state[id][key] = value
 end
 
 function equipment.getState(id)
@@ -185,11 +170,9 @@ end
 
 function equipment.initialize(deps)
     mem = deps.memory
-    mappings = deps.mappings
-    elementNames = mappings.element
-    attributeDefs = mappings.attribute
-    constants = mappings.constants
-
+    elementNames = deps.mappings.element
+    attributeDefs = deps.mappings.attribute
+    constants = deps.mappings.constants
     return true
 end
 

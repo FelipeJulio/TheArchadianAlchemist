@@ -3,11 +3,10 @@ local controller = {}
 
 local mem
 local flow
-local loader
+local writer
 local element
 local attribute
 local unlock
-local mappings
 local symbols
 local configData
 local addresses
@@ -85,7 +84,7 @@ function controller.dispatch(flowEvent, base, addrs, config)
     end
 
     if flowEvent == flowEvents.loadEquipment then
-        loader.dispatch(base, addrs, config)
+        writer.dispatch(base, addrs, config)
         mem.flags.clear(base, addrs.flow.loadEquipment)
         mem.flags.set(base, addrs.flow.pollMode, 1)
         return
@@ -105,7 +104,7 @@ function controller.dispatch(flowEvent, base, addrs, config)
 
     if flowEvent == flowEvents.checkAttribute then
         local refinement = attribute.get(base, addrs)
-        loader.results(base, addrs, refinement)
+        writer.results(base, addrs, refinement)
         mem.flags.clear(base, addrs.flow.checkAttribute)
         return
     end
@@ -116,11 +115,11 @@ function controller.dispatch(flowEvent, base, addrs, config)
         if flowStatus == 2 then
             element.apply(base, addrs)
         elseif flowStatus == 3 then
-            attribute.apply(base, addrs, config, loader)
+            attribute.apply(base, addrs, config, writer)
         end
 
         if symbols then
-            symbols.triggerRefresh()
+            symbols.refresh()
         end
 
         return
@@ -158,16 +157,14 @@ end
 function controller.initialize(deps)
     mem = deps.memory
     flow = deps.flow
-    loader = deps.loader
+    writer = deps.writer
     element = deps.element
     attribute = deps.attribute
     unlock = deps.unlock
-    mappings = deps.mappings
-    addresses = mappings.addresses
-    flowEvents = mappings.flowEvents
-    constants = mappings.constants
+    addresses = deps.mappings.addresses
+    flowEvents = deps.mappings.flowEvents
+    constants = deps.mappings.constants
     controller.targetLocation = constants.targetLocation
-
     return true
 end
 

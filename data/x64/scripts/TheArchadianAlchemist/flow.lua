@@ -2,12 +2,8 @@
 local flow = {}
 
 local mem
-local mappings
-local addresses
 local flowEvents
 local flowIntervals
-
-flow.lastPollMode = -1
 
 function flow.interval(base, addrs)
     local mode = mem.flags.get(base, addrs.flow.pollMode)
@@ -86,17 +82,10 @@ function flow.load(base, addrs)
     mem.flags.set(base, addrs.flow.pollMode, 0)
 end
 
-function flow.reset(base, addrs)
-    flow.load(base, addrs)
-end
-
 function flow.initialize(deps)
     mem = deps.memory
-    mappings = deps.mappings
-    addresses = mappings.addresses
-    flowEvents = mappings.flowEvents
-    flowIntervals = mappings.flowIntervals
-
+    flowEvents = deps.mappings.flowEvents
+    flowIntervals = deps.mappings.flowIntervals
     return true
 end
 

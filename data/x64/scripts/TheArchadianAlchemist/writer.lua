@@ -1,10 +1,8 @@
 -- Made By FehDead
-local loader = {}
+local writer = {}
 
 local mem
 local helpers
-local mappings
-local addresses
 local constants
 
 local UPGRADE_OFFSETS = {
@@ -13,7 +11,7 @@ local UPGRADE_OFFSETS = {
     gil = {9, 11, 13}
 }
 
-function loader.dispatch(base, addrs, config)
+function writer.dispatch(base, addrs, config)
     if not config then
         return false
     end
@@ -30,17 +28,17 @@ function loader.dispatch(base, addrs, config)
     end
 
     if categoryId and categoryId ~= 0 then
-        loader.equipment(base, addrs.load.equipmentList, categoryId, config)
+        writer.equipment(base, addrs.load.equipmentList, categoryId, config)
     end
 
     if flowStatus == 3 then
         if helpers.validateRange(tierId, constants.tierMin, constants.tierMax) then
-            loader.upgrade(base, addrs.load.upgradeList, subcategoryId, tierId, categoryId, config, flowStatus)
+            writer.upgrade(base, addrs.load.upgradeList, subcategoryId, tierId, categoryId, config, flowStatus)
         elseif subcategoryId then
             if subcategoryId == constants.removeId then
-                loader.upgrade(base, addrs.load.upgradeList, subcategoryId, nil, categoryId, config, flowStatus)
+                writer.upgrade(base, addrs.load.upgradeList, subcategoryId, nil, categoryId, config, flowStatus)
             elseif helpers.validateRange(subcategoryId, constants.attributeMin, constants.attributeMax) then
-                loader.tier(base, addrs, subcategoryId, categoryId, config)
+                writer.tier(base, addrs, subcategoryId, categoryId, config)
             end
         end
     elseif flowStatus == 2 then
@@ -48,7 +46,7 @@ function loader.dispatch(base, addrs, config)
         if subcategoryId then
             if helpers.validateRange(subcategoryId, constants.elementMin, constants.elementMax) or subcategoryId ==
                 constants.removeId then
-                loader.upgrade(base, addrs.load.upgradeList, subcategoryId, nil, categoryId, config, flowStatus)
+                writer.upgrade(base, addrs.load.upgradeList, subcategoryId, nil, categoryId, config, flowStatus)
             end
         end
     end
@@ -56,7 +54,7 @@ function loader.dispatch(base, addrs, config)
     return true
 end
 
-function loader.equipment(base, offset, categoryId, config)
+function writer.equipment(base, offset, categoryId, config)
     local equipmentList = config.equipment[categoryId]
     if not equipmentList then
         return false
@@ -74,13 +72,13 @@ function loader.equipment(base, offset, categoryId, config)
     return true
 end
 
-function loader.upgrade(base, offset, subcategoryId, tierId, categoryId, config, flowStatus)
+function writer.upgrade(base, offset, subcategoryId, tierId, categoryId, config, flowStatus)
     if flowStatus == 3 and (not categoryId or categoryId == 0) then
         return false
     end
 
-    local upgrades, gilValue = loader._getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
-    if not upgrades or not loader.validateUpgrades(upgrades) then
+    local upgrades, gilValue = writer._getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
+    if not upgrades or not writer.validateUpgrades(upgrades) then
         return false
     end
 
@@ -101,7 +99,7 @@ function loader.upgrade(base, offset, subcategoryId, tierId, categoryId, config,
     return true
 end
 
-function loader._getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
+function writer._getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
     local upgrades = nil
     local gilValue = 0
 
@@ -142,15 +140,15 @@ function loader._getUpgradeData(subcategoryId, tierId, categoryId, config, flowS
     return upgrades, gilValue
 end
 
-function loader.tier(base, addrs, attributeId, categoryId, config)
+function writer.tier(base, addrs, attributeId, categoryId, config)
     local attr = helpers.getNestedValue(config, "attributes", categoryId, attributeId)
     if not attr then
         return false
     end
 
-    local tier1 = loader.getTierValue(attr, 1)
-    local tier2 = loader.getTierValue(attr, 2)
-    local tier3 = loader.getTierValue(attr, 3)
+    local tier1 = writer.getTierValue(attr, 1)
+    local tier2 = writer.getTierValue(attr, 2)
+    local tier3 = writer.getTierValue(attr, 3)
 
     mem.writeU16(base, addrs.refinement.tier1AttributeValue, tier1)
     mem.writeU16(base, addrs.refinement.tier2AttributeValue, tier2)
@@ -159,46 +157,26 @@ function loader.tier(base, addrs, attributeId, categoryId, config)
     return true
 end
 
-function loader.results(base, addrs, refinement)
-    if refinement then
-        mem.writeU8(base, addrs.current.currentAttribute, refinement.id)
-        mem.writeU16(base, addrs.refinement.defaultAttributeValue, refinement.initial)
-        mem.writeU16(base, addrs.refinement.extraAttributeValue, refinement.extra or 0)
-        mem.writeU16(base, addrs.refinement.totalAttributeValue, refinement.total)
-    else
-        mem.writeU8(base, addrs.current.currentAttribute, 0)
-        mem.writeU16(base, addrs.refinement.defaultAttributeValue, 0)
-        mem.writeU16(base, addrs.refinement.extraAttributeValue, 0)
-        mem.writeU16(base, addrs.refinement.totalAttributeValue, 0)
-    end
+function writer.results(base, addrs, refinement)
+    local r = refinement or {}
+    mem.writeU8(base, addrs.current.currentAttribute, r.id or 0)
+    mem.writeU16(base, addrs.refinement.defaultAttributeValue, r.initial or 0)
+    mem.writeU16(base, addrs.refinement.extraAttributeValue, r.extra or 0)
+    mem.writeU16(base, addrs.refinement.totalAttributeValue, r.total or 0)
 end
 
-function loader.getTierValue(attr, tier)
-    if not attr then
-        return 0
-    end
-
-    local tierData = attr[tier]
-    if tierData then
-        return tierData.value or 0
-    end
-
-    return 0
+function writer.getTierValue(attr, tier)
+    local tierData = attr and attr[tier]
+    return tierData and tierData.value or 0
 end
 
-function loader.validateUpgrades(upgrades)
-    if not helpers.isTable(upgrades) then
+function writer.validateUpgrades(upgrades)
+    if not helpers.isTable(upgrades) or #upgrades == 0 then
         return false
     end
 
-    if #upgrades == 0 then
-        return false
-    end
-
-    for i, item in ipairs(upgrades) do
-        if i > 3 then
-            break
-        end
+    for i = 1, math.min(#upgrades, 3) do
+        local item = upgrades[i]
         if not helpers.isTable(item) or not helpers.getItemId(item) then
             return false
         end
@@ -207,14 +185,11 @@ function loader.validateUpgrades(upgrades)
     return true
 end
 
-function loader.initialize(deps)
+function writer.initialize(deps)
     mem = deps.memory
     helpers = deps.helpers
-    mappings = deps.mappings
-    addresses = mappings.addresses
-    constants = mappings.constants
-
+    constants = deps.mappings.constants
     return true
 end
 
-return loader
+return writer

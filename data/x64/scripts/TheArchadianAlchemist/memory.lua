@@ -3,45 +3,40 @@ local mem = {}
 
 local memoryU8, memoryU16, memoryU32
 
+local function addr(base, offset)
+    return offset and (base + offset) or base
+end
+
 function mem.readU8(base, offset)
-    local address = (offset == nil) and base or (base + offset)
-    return memoryU8[address] or 0
+    return memoryU8[addr(base, offset)] or 0
 end
 
 function mem.readU16(base, offset)
-    local address = (offset == nil) and base or (base + offset)
-    return memoryU16[address] or 0
+    return memoryU16[addr(base, offset)] or 0
 end
 
 function mem.readU32(base, offset)
-    local address = (offset == nil) and base or (base + offset)
-    return memoryU32[address] or 0
+    return memoryU32[addr(base, offset)] or 0
 end
 
 function mem.writeU8(base, offset, value)
-    local address = (offset == nil) and base or (base + offset)
-    local val = (value == nil) and offset or value
-    memoryU8[address] = val
+    memoryU8[addr(base, offset)] = value or offset
 end
 
 function mem.writeU16(base, offset, value)
-    local address = (offset == nil) and base or (base + offset)
-    local val = (value == nil) and offset or value
-    memoryU16[address] = val
+    memoryU16[addr(base, offset)] = value or offset
 end
 
 function mem.writeU32(base, offset, value)
-    local address = (offset == nil) and base or (base + offset)
-    local val = (value == nil) and offset or value
-    memoryU32[address] = val
+    memoryU32[addr(base, offset)] = value or offset
 end
 
 function mem.clear(base, offset, length)
-    if length == nil or length <= 0 then
+    if not length or length <= 0 then
         return
     end
 
-    local startAddr = (offset == nil) and base or (base + offset)
+    local startAddr = addr(base, offset)
     for i = 0, length - 1 do
         memoryU8[startAddr + i] = 0
     end

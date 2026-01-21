@@ -4,9 +4,6 @@ local unlock = {}
 local mem
 local helpers
 local mappings
-local addresses
-local constants
-local mainQuestStatusValues
 
 unlock.questStatus = {
     mainQuestStatus = 0,
@@ -99,11 +96,15 @@ function unlock._calculateTier(progress, tierData)
         return 0
     end
 
-    for tier = 3, 1, -1 do
-        local tierId = tierData.ids[tier]
-        if tierId and progress >= tierId then
-            return tier
-        end
+    local ids = tierData.ids
+    if ids[3] and progress >= ids[3] then
+        return 3
+    end
+    if ids[2] and progress >= ids[2] then
+        return 2
+    end
+    if ids[1] and progress >= ids[1] then
+        return 1
     end
 
     return 0
@@ -299,10 +300,6 @@ function unlock.initialize(deps)
     mem = deps.memory
     helpers = deps.helpers
     mappings = deps.mappings
-    addresses = mappings.addresses
-    constants = mappings.constants
-    mainQuestStatusValues = constants.mainQuestStatus
-
     return true
 end
 
