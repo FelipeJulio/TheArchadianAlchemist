@@ -1569,6 +1569,31 @@ actor Alchemist_Utility(0)
 		seteventtimestop(0);
 		return;
 	}
+
+	function ConsumeUpgradeCosts()
+	{
+		// Consume gil
+		if (load_upgrade_gil[0] > 0) {
+			gillwinstart((-1 * load_upgrade_gil[0]));
+			gillwinsync();
+			subgill(load_upgrade_gil[0]);
+			wait(20);
+			gillwinclose();
+		}
+
+		// Consume items
+		if (load_upgrade_item_ids[0] > 0 && load_upgrade_item_qtys[0] > 0) {
+			subitem(load_upgrade_item_ids[0], load_upgrade_item_qtys[0]);
+		}
+		if (load_upgrade_item_ids[1] > 0 && load_upgrade_item_qtys[1] > 0) {
+			subitem(load_upgrade_item_ids[1], load_upgrade_item_qtys[1]);
+		}
+		if (load_upgrade_item_ids[2] > 0 && load_upgrade_item_qtys[2] > 0) {
+			subitem(load_upgrade_item_ids[2], load_upgrade_item_qtys[2]);
+		}
+
+		return;
+	}
 }
 
 actor 武器屋の看板(1)
@@ -6126,13 +6151,6 @@ actor NPC_Alchemist(6) {
       goto dialog_102;
     }
 
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
     mesclose(0);
     messync(0, 1);
     goto check_element_before_apply;
@@ -6162,9 +6180,11 @@ actor NPC_Alchemist(6) {
         case 8:
           goto dialog_166;
         default:
+          sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
           goto dialog_112;
       }
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_159:
@@ -6177,6 +6197,7 @@ actor NPC_Alchemist(6) {
     if (local_choice == 1) {
       goto dialog_89;
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_160:
@@ -6191,6 +6212,7 @@ actor NPC_Alchemist(6) {
       goto dialog_89;
     }
 
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_161:
@@ -6203,6 +6225,7 @@ actor NPC_Alchemist(6) {
     if (local_choice == 1) {
       goto dialog_89;
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_162:
@@ -6215,6 +6238,7 @@ actor NPC_Alchemist(6) {
     if (local_choice == 1) {
       goto dialog_89;
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_163:
@@ -6227,6 +6251,7 @@ actor NPC_Alchemist(6) {
     if (local_choice == 1) {
       goto dialog_89;
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_164:
@@ -6239,6 +6264,7 @@ actor NPC_Alchemist(6) {
     if (local_choice == 1) {
       goto dialog_89;
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_165:
@@ -6251,6 +6277,7 @@ actor NPC_Alchemist(6) {
     if (local_choice == 1) {
       goto dialog_89;
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   dialog_166:
@@ -6263,6 +6290,7 @@ actor NPC_Alchemist(6) {
     if (local_choice == 1) {
       goto dialog_89;
     }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     goto dialog_112;
 
   // @description: no element to remove
@@ -6512,6 +6540,8 @@ actor NPC_Alchemist(6) {
   // @description: back to attribute menu
   return_to_attribute_menu:
     gillwinclose();
+    selected_subcategory = 0;
+    selected_tier = 0;
 
     if (selected_category >= 1 && selected_category <= 17) {
       goto dialog_113;
@@ -7980,13 +8010,7 @@ actor NPC_Alchemist(6) {
       goto dialog_102;
     }
 
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     mesclose(0);
     messync(0, 1);
     flow_confirmed_intention = 1;
@@ -8025,13 +8049,7 @@ actor NPC_Alchemist(6) {
       goto dialog_102;
     }
 
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     mesclose(0);
     messync(0, 1);
     flow_confirmed_intention = 1;
@@ -8070,13 +8088,7 @@ actor NPC_Alchemist(6) {
       goto dialog_102;
     }
 
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     mesclose(0);
     messync(0, 1);
     flow_confirmed_intention = 1;
@@ -8129,13 +8141,7 @@ actor NPC_Alchemist(6) {
       goto dialog_102;
     }
 
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
+    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
     mesclose(0);
     messync(0, 1);
     flow_confirmed_intention = 1;
