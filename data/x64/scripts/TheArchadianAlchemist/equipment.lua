@@ -21,7 +21,7 @@ function equipment.validateId(id)
     return id and id > 0
 end
 
-function equipment._readElement(eq, elementId)
+local function readElement(eq, elementId)
     if elementId < 1 or elementId > 8 then
         return nil
     end
@@ -34,7 +34,7 @@ function equipment._readElement(eq, elementId)
     return (eq and eq.elements and eq.elements[name]) or 0
 end
 
-function equipment._readAttribute(eq, attributeId)
+local function readAttribute(eq, attributeId)
     if attributeId < 10 or attributeId > 26 then
         return nil
     end
@@ -67,10 +67,10 @@ function equipment.read(id, key, subid)
     end
 
     if key == "element" then
-        return equipment._readElement(eq, subid)
+        return readElement(eq, subid)
     end
     if key == "attribute" then
-        return equipment._readAttribute(eq, subid)
+        return readAttribute(eq, subid)
     end
 
     return nil

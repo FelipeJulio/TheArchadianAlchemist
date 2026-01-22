@@ -15,6 +15,35 @@ local function buildLookup(source, keyExtractor)
     return lookup
 end
 
+local function parseQuestlineSection(section, nameToId)
+    if not section then
+        return nil
+    end
+
+    local parsed = {
+        ids = {},
+        contents = {}
+    }
+
+    for tier = 1, 3 do
+        local tierData = section[tier]
+        if tierData then
+            parsed.ids[tier] = tierData.id
+            if tierData.unlocks then
+                parsed.contents[tier] = {}
+                for name, flag in pairs(tierData.unlocks) do
+                    local id = nameToId[name]
+                    if id then
+                        parsed.contents[tier][id] = helpers.toBool(flag)
+                    end
+                end
+            end
+        end
+    end
+
+    return parsed
+end
+
 function config.lookup()
     if lookupCache.category then
         return lookupCache.category, lookupCache.attribute, lookupCache.element
@@ -103,35 +132,6 @@ function config.attribute(rawAttributesByCategory, attributeNameToId)
     return parsed
 end
 
-function config._parseQuestlineSection(section, nameToId)
-    if not section then
-        return nil
-    end
-
-    local parsed = {
-        ids = {},
-        contents = {}
-    }
-
-    for tier = 1, 3 do
-        local tierData = section[tier]
-        if tierData then
-            parsed.ids[tier] = tierData.id
-            if tierData.unlocks then
-                parsed.contents[tier] = {}
-                for name, flag in pairs(tierData.unlocks) do
-                    local id = nameToId[name]
-                    if id then
-                        parsed.contents[tier][id] = helpers.toBool(flag)
-                    end
-                end
-            end
-        end
-    end
-
-    return parsed
-end
-
 function config.questline(rawQuestline, elementNameToId, attributeNameToId)
     local parsed = {
         overrideEvents = rawQuestline.overrideEvents or false
@@ -154,10 +154,10 @@ function config.questline(rawQuestline, elementNameToId, attributeNameToId)
     end
 
     if rawQuestline.elementalExchange then
-        parsed.elementalExchange = config._parseQuestlineSection(rawQuestline.elementalExchange, elementNameToId)
+        parsed.elementalExchange = parseQuestlineSection(rawQuestline.elementalExchange, elementNameToId)
     end
     if rawQuestline.attributeRefinement then
-        parsed.attributeRefinement = config._parseQuestlineSection(rawQuestline.attributeRefinement, attributeNameToId)
+        parsed.attributeRefinement = parseQuestlineSection(rawQuestline.attributeRefinement, attributeNameToId)
     end
 
     return parsed

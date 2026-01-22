@@ -94,16 +94,6 @@ function element.apply(base, addrs)
     return true
 end
 
-function element.clearAll(equipmentId)
-    if equipmentId <= 0 then
-        return
-    end
-
-    for id = 1, 8 do
-        equipment.write(equipmentId, "element", id, 0)
-    end
-end
-
 function element.initialize(deps)
     mem = deps.memory
     equipment = deps.equipment

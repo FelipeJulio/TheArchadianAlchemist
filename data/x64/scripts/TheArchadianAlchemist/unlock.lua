@@ -13,6 +13,25 @@ unlock.questStatus = {
     lastMessageLevel = 0
 }
 
+local function calculateTier(progress, tierData)
+    if not tierData or not tierData.ids then
+        return 0
+    end
+
+    local ids = tierData.ids
+    if ids[3] and progress >= ids[3] then
+        return 3
+    end
+    if ids[2] and progress >= ids[2] then
+        return 2
+    end
+    if ids[1] and progress >= ids[1] then
+        return 1
+    end
+
+    return 0
+end
+
 function unlock.mainQuest(base, addrs, questline, symbolsModule)
     if not questline or not questline.mainQuest then
         return
@@ -23,7 +42,7 @@ function unlock.mainQuest(base, addrs, questline, symbolsModule)
 
     if override then
         if symbolsModule then
-            local symbolValue = symbolsModule.getValue(mappings.symbols.main)
+            local symbolValue = symbolsModule.get("TAA_QuestStatus")
 
             if currentStatus == 0 and symbolValue >= 1 then
                 mem.flags.set(base, addrs.quest.mainQuestStatus, 1)
@@ -91,25 +110,6 @@ function unlock.mainQuest(base, addrs, questline, symbolsModule)
     unlock.questStatus.mainQuestStatus = finalStatus
 end
 
-function unlock._calculateTier(progress, tierData)
-    if not tierData or not tierData.ids then
-        return 0
-    end
-
-    local ids = tierData.ids
-    if ids[3] and progress >= ids[3] then
-        return 3
-    end
-    if ids[2] and progress >= ids[2] then
-        return 2
-    end
-    if ids[1] and progress >= ids[1] then
-        return 1
-    end
-
-    return 0
-end
-
 function unlock.elements(base, addrs, questline, symbolsModule)
     if not questline then
         return
@@ -129,10 +129,10 @@ function unlock.elements(base, addrs, questline, symbolsModule)
     local elementTier = 0
 
     if override and symbolsModule then
-        elementTier = symbolsModule.getValue(mappings.symbols.element)
+        elementTier = symbolsModule.get("TAA_ElementStatus")
     else
         local progress = mem.readU16(addrs.storyProgress, nil)
-        elementTier = unlock._calculateTier(progress, questline.elementalExchange)
+        elementTier = calculateTier(progress, questline.elementalExchange)
     end
 
     local unlocks
@@ -174,10 +174,10 @@ function unlock.attributes(base, addrs, questline, symbolsModule)
     local attrTier = 0
 
     if override and symbolsModule then
-        attrTier = symbolsModule.getValue(mappings.symbols.attribute)
+        attrTier = symbolsModule.get("TAA_AttributeStatus")
     else
         local progress = mem.readU16(addrs.storyProgress, nil)
-        attrTier = unlock._calculateTier(progress, questline.attributeRefinement)
+        attrTier = calculateTier(progress, questline.attributeRefinement)
     end
 
     local unlocks

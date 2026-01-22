@@ -11,6 +11,47 @@ local UPGRADE_OFFSETS = {
     gil = {9, 11, 13}
 }
 
+local function getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
+    local upgrades = nil
+    local gilValue = 0
+
+    if subcategoryId == constants.removeId then
+
+        if flowStatus == 2 then
+            local elemData = helpers.getNestedValue(config, "elements", 9)
+
+            if elemData then
+                upgrades = elemData.items
+                gilValue = elemData.gil or 0
+            end
+        elseif flowStatus == 3 then
+            local attrData = helpers.getNestedValue(config, "attributes", categoryId, 9)
+
+            if attrData then
+                upgrades = attrData.items
+                gilValue = attrData.gil or 0
+            end
+        end
+    elseif helpers.validateRange(tierId, constants.tierMin, constants.tierMax) and
+        helpers.validateRange(subcategoryId, constants.attributeMin, constants.attributeMax) then
+        local tierData = helpers.getNestedValue(config, "attributes", categoryId, subcategoryId, tierId)
+
+        if tierData then
+            upgrades = tierData.items
+            gilValue = tierData.gil or 0
+        end
+    elseif helpers.validateRange(subcategoryId, constants.elementMin, constants.elementMax) then
+        local elemData = helpers.getNestedValue(config, "elements", subcategoryId)
+
+        if elemData then
+            upgrades = elemData.items
+            gilValue = elemData.gil or 0
+        end
+    end
+
+    return upgrades, gilValue
+end
+
 function writer.dispatch(base, addrs, config)
     if not config then
         return false
@@ -77,7 +118,7 @@ function writer.upgrade(base, offset, subcategoryId, tierId, categoryId, config,
         return false
     end
 
-    local upgrades, gilValue = writer._getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
+    local upgrades, gilValue = getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
     if not upgrades or not writer.validateUpgrades(upgrades) then
         return false
     end
@@ -97,47 +138,6 @@ function writer.upgrade(base, offset, subcategoryId, tierId, categoryId, config,
     end
 
     return true
-end
-
-function writer._getUpgradeData(subcategoryId, tierId, categoryId, config, flowStatus)
-    local upgrades = nil
-    local gilValue = 0
-
-    if subcategoryId == constants.removeId then
-
-        if flowStatus == 2 then
-            local elemData = helpers.getNestedValue(config, "elements", 9)
-
-            if elemData then
-                upgrades = elemData.items
-                gilValue = elemData.gil or 0
-            end
-        elseif flowStatus == 3 then
-            local attrData = helpers.getNestedValue(config, "attributes", categoryId, 9)
-
-            if attrData then
-                upgrades = attrData.items
-                gilValue = attrData.gil or 0
-            end
-        end
-    elseif helpers.validateRange(tierId, constants.tierMin, constants.tierMax) and
-        helpers.validateRange(subcategoryId, constants.attributeMin, constants.attributeMax) then
-        local tierData = helpers.getNestedValue(config, "attributes", categoryId, subcategoryId, tierId)
-
-        if tierData then
-            upgrades = tierData.items
-            gilValue = tierData.gil or 0
-        end
-    elseif helpers.validateRange(subcategoryId, constants.elementMin, constants.elementMax) then
-        local elemData = helpers.getNestedValue(config, "elements", subcategoryId)
-
-        if elemData then
-            upgrades = elemData.items
-            gilValue = elemData.gil or 0
-        end
-    end
-
-    return upgrades, gilValue
 end
 
 function writer.tier(base, addrs, attributeId, categoryId, config)

@@ -99,8 +99,6 @@ function handlers.onFileChange(filepath, stats, created, deleted)
     if deleted then
         return
     end
-
-    print("[TAA] Config file changed, reloading...")
     loader.config()
 end
 
@@ -111,27 +109,7 @@ function handlers.onSave()
     }
 end
 
-function handlers.onLoad(filepath, savedData)
-    equipment.state = equipment.state or {}
-
-    if savedData and type(savedData) == "table" then
-        if savedData.equipments then
-            handlers._loadEquipmentState(savedData.equipments)
-            handlers._restoreEquipmentState()
-        elseif not savedData.questStatus then
-            handlers._loadEquipmentState(savedData)
-            handlers._restoreEquipmentState()
-        end
-
-        if savedData.questStatus then
-            unlock.setQuestStatus(savedData.questStatus)
-        end
-
-        symbols.refresh()
-    end
-end
-
-function handlers._loadEquipmentState(savedData)
+local function loadEquipmentState(savedData)
     if savedData[1] then
         for _, item in ipairs(savedData) do
             if item.equipmentId then
@@ -154,7 +132,7 @@ function handlers._loadEquipmentState(savedData)
     end
 end
 
-function handlers._restoreEquipmentState()
+local function restoreEquipmentState()
     for equipmentId, state in pairs(equipment.state) do
         if state.element and state.element.id then
             local elementId = state.element.id
@@ -176,6 +154,26 @@ function handlers._restoreEquipmentState()
     end
 end
 
+function handlers.onLoad(filepath, savedData)
+    equipment.state = equipment.state or {}
+
+    if savedData and type(savedData) == "table" then
+        if savedData.equipments then
+            loadEquipmentState(savedData.equipments)
+            restoreEquipmentState()
+        elseif not savedData.questStatus then
+            loadEquipmentState(savedData)
+            restoreEquipmentState()
+        end
+
+        if savedData.questStatus then
+            unlock.setQuestStatus(savedData.questStatus)
+        end
+
+        symbols.refresh()
+    end
+end
+
 function handlers.onLocation(locationId)
     controller.location(locationId)
 end
@@ -190,13 +188,11 @@ function loader.file(path)
     }))
 
     if not chunk then
-        print("ERROR [TAA] Failed to load file: " .. path .. ": " .. tostring(err))
         return nil
     end
 
     local ok, result = pcall(chunk)
     if not ok then
-        print("ERROR [TAA] Failed to execute file: " .. path .. ": " .. tostring(result))
         return nil
     end
 
@@ -237,7 +233,6 @@ function loader.init()
     for key, path in pairs(paths.core) do
         local loaded = loader.file(path)
         if not loaded then
-            print("ERROR [TAA] Failed to load: " .. key)
             return false
         end
         modules[key] = loaded
