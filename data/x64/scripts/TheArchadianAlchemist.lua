@@ -17,8 +17,8 @@ local paths = {
 		controller = MODULE_BASE .. "/controller.lua"
 	},
 	config = {
-		equipment = CONFIG_BASE .. "/equipments.lua",
-		element = CONFIG_BASE .. "/elements.lua",
+		equipment = CONFIG_BASE .. "/equipment.lua",
+		element = CONFIG_BASE .. "/element.lua",
 		questline = CONFIG_BASE .. "/questline.lua",
 		attribute = {
 			[1] = CONFIG_BASE .. "/attributes/sword.lua",
@@ -100,7 +100,7 @@ end
 
 function handlers.onSave()
 	return {
-		equipments = equipment.state,
+		equipment = equipment.state,
 		questStatus = unlock.getQuestStatus()
 	}
 end
@@ -152,8 +152,8 @@ function handlers.onLoad(filepath, savedData)
 	equipment.state = equipment.state or {}
 
 	if savedData and type(savedData) == "table" then
-		if savedData.equipments then
-			loadEquipmentState(savedData.equipments)
+		if savedData.equipment then
+			loadEquipmentState(savedData.equipment)
 			restoreEquipmentState()
 		elseif not savedData.questStatus then
 			loadEquipmentState(savedData)
@@ -177,8 +177,8 @@ function loader.file(path)
 
 	if not chunk then return nil end
 
-	local ok, result = pcall(chunk)
-	if not ok then return nil end
+	local success, result = pcall(chunk)
+	if not success then return nil end
 
 	return result
 end
@@ -204,8 +204,6 @@ function loader.config()
 	configData = config.parse(rawConfig)
 
 	if controller then controller.setConfig(configData) end
-
-	return configData
 end
 
 function loader.init()

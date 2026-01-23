@@ -1,5 +1,5 @@
 -- Made By FehDead
-local equipments = {
+local equipment = {
 	sword = {
 		4097, -- broadsword
 		4098, -- longsword
@@ -480,4 +480,4 @@ local equipments = {
 	}
 }
 
-return equipments
+return equipment

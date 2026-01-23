@@ -953,7 +953,7 @@ What would you like to do now?
 {instant}Thorne
 Excellent... the {color:gold}{macro:7,0,1,0}{color:none}
 absorbs heat in perfect balance.{wait}
-The {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}Fire element burns bright and steady,
+The {scale:75}{vpos:-10}{icon:fire}{vpos:0}{scale:100}{color:gold}Fire{color:none} element burns bright and steady,
 its passion tempered by perfect control.{wait}
 What would you like to do now?
 {choice}
@@ -966,7 +966,7 @@ What would you like to do now?
 {instant}Thorne
 Impeccable... the {color:gold}{macro:7,0,1,0}{color:none}
 channels lightning with no resistance.{wait}
-The {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}Lightning element surges and dances,
+The {scale:75}{vpos:-10}{icon:lightning}{vpos:0}{scale:100}{color:gold}Lightning{color:none} element surges and dances,
 swift power bound in measured rhythm.{wait}
 What would you like to do now?
 {choice}
@@ -979,7 +979,7 @@ What would you like to do now?
 {instant}Thorne
 Remarkable... the {color:gold}{macro:7,0,1,0}{color:none}
 crystallizes as the cold seals it firm.{wait}
-The {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}Ice element settles pure and clear,
+The {scale:75}{vpos:-10}{icon:ice}{vpos:0}{scale:100}{color:gold}Ice{color:none} element settles pure and clear,
 its stillness gleaming with silent strength.{wait}
 What would you like to do now?
 {choice}
@@ -992,7 +992,7 @@ What would you like to do now?
 {instant}Thorne
 Wonderful... the {color:gold}{macro:7,0,1,0}{color:none}
 settles into a strong and firm bond.{wait}
-The {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}Earth element stands calm and sure,
+The {scale:75}{vpos:-10}{icon:earth}{vpos:0}{scale:100}{color:gold}Earth{color:none} element stands calm and sure,
 unyielding, steadfast, and resolute.{wait}
 What would you like to do now?
 {choice}
@@ -1005,7 +1005,7 @@ What would you like to do now?
 {instant}Thorne
 Great... the {color:gold}{macro:7,0,1,0}{color:none}
 adapts smooth and perfectly balanced.{wait}
-The {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}Water element flows soft and true,
+The {scale:75}{vpos:-10}{icon:water}{vpos:0}{scale:100}{color:gold}Water{color:none} element flows soft and true,
 ever adapting, yet never astray.{wait}
 What would you like to do now?
 {choice}
@@ -1018,7 +1018,7 @@ What would you like to do now?
 {instant}Thorne
 Perfect... the {color:gold}{macro:7,0,1,0}{color:none}
 resonates lightly, full of motion.{wait}
-The {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}Wind element drifts light and free,
+The {scale:75}{vpos:-10}{icon:wind}{vpos:0}{scale:100}{color:gold}Wind{color:none} element drifts light and free,
 its motion graceful, its form unseen.{wait}
 What would you like to do now?
 {choice}
@@ -1031,7 +1031,7 @@ What would you like to do now?
 {instant}Thorne
 Admirable... the {color:gold}{macro:7,0,1,0}{color:none}
 accepts the light with pure grace.{wait}
-The {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}Holy element shines calm and pure,
+The {scale:75}{vpos:-10}{icon:holy}{vpos:0}{scale:100}{color:gold}Holy{color:none} element shines calm and pure,
 a flawless light untouched by doubt.{wait}
 What would you like to do now?
 {choice}
@@ -1044,7 +1044,7 @@ What would you like to do now?
 {instant}Thorne
 Splendid... the {color:gold}{macro:7,0,1,0}{color:none}
 draws in darkness, still and calm.{wait}
-The {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}Dark element stirs deep and quiet,
+The {scale:75}{vpos:-10}{icon:dark}{vpos:0}{scale:100}{color:gold}Dark{color:none} element stirs deep and quiet,
 a power veiled, yet perfectly bound.{wait}
 What would you like to do now?
 {choice}

@@ -1,5 +1,5 @@
 -- Made By FehDead
-local elements = {
+local element = {
 	fire = {
 		gil = 7850,
 		items = {{8243, 4}, {8235, 3}, {8227, 2}}
@@ -38,4 +38,4 @@ local elements = {
 	}
 }
 
-return elements
+return element
