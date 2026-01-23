@@ -3,16 +3,16 @@ local questline = {
     overrideEvents = false,
     mainQuest = {
         startQuest = {
-            id = 1250,
-            gil = 100000
+            id = 546,
+            gil = 70000
         },
         finishQuest = {
-            id = 1250
+            id = 1240
         }
     },
     elementalExchange = {
         [1] = {
-            id = 1250,
+            id = 1240,
             unlocks = {
                 fire = 1,
                 lightning = 1,
@@ -25,7 +25,7 @@ local questline = {
             }
         },
         [2] = {
-            id = 1250,
+            id = 1580,
             unlocks = {
                 fire = 1,
                 lightning = 1,
@@ -38,7 +38,7 @@ local questline = {
             }
         },
         [3] = {
-            id = 1250,
+            id = 4150,
             unlocks = {
                 fire = 1,
                 lightning = 1,
@@ -53,7 +53,7 @@ local questline = {
     },
     attributeRefinement = {
         [1] = {
-            id = 1250,
+            id = 1240,
             unlocks = {
                 range = 0,
                 chargeTime = 0,
@@ -75,7 +75,7 @@ local questline = {
             }
         },
         [2] = {
-            id = 1250,
+            id = 1580,
             unlocks = {
                 range = 0,
                 chargeTime = 0,
@@ -97,7 +97,7 @@ local questline = {
             }
         },
         [3] = {
-            id = 1250,
+            id = 4150,
             unlocks = {
                 range = 1,
                 chargeTime = 1,

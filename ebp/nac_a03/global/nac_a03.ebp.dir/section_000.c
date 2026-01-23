@@ -607,6 +607,8 @@ u_char  file_var_s4_2;           // pos: 0x1a;
 u_char  file_var_s4_3;           // pos: 0x1b;
 u_char  file_var_s4_4;           // pos: 0xc0;
 u_char  file_var_s4_5[8];        // pos: 0xd0;
+u_char  file_alchemist_tier_count;
+u_char  file_alchemist_has_items;
 
 actor 監視_NPC0809(0)
 {
@@ -1572,16 +1574,13 @@ actor Alchemist_Utility(0)
 
 	function ConsumeUpgradeCosts()
 	{
-		// Consume gil
 		if (load_upgrade_gil[0] > 0) {
 			gillwinstart((-1 * load_upgrade_gil[0]));
 			gillwinsync();
 			subgill(load_upgrade_gil[0]);
-			wait(20);
+			wait(16);
 			gillwinclose();
 		}
-
-		// Consume items
 		if (load_upgrade_item_ids[0] > 0 && load_upgrade_item_qtys[0] > 0) {
 			subitem(load_upgrade_item_ids[0], load_upgrade_item_qtys[0]);
 		}
@@ -1592,6 +1591,95 @@ actor Alchemist_Utility(0)
 			subitem(load_upgrade_item_ids[2], load_upgrade_item_qtys[2]);
 		}
 
+		return;
+	}
+
+	function SetUpgradeMacros()
+	{
+		setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
+		setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
+		setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
+		setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
+		setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
+		setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
+		setmesmacro(0, 7, 1, selected_equipment_id);
+		setmesmacro(0, 12, 0, load_upgrade_gil[0]);
+		return;
+	}
+
+	function SetTierMacros()
+	{
+		setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
+		setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
+		setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+		setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
+		setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
+		setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
+
+		if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
+			setaskselectignore(0, 0);
+		}
+		if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
+			setaskselectignore(0, 1);
+		}
+		if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
+			setaskselectignore(0, 2);
+		}
+
+		file_alchemist_tier_count = 0;
+		if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
+			file_alchemist_tier_count = file_alchemist_tier_count + 1;
+		}
+		if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
+			file_alchemist_tier_count = file_alchemist_tier_count + 1;
+		}
+		if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
+			file_alchemist_tier_count = file_alchemist_tier_count + 1;
+		}
+		file_alchemist_tier_count = file_alchemist_tier_count + 1;
+		if (file_alchemist_tier_count < 2) {
+			file_alchemist_tier_count = 2;
+		}
+		if (file_alchemist_tier_count > 4) {
+			file_alchemist_tier_count = 4;
+		}
+		return;
+	}
+
+	function SetResultMacros()
+	{
+		setmesmacro(0, 7, 1, selected_equipment_id);
+		setmesmacro(0, 1, 0, refinement_default_attribute_value);
+		setmesmacro(0, 2, 0, refinement_total_attribute_value);
+		return;
+	}
+
+	function CheckHasRequiredItems()
+	{
+		if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
+			 haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
+			 haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
+			(load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
+			file_alchemist_has_items = 0;
+		} else {
+			file_alchemist_has_items = 1;
+		}
+		return;
+	}
+
+	function TriggerLoadEquipment()
+	{
+		flow_load_equipment = 1;
+		wait(16);
+		flow_load_equipment = 0;
+		return;
+	}
+
+	function TriggerConfirmIntention()
+	{
+		flow_confirmed_intention = 1;
+		wait(16);
+		flow_confirmed_intention = 0;
 		return;
 	}
 }
@@ -5085,8 +5173,8 @@ actor PC乗っ取り(6)
 }
 
 actor NPC_Alchemist(6) {
-	int stop_random_motion;
-	int set_shop_name;
+  int stop_random_motion;
+  int set_shop_name;
   // @description: player choice
   int local_choice;
   // @description: equipment category
@@ -5113,40 +5201,44 @@ actor NPC_Alchemist(6) {
   int local_choice_subcategory_id[13];
   int local_choice_dialog_id[13];
 
-  function init() { return; }
+  function init() {
+    return;
+  }
 
   function main(1) {
     set_shop_name = -1;
 
     while (true) {
-			if (quest_main_quest_status != set_shop_name) {
-					set_shop_name = quest_main_quest_status;
+      if (quest_main_quest_status != set_shop_name) {
+        set_shop_name = quest_main_quest_status;
 
-					if (set_shop_name >= 4) {
-							fieldsignmes(0x01000000 | 186);
-					} else {
-							fieldsignmes(0x01000000 | 185);
-					}
-			}
+        if (set_shop_name >= 4) {
+          fieldsignmes(0x01000000 | 186);
+        } else {
+          fieldsignmes(0x01000000 | 185);
+        }
+      }
 
-			if (stop_random_motion == 1) {
-					wait(1);
-					continue;
-			}
+      if (stop_random_motion == 1) {
+        wait(1);
+        continue;
+      }
 
-			motionplay_bb(0x10000000, 20);
-			wait(1);
-			motionsync_282(1);
+      motionplay_bb(0x10000000, 20);
+      wait(1);
+      motionsync_282(1);
       wait((rand_29(90) + 90));
     }
     return;
-	}
+  }
 
-  function talkhold(16) { return; }
+  function talkhold(16) {
+    return;
+  }
 
   function talkterm(17) {
     if (((getrotangzx() - getdestrotangzx_227(0)) *
-         (getrotangzx() - getdestrotangzx_227(0))) > 0) {
+        (getrotangzx() - getdestrotangzx_227(0))) > 0) {
       setaturnlookatlockstatus(1);
       aturn_261(getdestrotangzx_227(0));
     }
@@ -5175,7 +5267,7 @@ actor NPC_Alchemist(6) {
 
   function talk(2) {
     // @description: dialog handler
-		stop_random_motion = 0;
+    stop_random_motion = 0;
     flow_talk_status = 0;
     flow_poll_mode = 0;
     flow_selected_intention = 0;
@@ -5190,7 +5282,7 @@ actor NPC_Alchemist(6) {
 
     sethpmenu(0);
     ucoff();
-		lookatoff();
+    lookatoff();
     settrapshowstatus(0);
     sysRturna(-1);
     if (isturn()) {
@@ -5201,3424 +5293,2398 @@ actor NPC_Alchemist(6) {
     setunazukistatus(1);
     setkubifuristatus(1);
 
-		if (quest_main_quest_status == 0) {
-			goto dialog_172;
-		} else if (quest_main_quest_status == 1) {
-				goto dialog_173;
-		} else if (quest_main_quest_status == 2) {
-				goto dialog_179;
-		} else if (quest_main_quest_status == 3) {
-				goto dialog_180;
-		} else {
-				goto dialog_79;
-		}
-
-		dialog_172:
-    amese(0, 0x01000000 | 172);
-    messync(0, 1);
-    goto cleanup;
-
-  dialog_173:
-		flow_poll_mode = 2;
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 173);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 0) {
-      goto dialog_175;
+    if (quest_main_quest_status == 0) {
+      goto dialog_172;
+    } else if (quest_main_quest_status == 1) {
+      goto dialog_173;
+    } else if (quest_main_quest_status == 2) {
+      goto dialog_179;
+    } else if (quest_main_quest_status == 3) {
+      goto dialog_180;
     } else {
-      goto dialog_174;
+      goto dialog_79;
     }
 
-  dialog_174:
-    amese(0, 0x01000000 | 174);
-    messync(0, 1);
-    goto cleanup;
+    dialog_172:
+      amese(0, 0x01000000 | 172);
+			messync(0, 1);
+			goto cleanup;
 
-	dialog_175:
-		setmesmacro(0, 12, 0, quest_main_quest_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-		sysLookata(NAC_A03_NPC13);
+    dialog_173:
+      flow_poll_mode = 2;
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 173);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_175;
+			} else {
+				goto dialog_174;
+			}
 
-    local_choice = aaske(0, 0x01000000 | 175);
+    dialog_174:
+      amese(0, 0x01000000 | 174);
+			messync(0, 1);
+			goto cleanup;
 
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_176;
-    }
+    dialog_175:
+      setmesmacro(0, 12, 0, quest_main_quest_gil[0]);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			sysLookata(NAC_A03_NPC13);
+			local_choice = aaske(0, 0x01000000 | 175);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_176;
+			}
+			if (havegill() < quest_main_quest_gil[0]) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_177;
+			}
+			if (quest_main_quest_gil[0] > 0) {
+				gillwinstart((-1 * quest_main_quest_gil[0]));
+				gillwinsync();
+				subgill(quest_main_quest_gil[0]);
+				wait(20);
+				gillwinclose();
+			}
+			mesclose(0);
+			messync(0, 1);
+			quest_main_quest_status = 2;
+			goto dialog_178;
 
-    if (havegill() < quest_main_quest_gil[0]) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_177;
-    }
+    dialog_176:
+      lookatoff();
+			amese(0, 0x01000000 | 176);
+			messync(0, 1);
+			goto cleanup;
 
-    if (quest_main_quest_gil[0] > 0) {
-      gillwinstart((-1 * quest_main_quest_gil[0]));
-      gillwinsync();
-      subgill(quest_main_quest_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
+    dialog_177:
+      lookatoff();
+			amese(0, 0x01000000 | 177);
+			messync(0, 1);
+			goto cleanup;
 
-    mesclose(0);
-    messync(0, 1);
+    dialog_178:
+      lookatoff();
+			sebsoundplay(0, 38);
+			amese(0, 0x01000000 | 178);
+			messync(0, 1);
+			goto cleanup;
 
-    quest_main_quest_status = 2;
-    goto dialog_178;
+    dialog_179:
+      amese(0, 0x01000000 | 179);
+			messync(0, 1);
+			goto cleanup;
 
-  dialog_176:
-		lookatoff();
-    amese(0, 0x01000000 | 176);
-    messync(0, 1);
-    goto cleanup;
+    dialog_180:
+      quest_main_quest_status = 4;
+			amese(0, 0x01000000 | 180);
+			messync(0, 1);
+			wait(16);
+			goto dialog_79;
 
-  dialog_177:
-		lookatoff();
-    amese(0, 0x01000000 | 177);
-    messync(0, 1);
-    goto cleanup;
+    // @description: main menu
+    dialog_79:
+      flow_poll_mode = 1;
+			if (notification_show_tier_message == 1) {
+				sysReqew(0, Alchemist_Utility::Notify);
+				notification_show_tier_message = 0;
 
-  dialog_178:
-		lookatoff();
-    sebsoundplay(0, 38);
-    amese(0, 0x01000000 | 178);
-    messync(0, 1);
-    goto cleanup;
-
-  dialog_179:
-    amese(0, 0x01000000 | 179);
-    messync(0, 1);
-    goto cleanup;
-
-  dialog_180:
-	  quest_main_quest_status = 4;
-    amese(0, 0x01000000 | 180);
-    messync(0, 1);
-		wait(16);
-    goto dialog_79;
-
-  // @description: main menu
-  dialog_79:
-    flow_poll_mode = 1;
-
-    if (notification_show_tier_message == 1) {
-			sysReqew(0, Alchemist_Utility::Notify);
-			notification_show_tier_message = 0;
-
-			if (notification_show_supply_message == 1) {
+				if (notification_show_supply_message == 1) {
 					amese(0, 0x01000000 | 182);
 					messync(0, 1);
 					notification_show_supply_message = 0;
-			} else if (notification_show_supply_message == 2) {
+				} else if (notification_show_supply_message == 2) {
 					amese(0, 0x01000000 | 183);
 					messync(0, 1);
 					notification_show_supply_message = 0;
-			} else if (notification_show_supply_message == 3) {
+				} else if (notification_show_supply_message == 3) {
 					amese(0, 0x01000000 | 184);
 					messync(0, 1);
 					notification_show_supply_message = 0;
+				}
 			}
-		}
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 79);
+			mesclose(0);
+			messync(0, 1);
 
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 79);
-    mesclose(0);
-    messync(0, 1);
+			if (local_choice == 0) {
+				flow_talk_status = 2;
+				goto dialog_80;
+			} else if (local_choice == 1) {
+				flow_talk_status = 3;
+				goto dialog_81;
+			} else if (local_choice == 2) {
+				goto dialog_90;
+			}
 
-    if (local_choice == 0) {
-      flow_talk_status = 2;
-      goto dialog_80;
-    } else if (local_choice == 1) {
-      flow_talk_status = 3;
-      goto dialog_81;
-    } else if (local_choice == 2) {
-      goto dialog_90;
-    }
+    dialog_80:
+      flow_poll_mode = 1;
+			amese(0, 0x01000000 | 80);
+			messync(0, 1);
+			goto dialog_82;
 
-  dialog_80:
-    flow_poll_mode = 1;
-    amese(0, 0x01000000 | 80);
-    messync(0, 1);
-    goto dialog_82;
+		dialog_81:
+			flow_poll_mode = 1;
+			amese(0, 0x01000000 | 81);
+			messync(0, 1);
+			goto dialog_83;
 
-  dialog_81:
-    flow_poll_mode = 1;
-    amese(0, 0x01000000 | 81);
-    messync(0, 1);
-    goto dialog_83;
+    // @description: element category selection
+    dialog_82:
+      flow_poll_mode = 2;
+			selected_subcategory = 0;
+			flow_load_equipment = 0;
 
-  // @description: element category selection
-  dialog_82:
-    flow_poll_mode = 2;
-    selected_subcategory = 0;
-    flow_load_equipment = 0;
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 82, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
 
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 82, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
+			if (local_choice == 2) {
+				goto dialog_79;
+			}
+			if (local_choice == 3) {
+				goto dialog_90;
+			}
 
-    if (local_choice == 2) {
-      goto dialog_79;
-    }
-    if (local_choice == 3) {
-      goto dialog_90;
-    }
+			local_category = local_choice;
+			if (local_category == 0) {
+				goto dialog_84;
+			} else if (local_category == 1) {
+				goto dialog_88;
+			}
 
-    local_category = local_choice;
-    if (local_category == 0) {
-      goto dialog_84;
-    } else if (local_category == 1) {
-      goto dialog_88;
-    }
+    // @description: attribute category selection
+    dialog_83:
+      flow_poll_mode = 2;
+			selected_subcategory = 0;
+			flow_load_equipment = 0;
+			setmeswinline(0, 6);
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 83, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 6) {
+				goto dialog_79;
+			}
+			if (local_choice == 7) {
+				goto dialog_90;
+			}
+			local_category = local_choice;
+			if (local_category == 0) {
+				goto dialog_84;
+			} else if (local_category == 1) {
+				goto dialog_85;
+			} else if (local_category == 2) {
+				goto dialog_86;
+			} else if (local_category == 3) {
+				goto dialog_87;
+			} else if (local_category == 4) {
+				goto dialog_88;
+			} else if (local_category == 5) {
+				selected_category = 36;
+				sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+				goto dialog_89;
+			}
 
-  // @description: attribute category selection
-  dialog_83:
-    flow_poll_mode = 2;
-    selected_subcategory = 0;
-    flow_load_equipment = 0;
+    dialog_84:
+      flow_poll_mode = 2;
+			selected_subcategory = 0;
+			flow_load_equipment = 0;
+			setmeswinline(0, 6);
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 84, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 17) {
+				if (flow_talk_status == 2) {
+					goto dialog_82;
+				} else {
+					goto dialog_83;
+				}
+			}
+			if (local_choice == 18) {
+				goto dialog_90;
+			}
+			if (local_choice >= 0 && local_choice <= 16) {
+				selected_category = local_choice + 1;
+				sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+				goto dialog_89;
+			}
 
-    setmeswinline(0, 6);
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 83, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
+    dialog_85:
+      flow_poll_mode = 2;
+			selected_subcategory = 0;
+			flow_load_equipment = 0;
+			setmeswinline(0, 5);
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 85, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				if (flow_talk_status == 2) {
+					goto dialog_82;
+				} else {
+					goto dialog_83;
+				}
+			}
+			if (local_choice == 4) {
+				goto dialog_90;
+			}
+			if (local_choice >= 0 && local_choice <= 2) {
+				selected_category = local_choice + 18;
+				sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+				goto dialog_89;
+			}
 
-    if (local_choice == 6) {
-      goto dialog_79;
-    }
-    if (local_choice == 7) {
-      goto dialog_90;
-    }
+    dialog_86:
+      flow_poll_mode = 2;
+			selected_subcategory = 0;
+			flow_load_equipment = 0;
+			setmeswinline(0, 5);
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 86, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				if (flow_talk_status == 2) {
+					goto dialog_82;
+				} else {
+					goto dialog_83;
+				}
+			}
+			if (local_choice == 4) {
+				goto dialog_90;
+			}
 
-    local_category = local_choice;
-    if (local_category == 0) {
-      goto dialog_84;
-    } else if (local_category == 1) {
-      goto dialog_85;
-    } else if (local_category == 2) {
-      goto dialog_86;
-    } else if (local_category == 3) {
-      goto dialog_87;
-    } else if (local_category == 4) {
-      goto dialog_88;
-    } else if (local_category == 5) {
-      selected_category = 36;
-      flow_load_equipment = 1;
-      wait(16);
-      flow_load_equipment = 0;
-      goto dialog_89;
-    }
+			if (local_choice >= 0 && local_choice <= 2) {
+				selected_category = local_choice + 21;
+				sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+				goto dialog_89;
+			}
 
-  dialog_84:
-    flow_poll_mode = 2;
-    selected_subcategory = 0;
-    flow_load_equipment = 0;
+    dialog_87:
+      flow_poll_mode = 2;
+			selected_subcategory = 0;
+			flow_load_equipment = 0;
+			setmeswinline(0, 5);
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 87, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 8) {
+				if (flow_talk_status == 2) {
+					goto dialog_82;
+				} else {
+					goto dialog_83;
+				}
+			}
+			if (local_choice == 9) {
+				goto dialog_90;
+			}
 
-    setmeswinline(0, 6);
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 84, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
+			if (local_choice >= 0 && local_choice <= 7) {
+				selected_category = local_choice + 24;
+				sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+				goto dialog_89;
+			}
 
-    if (local_choice == 17) {
-      if (flow_talk_status == 2) {
-        goto dialog_82;
-      } else {
-        goto dialog_83;
-      }
-    }
-    if (local_choice == 18) {
-      goto dialog_90;
-    }
+    dialog_88:
+      flow_poll_mode = 2;
+			selected_subcategory = 0;
+			flow_load_equipment = 0;
+			setmeswinline(0, 6);
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 88, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 4) {
+				if (flow_talk_status == 2) {
+					goto dialog_82;
+				} else {
+					goto dialog_83;
+				}
+			}
+			if (local_choice == 5) {
+				goto dialog_90;
+			}
+			if (local_choice >= 0 && local_choice <= 3) {
+				selected_category = local_choice + 32;
+				sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+				goto dialog_89;
+			}
 
-    if (local_choice >= 0 && local_choice <= 16) {
-      selected_category = local_choice + 1;
-      flow_load_equipment = 1;
-      wait(16);
-      flow_load_equipment = 0;
-      goto dialog_89;
-    }
+    return_to_category_dialog:
+      if (selected_category >= 1 && selected_category <= 17) goto dialog_84;
+			if (selected_category >= 18 && selected_category <= 20) goto dialog_85;
+			if (selected_category >= 21 && selected_category <= 23) goto dialog_86;
+			if (selected_category >= 24 && selected_category <= 31) goto dialog_87;
+			if (selected_category >= 32 && selected_category <= 35) goto dialog_88;
+			if (flow_talk_status == 2)
+				goto dialog_82;
+			else
+				goto dialog_83;
 
-  dialog_85:
-    flow_poll_mode = 2;
-    selected_subcategory = 0;
-    flow_load_equipment = 0;
+    // @description: equipment list
+    dialog_89:
+      flow_poll_mode = 2;
+			local_count = 0;
+			local_equipment_qtty = 0;
+			for (local_i = 0; local_i <= 30; local_i++) {
+				if (load_equipment_list[local_i] == 0) {
+					setaskselectignore(0, local_i);
+				} else {
+					local_count++;
+					if (haveitem(load_equipment_list[local_i]) > 0) {
+						setmesmacro(0, local_equipment_qtty, 1, load_equipment_list[local_i]);
+						local_available_indices[local_equipment_qtty] = local_i;
+						local_equipment_qtty++;
+					} else {
+						setaskselectignore(0, local_i);
+					}
+				}
+			}
+			if (local_equipment_qtty == 0) {
+				amese(0, 0x01000000 | 91);
+				messync(0, 1);
+				goto return_to_category_dialog;
+			}
+			for (local_i = local_equipment_qtty; local_i <= 30; local_i++) {
+				setaskselectignore(0, local_i);
+			}
+			if (local_equipment_qtty > 6) {
+				setmeswinline(0, 7);
+			} else {
+				setmeswinline(0, local_equipment_qtty + 1);
+			}
+			askpos(0, 0, local_equipment_qtty + 1);
+			local_equipment_index = aask(0, 0x01000000 | 89, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_equipment_index >= local_equipment_qtty) {
+				goto return_to_category_dialog;
+			}
+			local_selected_equipment = load_equipment_list[local_available_indices[local_equipment_index]];
+			selected_equipment_id = local_selected_equipment;
+			flow_selected_intention = 1;
+			if (flow_talk_status == 2) {
+				goto dialog_92;
+			} else if (flow_talk_status == 3) {
+				if (selected_category >= 1 && selected_category <= 17) {
+					goto dialog_113;
+				} else if (selected_category == 36) {
+					goto dialog_114;
+				} else if (selected_category >= 18 && selected_category <= 23) {
+					goto dialog_115;
+				} else if (selected_category >= 24 && selected_category <= 35) {
+					goto dialog_116;
+				} else {
+					goto cleanup;
+				}
+			} else {
+				goto cleanup;
+			}
 
-    setmeswinline(0, 5);
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 85, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 3) {
-      if (flow_talk_status == 2) {
-        goto dialog_82;
-      } else {
-        goto dialog_83;
-      }
-    }
-    if (local_choice == 4) {
-      goto dialog_90;
-    }
+    // @description: element selection
+    dialog_92:
+      flow_poll_mode = 2;
+			local_macro_id[0] = 14;
+			local_macro_id[1] = 15;
+			local_macro_id[2] = 16;
+			local_macro_id[3] = 17;
+			local_macro_id[4] = 18;
+			local_macro_id[5] = 19;
+			local_macro_id[6] = 20;
+			local_macro_id[7] = 21;
+			local_choice_id[0] = 0;
+			local_choice_id[1] = 1;
+			local_choice_id[2] = 2;
+			local_choice_id[3] = 3;
+			local_choice_id[4] = 4;
+			local_choice_id[5] = 5;
+			local_choice_id[6] = 6;
+			local_choice_id[7] = 7;
+			local_choice_subcategory_id[0] = 1;
+			local_choice_subcategory_id[1] = 2;
+			local_choice_subcategory_id[2] = 3;
+			local_choice_subcategory_id[3] = 4;
+			local_choice_subcategory_id[4] = 5;
+			local_choice_subcategory_id[5] = 6;
+			local_choice_subcategory_id[6] = 7;
+			local_choice_subcategory_id[7] = 8;
+			local_choice_dialog_id[0] = 93;
+			local_choice_dialog_id[1] = 94;
+			local_choice_dialog_id[2] = 95;
+			local_choice_dialog_id[3] = 96;
+			local_choice_dialog_id[4] = 97;
+			local_choice_dialog_id[5] = 98;
+			local_choice_dialog_id[6] = 99;
+			local_choice_dialog_id[7] = 100;
+			setmesmacro(0, 7, 1, selected_equipment_id);
+			local_count = 0;
+			local_i = 0;
+			while (local_i < 8) {
+				setmesmacro(0, local_macro_id[local_i], 0, quest_unlocked_elements[local_i]);
+				if (quest_unlocked_elements[local_i] == 0) {
+					setaskselectignore(0, local_choice_id[local_i]);
+				}
+				if (quest_unlocked_elements[local_i] > 0) {
+					local_count++;
+				}
+				local_i++;
+			}
+			local_count += 2;
+			if (local_count > 10) {
+				local_count = 10;
+			}
+			if (local_count > 7) {
+				setmeswinline(0, 7);
+			} else {
+				setmeswinline(0, local_count);
+			}
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 92, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 9) {
+				goto dialog_89;
+			}
+			if (local_choice == 8) {
+				selected_subcategory = 9;
+				goto check_element_before_remove;
+			}
+			if (local_choice >= 0 && local_choice < 8 &&
+				quest_unlocked_elements[local_choice] > 0) {
+				selected_subcategory = local_choice_subcategory_id[local_choice];
+				goto check_element_before_apply;
+			}
 
-    if (local_choice >= 0 && local_choice <= 2) {
-      selected_category = local_choice + 18;
-      flow_load_equipment = 1;
-      wait(16);
-      flow_load_equipment = 0;
-      goto dialog_89;
-    }
+    dialog_93:
+      flow_poll_mode = 2;
+			selected_subcategory = 1;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 93);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-  dialog_86:
-    flow_poll_mode = 2;
-    selected_subcategory = 0;
-    flow_load_equipment = 0;
+    dialog_94:
+      selected_subcategory = 2;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 94);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-    setmeswinline(0, 5);
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 86, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 3) {
-      if (flow_talk_status == 2) {
-        goto dialog_82;
-      } else {
-        goto dialog_83;
-      }
-    }
-    if (local_choice == 4) {
-      goto dialog_90;
-    }
+    dialog_95:
+      selected_subcategory = 3;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 6);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 95);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-    if (local_choice >= 0 && local_choice <= 2) {
-      selected_category = local_choice + 21;
-      flow_load_equipment = 1;
-      wait(16);
-      flow_load_equipment = 0;
-      goto dialog_89;
-    }
+    dialog_96:
+      selected_subcategory = 4;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 96);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-  dialog_87:
-    flow_poll_mode = 2;
-    selected_subcategory = 0;
-    flow_load_equipment = 0;
+    dialog_97:
+      selected_subcategory = 5;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 97);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-    setmeswinline(0, 5);
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 87, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 8) {
-      if (flow_talk_status == 2) {
-        goto dialog_82;
-      } else {
-        goto dialog_83;
-      }
-    }
-    if (local_choice == 9) {
-      goto dialog_90;
-    }
+    dialog_98:
+      selected_subcategory = 6;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 98);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-    if (local_choice >= 0 && local_choice <= 7) {
-      selected_category = local_choice + 24;
-      flow_load_equipment = 1;
-      wait(16);
-      flow_load_equipment = 0;
-      goto dialog_89;
-    }
+    dialog_99:
+      selected_subcategory = 7;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 99);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-  dialog_88:
-    flow_poll_mode = 2;
-    selected_subcategory = 0;
-    flow_load_equipment = 0;
+    dialog_100:
+      selected_subcategory = 8;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 100);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-    setmeswinline(0, 6);
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 88, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 4) {
-      if (flow_talk_status == 2) {
-        goto dialog_82;
-      } else {
-        goto dialog_83;
-      }
-    }
-    if (local_choice == 5) {
-      goto dialog_90;
-    }
-    if (local_choice >= 0 && local_choice <= 3) {
-      selected_category = local_choice + 32;
-      flow_load_equipment = 1;
-      wait(16);
-      flow_load_equipment = 0;
-      goto dialog_89;
-    }
+    // @description: check existing element before remove
+    check_element_before_remove:
+      flow_check_element = 1;
+			wait(16);
+			flow_check_element = 0;
 
-  return_to_category_dialog:
-    if (selected_category >= 1 && selected_category <= 17) goto dialog_84;
-    if (selected_category >= 18 && selected_category <= 20) goto dialog_85;
-    if (selected_category >= 21 && selected_category <= 23) goto dialog_86;
-    if (selected_category >= 24 && selected_category <= 31) goto dialog_87;
-    if (selected_category >= 32 && selected_category <= 35) goto dialog_88;
-    if (flow_talk_status == 2)
-      goto dialog_82;
-    else
-      goto dialog_83;
+			if (current_element == 0) {
+				goto dialog_170;
+			}
+			goto dialog_101;
 
-  // @description: equipment list
-  dialog_89:
-    flow_poll_mode = 2;
-    local_count = 0;
-    local_equipment_qtty = 0;
-    for (local_i = 0; local_i <= 30; local_i++) {
-      if (load_equipment_list[local_i] == 0) {
-        setaskselectignore(0, local_i);
-      } else {
-        local_count++;
-        if (haveitem(load_equipment_list[local_i]) > 0) {
-          setmesmacro(0, local_equipment_qtty, 1, load_equipment_list[local_i]);
-          local_available_indices[local_equipment_qtty] = local_i;
-          local_equipment_qtty++;
-        } else {
-          setaskselectignore(0, local_i);
-        }
-      }
-    }
-
-    if (local_equipment_qtty == 0) {
-      amese(0, 0x01000000 | 91);
-      messync(0, 1);
-      goto return_to_category_dialog;
-    }
-
-    for (local_i = local_equipment_qtty; local_i <= 30; local_i++) {
-      setaskselectignore(0, local_i);
-    }
-
-    if (local_equipment_qtty > 6) {
-      setmeswinline(0, 7);
-    } else {
-      setmeswinline(0, local_equipment_qtty + 1);
-    }
-
-    askpos(0, 0, local_equipment_qtty + 1);
-    local_equipment_index = aask(0, 0x01000000 | 89, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_equipment_index >= local_equipment_qtty) {
-      goto return_to_category_dialog;
-    }
-
-    local_selected_equipment =
-        load_equipment_list[local_available_indices[local_equipment_index]];
-    selected_equipment_id = local_selected_equipment;
-    flow_selected_intention = 1;
-
-    if (flow_talk_status == 2) {
-      goto dialog_92;
-    } else if (flow_talk_status == 3) {
-      if (selected_category >= 1 && selected_category <= 17) {
-        goto dialog_113;
-      } else if (selected_category == 36) {
-        goto dialog_114;
-      } else if (selected_category >= 18 && selected_category <= 23) {
-        goto dialog_115;
-      } else if (selected_category >= 24 && selected_category <= 35) {
-        goto dialog_116;
-      } else {
-        goto cleanup;
-      }
-    } else {
-      goto cleanup;
-    }
-
-  // @description: element selection
-  dialog_92:
-    flow_poll_mode = 2;
-    local_macro_id[0] = 14;
-    local_macro_id[1] = 15;
-    local_macro_id[2] = 16;
-    local_macro_id[3] = 17;
-    local_macro_id[4] = 18;
-    local_macro_id[5] = 19;
-    local_macro_id[6] = 20;
-    local_macro_id[7] = 21;
-
-    local_choice_id[0] = 0;
-    local_choice_id[1] = 1;
-    local_choice_id[2] = 2;
-    local_choice_id[3] = 3;
-    local_choice_id[4] = 4;
-    local_choice_id[5] = 5;
-    local_choice_id[6] = 6;
-    local_choice_id[7] = 7;
-
-    local_choice_subcategory_id[0] = 1;
-    local_choice_subcategory_id[1] = 2;
-    local_choice_subcategory_id[2] = 3;
-    local_choice_subcategory_id[3] = 4;
-    local_choice_subcategory_id[4] = 5;
-    local_choice_subcategory_id[5] = 6;
-    local_choice_subcategory_id[6] = 7;
-    local_choice_subcategory_id[7] = 8;
-
-    local_choice_dialog_id[0] = 93;
-    local_choice_dialog_id[1] = 94;
-    local_choice_dialog_id[2] = 95;
-    local_choice_dialog_id[3] = 96;
-    local_choice_dialog_id[4] = 97;
-    local_choice_dialog_id[5] = 98;
-    local_choice_dialog_id[6] = 99;
-    local_choice_dialog_id[7] = 100;
-
-    setmesmacro(0, 7, 1, selected_equipment_id);
-
-    local_count = 0;
-    local_i = 0;
-    while (local_i < 8) {
-      setmesmacro(0, local_macro_id[local_i], 0, quest_unlocked_elements[local_i]);
-      if (quest_unlocked_elements[local_i] == 0) {
-        setaskselectignore(0, local_choice_id[local_i]);
-      }
-      if (quest_unlocked_elements[local_i] > 0) {
-        local_count++;
-      }
-      local_i++;
-    }
-    local_count += 2;
-    if (local_count > 10) {
-      local_count = 10;
-    }
-    if (local_count > 7) {
-      setmeswinline(0, 7);
-    } else {
-      setmeswinline(0, local_count);
-    }
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 92, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-
-    // Back is always option 9
-    if (local_choice == 9) {
-      goto dialog_89;
-    }
-
-    // Cleanse binding is always option 8
-    if (local_choice == 8) {
+    dialog_101:
       selected_subcategory = 9;
-      goto check_element_before_remove;
-    }
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 101);
+			if (local_choice == 1) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_89;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				gillwinclose();
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			if (load_upgrade_gil[0] > 0) {
+				gillwinopen(havegill());
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_112;
 
-    if (local_choice >= 0 && local_choice < 8 &&
-        quest_unlocked_elements[local_choice] > 0) {
-      selected_subcategory = local_choice_subcategory_id[local_choice];
-      if (local_choice == 0) {
-        goto dialog_93;
-      } else if (local_choice == 1) {
-        goto dialog_94;
-      } else if (local_choice == 2) {
-        goto dialog_95;
-      } else if (local_choice == 3) {
-        goto dialog_96;
-      } else if (local_choice == 4) {
-        goto dialog_97;
-      } else if (local_choice == 5) {
-        goto dialog_98;
-      } else if (local_choice == 6) {
-        goto dialog_99;
-      } else if (local_choice == 7) {
-        goto dialog_100;
-      }
-    }
+    // @description: check existing element before apply
+    check_element_before_apply:
+      flow_check_element = 1;
+			wait(16);
+			flow_check_element = 0;
+			if (current_element >= 1 && current_element <= 8) {
+				switch (current_element) {
+				case 1:
+					goto dialog_159;
+				case 2:
+					goto dialog_160;
+				case 3:
+					goto dialog_161;
+				case 4:
+					goto dialog_162;
+				case 5:
+					goto dialog_163;
+				case 6:
+					goto dialog_164;
+				case 7:
+					goto dialog_165;
+				case 8:
+					goto dialog_166;
+				default:
+					goto route_to_element_confirmation;
+				}
+			} else {
+				goto route_to_element_confirmation;
+			}
 
-  dialog_93:
-    flow_poll_mode = 2;
-    selected_subcategory = 1;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 93);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  dialog_94:
-    selected_subcategory = 2;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 94);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  dialog_95:
-    selected_subcategory = 3;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 6);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 95);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  dialog_96:
-
-    selected_subcategory = 4;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 96);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  dialog_97:
-    selected_subcategory = 5;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 97);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  dialog_98:
-    selected_subcategory = 6;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 98);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  dialog_99:
-    selected_subcategory = 7;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 99);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  dialog_100:
-    selected_subcategory = 8;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 100);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    if (load_upgrade_gil[0] > 0) {
-      gillwinstart((-1 * load_upgrade_gil[0]));
-      gillwinsync();
-      subgill(load_upgrade_gil[0]);
-      wait(20);
-      gillwinclose();
-    }
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  // @description: check existing element before remove
-  check_element_before_remove:
-    flow_check_element = 1;
-    wait(16);
-    flow_check_element = 0;
-
-    if (current_element == 0) {
-      goto dialog_170;
-    }
-    goto dialog_101;
-
-  dialog_101:
-
-    selected_subcategory = 9;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 101);
-    if (local_choice == 1) {
-      gillwinclose();
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_89;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    mesclose(0);
-    messync(0, 1);
-    goto check_element_before_apply;
-
-  // @description: check existing element before apply
-  check_element_before_apply:
-    flow_check_element = 1;
-    wait(16);
-    flow_check_element = 0;
-
-    if (current_element >= 1 && current_element <= 8) {
-      switch (current_element) {
-        case 1:
-          goto dialog_159;
-        case 2:
-          goto dialog_160;
-        case 3:
-          goto dialog_162;
-        case 4:
-          goto dialog_161;
-        case 5:
-          goto dialog_163;
-        case 6:
-          goto dialog_164;
-        case 7:
-          goto dialog_165;
-        case 8:
-          goto dialog_166;
-        default:
-          sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-          goto dialog_112;
-      }
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_159:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 159);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_160:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 160);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_161:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 161);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_162:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 162);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_163:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 163);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_164:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 164);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_165:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 166);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  dialog_166:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 167);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    goto dialog_112;
-
-  // @description: no element to remove
-  dialog_170:
-    flow_poll_mode = 2;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 170);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      goto dialog_90;
-    }
-
-  // @description: no attribute to remove
-  dialog_171:
-    flow_poll_mode = 2;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 171);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      goto dialog_90;
-    }
-
-  // @description: alchemy animation
-  dialog_112:
-    flow_poll_mode = 1;
-    amese(0, 0x01000000 | 112);
-    messync(0, 1);
-
-    sebsoundplay(0, 38);
-    if (selected_subcategory != 9) {
-      sysCommon2effectplay(PC00, 11);
-    } else {
-      sysCommon2effectplay(PC00, 10);
-    }
-
-    wait(35);
-
-    if (flow_talk_status == 2) {
+    // @description: route to element confirmation dialog based on selected_subcategory
+    route_to_element_confirmation:
       switch (selected_subcategory) {
-        case 1:
-          goto dialog_103;
-        case 2:
-          goto dialog_104;
-        case 3:
-          goto dialog_105;
-        case 4:
-          goto dialog_106;
-        case 5:
-          goto dialog_107;
-        case 6:
-          goto dialog_108;
-        case 7:
-          goto dialog_109;
-        case 8:
-          goto dialog_110;
-        case 9:
-          goto dialog_111;
-        default:
-          goto dialog_103;
-      }
-    } else if (flow_talk_status == 3) {
-      if (selected_subcategory == 0) {
-        goto dialog_155;
-      } else {
-        goto attribute_success_dialog;
-      }
-    } else {
-      goto dialog_103;
-    }
-
-  // @description: not enough items
-  dialog_102:
-    flow_poll_mode = 1;
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinclose();
-    local_choice = aaske(0, 0x01000000 | 102);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      goto cleanup;
-    }
-
-  dialog_103:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 103);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_104:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 104);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_105:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 105);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_106:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 106);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_107:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 107);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_108:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 108);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_109:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 109);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_110:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 110);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  dialog_111:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 111);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto dialog_89;
-    } else if (local_choice == 1) {
-      flow_confirmed_intention = 1;
-      wait(16);
-      flow_confirmed_intention = 0;
-      goto cleanup;
-    }
-
-  // @description: back to attribute menu
-  return_to_attribute_menu:
-    gillwinclose();
-    selected_subcategory = 0;
-    selected_tier = 0;
-
-    if (selected_category >= 1 && selected_category <= 17) {
-      goto dialog_113;
-    } else if (selected_category == 36) {
-      goto dialog_114;
-    } else if (selected_category >= 18 && selected_category <= 23) {
-      goto dialog_115;
-    } else if (selected_category >= 24 && selected_category <= 35) {
-      goto dialog_116;
-    } else {
-      goto dialog_89;
-    }
-
-  // @description: weapon attributes menu
-  dialog_113:
-    flow_poll_mode = 2;
-
-    local_macro_id[0] = 22;
-    local_macro_id[1] = 23;
-    local_macro_id[2] = 24;
-    local_macro_id[3] = 25;
-    local_macro_id[4] = 26;
-    local_macro_id[5] = 27;
-    local_macro_id[6] = 28;
-    local_macro_id[7] = 33;
-    local_macro_id[8] = 34;
-    local_macro_id[9] = 35;
-    local_macro_id[10] = 36;
-    local_macro_id[11] = 37;
-    local_macro_id[12] = 38;
-
-    local_macro_attr[0] = 0;
-    local_macro_attr[1] = 1;
-    local_macro_attr[2] = 2;
-    local_macro_attr[3] = 3;
-    local_macro_attr[4] = 4;
-    local_macro_attr[5] = 5;
-    local_macro_attr[6] = 6;
-    local_macro_attr[7] = 11;
-    local_macro_attr[8] = 12;
-    local_macro_attr[9] = 13;
-    local_macro_attr[10] = 14;
-    local_macro_attr[11] = 15;
-    local_macro_attr[12] = 16;
-
-    local_choice_id[0] = 0;
-    local_choice_id[1] = 1;
-    local_choice_id[2] = 2;
-    local_choice_id[3] = 3;
-    local_choice_id[4] = 4;
-    local_choice_id[5] = 5;
-    local_choice_id[6] = 6;
-    local_choice_id[7] = 7;
-    local_choice_id[8] = 8;
-    local_choice_id[9] = 9;
-    local_choice_id[10] = 10;
-    local_choice_id[11] = 11;
-    local_choice_id[12] = 12;
-
-    local_choice_subcategory_id[0] = 10;
-    local_choice_subcategory_id[1] = 11;
-    local_choice_subcategory_id[2] = 12;
-    local_choice_subcategory_id[3] = 16;
-    local_choice_subcategory_id[4] = 14;
-    local_choice_subcategory_id[5] = 15;
-    local_choice_subcategory_id[6] = 13;
-    local_choice_subcategory_id[7] = 21;
-    local_choice_subcategory_id[8] = 22;
-    local_choice_subcategory_id[9] = 23;
-    local_choice_subcategory_id[10] = 24;
-    local_choice_subcategory_id[11] = 25;
-    local_choice_subcategory_id[12] = 26;
-
-    local_choice_dialog_id[0] = 117;
-    local_choice_dialog_id[1] = 118;
-    local_choice_dialog_id[2] = 119;
-    local_choice_dialog_id[3] = 123;
-    local_choice_dialog_id[4] = 121;
-    local_choice_dialog_id[5] = 122;
-    local_choice_dialog_id[6] = 120;
-    local_choice_dialog_id[7] = 128;
-    local_choice_dialog_id[8] = 129;
-    local_choice_dialog_id[9] = 130;
-    local_choice_dialog_id[10] = 131;
-    local_choice_dialog_id[11] = 132;
-    local_choice_dialog_id[12] = 133;
-
-    setmesmacro(0, 0, 1, selected_equipment_id);
-
-    local_count = 0;
-    local_i = 0;
-    while (local_i < 13) {
-      setmesmacro(0, local_macro_id[local_i], 0,
-                  quest_unlocked_attributes[local_macro_attr[local_i]]);
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
-        setaskselectignore(0, local_choice_id[local_i]);
-      }
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
-        local_count++;
-      }
-      local_i++;
-    }
-    local_count += 2;
-
-    if (local_count > 15) {
-      local_count = 15;
-    }
-
-    if (local_count > 7) {
-      setmeswinline(0, 7);
-    } else {
-      setmeswinline(0, local_count);
-    }
-
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 113, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 14) {
-      goto dialog_89;
-    }
-
-    if (local_choice == 13) {
-      selected_subcategory = 9;
-      goto check_attribute_before_remove;
-    }
-
-    if (local_choice >= 0 && local_choice < 13 &&
-        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
-      selected_subcategory = local_choice_subcategory_id[local_choice];
-      if (local_choice == 0) {
-        goto dialog_117;
-      } else if (local_choice == 1) {
-        goto dialog_118;
-      } else if (local_choice == 2) {
-        goto dialog_119;
-      } else if (local_choice == 3) {
-        goto dialog_123;
-      } else if (local_choice == 4) {
-        goto dialog_121;
-      } else if (local_choice == 5) {
-        goto dialog_122;
-      } else if (local_choice == 6) {
-        goto dialog_120;
-      } else if (local_choice == 7) {
-        goto dialog_128;
-      } else if (local_choice == 8) {
-        goto dialog_129;
-      } else if (local_choice == 9) {
-        goto dialog_130;
-      } else if (local_choice == 10) {
-        goto dialog_131;
-      } else if (local_choice == 11) {
-        goto dialog_132;
-      } else if (local_choice == 12) {
-        goto dialog_133;
-      }
-    }
-
-  dialog_114:
-    flow_poll_mode = 2;
-    local_macro_id[0] = 29;
-    local_macro_id[1] = 30;
-    local_macro_id[2] = 33;
-    local_macro_id[3] = 34;
-    local_macro_id[4] = 35;
-    local_macro_id[5] = 36;
-    local_macro_id[6] = 37;
-    local_macro_id[7] = 38;
-
-    local_macro_attr[0] = 7;
-    local_macro_attr[1] = 8;
-    local_macro_attr[2] = 11;
-    local_macro_attr[3] = 12;
-    local_macro_attr[4] = 13;
-    local_macro_attr[5] = 14;
-    local_macro_attr[6] = 15;
-    local_macro_attr[7] = 16;
-
-    local_choice_id[0] = 0;
-    local_choice_id[1] = 1;
-    local_choice_id[2] = 2;
-    local_choice_id[3] = 3;
-    local_choice_id[4] = 4;
-    local_choice_id[5] = 5;
-    local_choice_id[6] = 6;
-    local_choice_id[7] = 7;
-
-    local_choice_subcategory_id[0] = 17;
-    local_choice_subcategory_id[1] = 18;
-    local_choice_subcategory_id[2] = 21;
-    local_choice_subcategory_id[3] = 22;
-    local_choice_subcategory_id[4] = 23;
-    local_choice_subcategory_id[5] = 24;
-    local_choice_subcategory_id[6] = 25;
-    local_choice_subcategory_id[7] = 26;
-
-    local_choice_dialog_id[0] = 124;
-    local_choice_dialog_id[1] = 125;
-    local_choice_dialog_id[2] = 128;
-    local_choice_dialog_id[3] = 129;
-    local_choice_dialog_id[4] = 130;
-    local_choice_dialog_id[5] = 131;
-    local_choice_dialog_id[6] = 132;
-    local_choice_dialog_id[7] = 133;
-
-    setmesmacro(0, 0, 1, selected_equipment_id);
-    local_count = 0;
-    local_i = 0;
-    while (local_i < 8) {
-      setmesmacro(0, local_macro_id[local_i], 0,
-                  quest_unlocked_attributes[local_macro_attr[local_i]]);
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
-        setaskselectignore(0, local_choice_id[local_i]);
-      }
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
-        local_count++;
-      }
-      local_i++;
-    }
-    local_count += 2;
-    if (local_count > 7) {
-      setmeswinline(0, 7);
-    } else {
-      setmeswinline(0, local_count);
-    }
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 114, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 9) {
-      goto dialog_89;
-    }
-
-    if (local_choice >= 0 && local_choice < 8 &&
-        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
-      selected_subcategory = local_choice_subcategory_id[local_choice];
-      if (local_choice == 0) {
-        goto dialog_124;
-      } else if (local_choice == 1) {
-        goto dialog_125;
-      } else if (local_choice == 2) {
-        goto dialog_128;
-      } else if (local_choice == 3) {
-        goto dialog_129;
-      } else if (local_choice == 4) {
-        goto dialog_130;
-      } else if (local_choice == 5) {
-        goto dialog_131;
-      } else if (local_choice == 6) {
-        goto dialog_132;
-      } else if (local_choice == 7) {
-        goto dialog_133;
-      }
-    } else if (local_choice == 8) {
-      selected_subcategory = 9;
-      goto check_attribute_before_remove;
-    }
-
-  dialog_115:
-    flow_poll_mode = 2;
-    local_macro_id[0] = 31;
-    local_macro_id[1] = 32;
-    local_macro_id[2] = 33;
-    local_macro_id[3] = 34;
-    local_macro_id[4] = 35;
-    local_macro_id[5] = 36;
-    local_macro_id[6] = 37;
-    local_macro_id[7] = 38;
-
-    local_macro_attr[0] = 9;
-    local_macro_attr[1] = 10;
-    local_macro_attr[2] = 11;
-    local_macro_attr[3] = 12;
-    local_macro_attr[4] = 13;
-    local_macro_attr[5] = 14;
-    local_macro_attr[6] = 15;
-    local_macro_attr[7] = 16;
-
-    local_choice_id[0] = 0;
-    local_choice_id[1] = 1;
-    local_choice_id[2] = 2;
-    local_choice_id[3] = 3;
-    local_choice_id[4] = 4;
-    local_choice_id[5] = 5;
-    local_choice_id[6] = 6;
-    local_choice_id[7] = 7;
-
-    local_choice_subcategory_id[0] = 19;
-    local_choice_subcategory_id[1] = 20;
-    local_choice_subcategory_id[2] = 21;
-    local_choice_subcategory_id[3] = 22;
-    local_choice_subcategory_id[4] = 23;
-    local_choice_subcategory_id[5] = 24;
-    local_choice_subcategory_id[6] = 25;
-    local_choice_subcategory_id[7] = 26;
-
-    local_choice_dialog_id[0] = 126;
-    local_choice_dialog_id[1] = 127;
-    local_choice_dialog_id[2] = 128;
-    local_choice_dialog_id[3] = 129;
-    local_choice_dialog_id[4] = 130;
-    local_choice_dialog_id[5] = 131;
-    local_choice_dialog_id[6] = 132;
-    local_choice_dialog_id[7] = 133;
-
-    setmesmacro(0, 0, 1, selected_equipment_id);
-
-    local_count = 0;
-    local_i = 0;
-    while (local_i < 8) {
-      setmesmacro(0, local_macro_id[local_i], 0,
-                  quest_unlocked_attributes[local_macro_attr[local_i]]);
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
-        setaskselectignore(0, local_choice_id[local_i]);
-      }
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
-        local_count++;
-      }
-      local_i++;
-    }
-    local_count += 2;
-    if (local_count > 7) {
-      setmeswinline(0, 7);
-    } else {
-      setmeswinline(0, local_count);
-    }
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 115, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 9) {
-      goto dialog_89;
-    }
-
-    if (local_choice >= 0 && local_choice < 8 &&
-        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
-      selected_subcategory = local_choice_subcategory_id[local_choice];
-      if (local_choice == 0) {
-        goto dialog_126;
-      } else if (local_choice == 1) {
-        goto dialog_127;
-      } else if (local_choice == 2) {
-        goto dialog_128;
-      } else if (local_choice == 3) {
-        goto dialog_129;
-      } else if (local_choice == 4) {
-        goto dialog_130;
-      } else if (local_choice == 5) {
-        goto dialog_131;
-      } else if (local_choice == 6) {
-        goto dialog_132;
-      } else if (local_choice == 7) {
-        goto dialog_133;
-      }
-    } else if (local_choice == 8) {
-      selected_subcategory = 9;
-      goto check_attribute_before_remove;
-    }
-
-  dialog_116:
-    flow_poll_mode = 2;
-    local_macro_id[0] = 24;
-    local_macro_id[1] = 28;
-    local_macro_id[2] = 25;
-    local_macro_id[3] = 33;
-    local_macro_id[4] = 34;
-    local_macro_id[5] = 35;
-    local_macro_id[6] = 36;
-    local_macro_id[7] = 37;
-    local_macro_id[8] = 38;
-
-    local_macro_attr[0] = 2;
-    local_macro_attr[1] = 6;
-    local_macro_attr[2] = 3;
-    local_macro_attr[3] = 11;
-    local_macro_attr[4] = 12;
-    local_macro_attr[5] = 13;
-    local_macro_attr[6] = 14;
-    local_macro_attr[7] = 15;
-    local_macro_attr[8] = 16;
-
-    local_choice_id[0] = 0;
-    local_choice_id[1] = 1;
-    local_choice_id[2] = 2;
-    local_choice_id[3] = 3;
-    local_choice_id[4] = 4;
-    local_choice_id[5] = 5;
-    local_choice_id[6] = 6;
-    local_choice_id[7] = 7;
-    local_choice_id[8] = 8;
-
-    local_choice_subcategory_id[0] = 12;
-    local_choice_subcategory_id[1] = 16;
-    local_choice_subcategory_id[2] = 13;
-    local_choice_subcategory_id[3] = 21;
-    local_choice_subcategory_id[4] = 22;
-    local_choice_subcategory_id[5] = 23;
-    local_choice_subcategory_id[6] = 24;
-    local_choice_subcategory_id[7] = 25;
-    local_choice_subcategory_id[8] = 26;
-
-    local_choice_dialog_id[0] = 119;
-    local_choice_dialog_id[1] = 123;
-    local_choice_dialog_id[2] = 120;
-    local_choice_dialog_id[3] = 128;
-    local_choice_dialog_id[4] = 129;
-    local_choice_dialog_id[5] = 130;
-    local_choice_dialog_id[6] = 131;
-    local_choice_dialog_id[7] = 132;
-    local_choice_dialog_id[8] = 133;
-
-    setmesmacro(0, 0, 1, selected_equipment_id);
-
-    local_count = 0;
-    local_i = 0;
-    while (local_i < 9) {
-      setmesmacro(0, local_macro_id[local_i], 0,
-                  quest_unlocked_attributes[local_macro_attr[local_i]]);
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
-        setaskselectignore(0, local_choice_id[local_i]);
-      }
-      if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
-        local_count++;
-      }
-      local_i++;
-    }
-    local_count += 2;
-    if (local_count > 7) {
-      setmeswinline(0, 7);
-    } else {
-      setmeswinline(0, local_count);
-    }
-    askpos(0, 0, 1);
-    local_choice = aask(0, 0x01000000 | 116, 48, 0x03fe, 1);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 10) {
-      goto dialog_89;
-    }
-
-    if (local_choice >= 0 && local_choice < 9 &&
-        quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
-      selected_subcategory = local_choice_subcategory_id[local_choice];
-      if (local_choice == 0) {
-        goto dialog_119;
-      } else if (local_choice == 1) {
-        goto dialog_123;
-      } else if (local_choice == 2) {
-        goto dialog_120;
-      } else if (local_choice == 3) {
-        goto dialog_128;
-      } else if (local_choice == 4) {
-        goto dialog_129;
-      } else if (local_choice == 5) {
-        goto dialog_130;
-      } else if (local_choice == 6) {
-        goto dialog_131;
-      } else if (local_choice == 7) {
-        goto dialog_132;
-      } else if (local_choice == 8) {
-        goto dialog_133;
-      }
-    } else if (local_choice == 9) {
-      selected_subcategory = 9;
-      goto check_attribute_before_remove;
-    }
-
-  dialog_117:
-    flow_poll_mode = 2;
-    selected_subcategory = 10;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 117);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_118:
-    flow_poll_mode = 2;
-    selected_subcategory = 11;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 118);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_119:
-    flow_poll_mode = 2;
-    selected_subcategory = 12;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 119);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_120:
-    flow_poll_mode = 2;
-    selected_subcategory = 13;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 120);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_121:
-    flow_poll_mode = 2;
-    selected_subcategory = 14;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 121);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_122:
-    flow_poll_mode = 2;
-    selected_subcategory = 15;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 122);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_123:
-    flow_poll_mode = 2;
-    selected_subcategory = 16;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 123);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_124:
-    flow_poll_mode = 2;
-    selected_subcategory = 17;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 124);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_125:
-    flow_poll_mode = 2;
-    selected_subcategory = 18;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 125);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_126:
-    flow_poll_mode = 2;
-    selected_subcategory = 19;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 126);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_127:
-    flow_poll_mode = 2;
-    selected_subcategory = 20;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 127);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_128:
-    flow_poll_mode = 2;
-    selected_subcategory = 21;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 128);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_129:
-    flow_poll_mode = 2;
-    selected_subcategory = 22;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 129);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_130:
-    flow_poll_mode = 2;
-    selected_subcategory = 23;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 130);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_131:
-    flow_poll_mode = 2;
-    selected_subcategory = 24;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 131);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_132:
-    flow_poll_mode = 2;
-    selected_subcategory = 25;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 132);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  dialog_133:
-    flow_poll_mode = 2;
-    selected_subcategory = 26;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-    setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-    setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
-    setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
-    setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
-    setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
-
-    if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
-      setaskselectignore(0, 0);
-    }
-    if (quest_unlocked_tiers < 2 || refinement_tier2_attribute_value == 0) {
-      setaskselectignore(0, 1);
-    }
-    if (quest_unlocked_tiers < 3 || refinement_tier3_attribute_value == 0) {
-      setaskselectignore(0, 2);
-    }
-
-    local_count = 0;
-    if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
-      local_count = local_count + 1;
-    }
-    local_count = local_count + 1;
-    if (local_count < 2) {
-      local_count = 2;
-    }
-    if (local_count > 4) {
-      local_count = 4;
-    }
-
-    setmeswinline(0, local_count);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 133);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 3) {
-      goto return_to_attribute_menu;
-    }
-
-    selected_tier = local_choice + 1;
-    goto check_attribute_before_apply;
-
-  // @description: check existing attribute before apply
-  check_attribute_before_apply:
-
-    flow_check_attribute = 1;
-    wait(16);
-    flow_check_attribute = 0;
-
-    if (current_attribute >= 10 && current_attribute <= 26) {
-      if (selected_tier == 1) {
-        goto dialog_156;
-      } else if (selected_tier == 2) {
-        goto dialog_157;
-      } else if (selected_tier == 3) {
-        goto dialog_158;
-      } else {
-        goto dialog_156;
-      }
-    }
-
-    if (selected_tier == 1) {
-      goto dialog_134;
-    } else if (selected_tier == 2) {
-      goto dialog_135;
-    } else if (selected_tier == 3) {
-      goto dialog_136;
-    } else {
-      goto dialog_134;
-    }
-
-  // @description: tier 1 confirmation
-  dialog_134:
-    flow_poll_mode = 2;
-
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 134);
-    if (local_choice == 1) {
-      mesclose(0);
-      messync(0, 1);
-      goto return_to_attribute_menu;
-    }
-
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    mesclose(0);
-    messync(0, 1);
-    flow_confirmed_intention = 1;
-    wait(16);
-    flow_confirmed_intention = 0;
-    goto dialog_167;
-
-  // @description: tier 2 confirmation
-  dialog_135:
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 135);
-    if (local_choice == 1) {
-      mesclose(0);
-      messync(0, 1);
-      goto return_to_attribute_menu;
-    }
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    mesclose(0);
-    messync(0, 1);
-    flow_confirmed_intention = 1;
-    wait(16);
-    flow_confirmed_intention = 0;
-    goto dialog_168;
-
-  // @description: tier 3 confirmation
-  dialog_136:
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 136);
-    if (local_choice == 1) {
-      mesclose(0);
-      messync(0, 1);
-      goto return_to_attribute_menu;
-    }
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    mesclose(0);
-    messync(0, 1);
-    flow_confirmed_intention = 1;
-    wait(16);
-    flow_confirmed_intention = 0;
-    goto dialog_169;
-
-  // @description: check existing attribute before remove
-  check_attribute_before_remove:
-    flow_check_attribute = 1;
-    wait(16);
-    flow_check_attribute = 0;
-
-    if (current_attribute == 0) {
-      goto dialog_171;
-    }
-    goto dialog_137;
-
-  // @description: remove attribute
-  dialog_137:
-    flow_poll_mode = 2;
-
-    selected_subcategory = 9;
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-    setmesmacro(0, 0, 1, load_upgrade_item_ids[0]);
-    setmesmacro(0, 1, 1, load_upgrade_item_ids[1]);
-    setmesmacro(0, 2, 1, load_upgrade_item_ids[2]);
-    setmesmacro(0, 3, 0, load_upgrade_item_qtys[0]);
-    setmesmacro(0, 4, 0, load_upgrade_item_qtys[1]);
-    setmesmacro(0, 5, 0, load_upgrade_item_qtys[2]);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 12, 0, load_upgrade_gil[0]);
-    setmeswinline(0, 3);
-    askpos(0, 0, 1);
-    gillwinopen(havegill());
-    local_choice = aaske(0, 0x01000000 | 137);
-    if (local_choice == 1) {
-      mesclose(0);
-      messync(0, 1);
-      goto return_to_attribute_menu;
-    }
-    if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-         haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-         haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-        (load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-      mesclose(0);
-      messync(0, 1);
-      goto dialog_102;
-    }
-
-    sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
-    mesclose(0);
-    messync(0, 1);
-    flow_confirmed_intention = 1;
-    wait(16);
-    flow_confirmed_intention = 0;
-    goto dialog_155;
-
-  // @description: attribute success dialog route
-  attribute_success_dialog:
-
-    if (selected_subcategory == 10) {
-      goto dialog_138;
-    } else if (selected_subcategory == 11) {
-      goto dialog_139;
-    } else if (selected_subcategory == 12) {
-      goto dialog_140;
-    } else if (selected_subcategory == 13) {
-      goto dialog_141;
-    } else if (selected_subcategory == 14) {
-      goto dialog_142;
-    } else if (selected_subcategory == 15) {
-      goto dialog_143;
-    } else if (selected_subcategory == 16) {
-      goto dialog_144;
-    } else if (selected_subcategory == 17) {
-      goto dialog_145;
-    } else if (selected_subcategory == 18) {
-      goto dialog_146;
-    } else if (selected_subcategory == 19) {
-      goto dialog_147;
-    } else if (selected_subcategory == 20) {
-      goto dialog_148;
-    } else if (selected_subcategory == 21) {
-      goto dialog_149;
-    } else if (selected_subcategory == 22) {
-      goto dialog_150;
-    } else if (selected_subcategory == 23) {
-      goto dialog_151;
-    } else if (selected_subcategory == 24) {
-      goto dialog_152;
-    } else if (selected_subcategory == 25) {
-      goto dialog_153;
-    } else if (selected_subcategory == 26) {
-      goto dialog_154;
-    } else {
-      goto return_to_attribute_menu;
-    }
-
-  dialog_138:
-    flow_poll_mode = 2;
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 138);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_139:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 139);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_140:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 140);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_141:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 141);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_142:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 142);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_143:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 143);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_144:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 144);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_145:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 145);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_146:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 146);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_147:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 147);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_148:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 148);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_149:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 149);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_150:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 150);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_151:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 151);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_152:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 152);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_153:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 153);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  dialog_154:
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 154);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto cleanup;
-    }
-
-  // @description: attribute removal success
-  dialog_155:
-    sebsoundplay(0, 38);
-    sysCommon2effectplay(PC00, 10);
-
-    wait(35);
-
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 155);
-    mesclose(0);
-    messync(0, 1);
-
-    if (local_choice == 0) {
-      goto return_to_attribute_menu;
-    } else {
-      goto dialog_90;
-    }
-
-  // @description: tier 1 overwrite
-  dialog_156:
-    flow_poll_mode = 2;
-
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 156);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-
-    if (selected_tier == 1) {
-      goto dialog_134;
-    } else if (selected_tier == 2) {
-      goto dialog_135;
-    } else if (selected_tier == 3) {
-      goto dialog_136;
-    } else {
-      goto dialog_134;
-    }
-
-  // @description: tier 2 overwrite
-  dialog_157:
-
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 157);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-
-    if (selected_tier == 1) {
-      goto dialog_134;
-    } else if (selected_tier == 2) {
-      goto dialog_135;
-    } else if (selected_tier == 3) {
-      goto dialog_136;
-    } else {
-      goto dialog_135;
-    }
-
-  // @description: tier 3 overwrite
-  dialog_158:
-
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-    setmesmacro(0, 1, 0, refinement_default_attribute_value);
-    setmesmacro(0, 2, 0, refinement_total_attribute_value);
-    setmesmacro(0, 7, 1, selected_equipment_id);
-    setmeswinline(0, 4);
-    askpos(0, 0, 1);
-    local_choice = aaske(0, 0x01000000 | 158);
-    mesclose(0);
-    messync(0, 1);
-    if (local_choice == 1) {
-      goto dialog_89;
-    }
-    if (selected_tier == 1) {
-      goto dialog_134;
-    } else if (selected_tier == 2) {
-      goto dialog_135;
-    } else if (selected_tier == 3) {
-      goto dialog_136;
-    } else {
-      goto dialog_136;
-    }
-
-  // @description: tier 1 animation
-  dialog_167:
-    flow_poll_mode = 1;
-
-    sebsoundplay(0, 39);
-    amese(0, 0x01000000 | 168);
-    messync(0, 1);
-
-    sebsoundplay(0, 38);
-    sysCommon2effectplay(PC00, 4);
-    goto attribute_success_dialog;
-
-  // @description: tier 2 animation
-  dialog_168:
-    flow_poll_mode = 1;
-
-    sebsoundplay(0, 39);
-    amese(0, 0x01000000 | 169);
-    messync(0, 1);
-
-    sebsoundplay(0, 38);
-    sysCommon2effectplay(PC00, 4);
-    goto attribute_success_dialog;
-
-  // @description: tier 3 animation
-  dialog_169:
-    flow_poll_mode = 1;
-
-    sebsoundplay(0, 39);
-    amese(0, 0x01000000 | 170);
-    messync(0, 1);
-
-    sebsoundplay(0, 38);
-    sysCommon2effectplay(PC00, 4);
-    goto attribute_success_dialog;
-
-  // @description: exit message
-  dialog_90:
-    flow_poll_mode = 1;
-    amese(0, 0x01000000 | 90);
-    messync(0, 1);
-    goto cleanup;
-
-  // @description: cleanup and restore
-  cleanup:
-    flow_talk_status = 0;
-    flow_selected_intention = 0;
-    flow_confirmed_intention = 0;
-    flow_reset_flow = 0;
-    flow_load_equipment = 0;
-    selected_category = 0;
-    selected_subcategory = 0;
-    selected_equipment_id = 0;
-    selected_tier = 0;
-
-    setkutipakustatus(0);
-    setunazukistatus(0);
-    setkubifuristatus(0);
-
-    ucon();
-    sethpmenu(1);
-    clear_force_char_nearfade();
-    setmaphighmodeldepth(-1);
-    setmapmodelstatus(1);
-    setstatuserrordispdenystatus(0);
-    settrapshowstatus(1);
-    stdmotionplay_2c2(0x01000000, 20);
+			case 1:
+				goto dialog_93;
+			case 2:
+				goto dialog_94;
+			case 3:
+				goto dialog_95;
+			case 4:
+				goto dialog_96;
+			case 5:
+				goto dialog_97;
+			case 6:
+				goto dialog_98;
+			case 7:
+				goto dialog_99;
+			case 8:
+				goto dialog_100;
+			default:
+				goto dialog_89;
+			}
+
+    dialog_159:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 159);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    dialog_160:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 160);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    dialog_161:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 161);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    dialog_162:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 162);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    dialog_163:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 163);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    dialog_164:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 164);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    dialog_165:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 166);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    dialog_166:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 166);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			goto route_to_element_confirmation;
+
+    // @description: no element to remove
+    dialog_170:
+      flow_poll_mode = 2;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 170);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				goto dialog_90;
+			}
+
+    // @description: no attribute to remove
+    dialog_171:
+      flow_poll_mode = 2;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 171);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				goto dialog_90;
+			}
+
+    // @description: alchemy animation
+    dialog_112:
+      flow_poll_mode = 1;
+			amese(0, 0x01000000 | 112);
+			messync(0, 1);
+			sebsoundplay(0, 38);
+			if (selected_subcategory != 9) {
+				sysCommon2effectplay(PC00, 11);
+			} else {
+				sysCommon2effectplay(PC00, 10);
+			}
+			wait(35);
+			if (flow_talk_status == 2) {
+				switch (selected_subcategory) {
+				case 1:
+					goto dialog_103;
+				case 2:
+					goto dialog_104;
+				case 3:
+					goto dialog_105;
+				case 4:
+					goto dialog_106;
+				case 5:
+					goto dialog_107;
+				case 6:
+					goto dialog_108;
+				case 7:
+					goto dialog_109;
+				case 8:
+					goto dialog_110;
+				case 9:
+					goto dialog_111;
+				default:
+					goto dialog_103;
+				}
+			} else if (flow_talk_status == 3) {
+				if (selected_subcategory == 0) {
+					goto dialog_155;
+				} else {
+					goto attribute_success_dialog;
+				}
+			} else {
+				goto dialog_103;
+			}
+
+    // @description: not enough items
+    dialog_102:
+      flow_poll_mode = 1;
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinclose();
+			local_choice = aaske(0, 0x01000000 | 102);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				goto dialog_90;
+			}
+
+    dialog_103:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 103);
+			mesclose(0);
+			messync(0, 1);
+
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_104:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 104);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_105:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 105);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_106:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 106);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_107:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 107);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_108:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 108);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_109:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 109);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_110:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 110);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+
+    dialog_111:
+      setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 111);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto dialog_89;
+			} else if (local_choice == 1) {
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_90;
+			}
+			// @description: back to attribute menu
+			return_to_attribute_menu:
+				gillwinclose();
+			selected_subcategory = 0;
+			selected_tier = 0;
+			if (selected_category >= 1 && selected_category <= 17) {
+				goto dialog_113;
+			} else if (selected_category == 36) {
+				goto dialog_114;
+			} else if (selected_category >= 18 && selected_category <= 23) {
+				goto dialog_115;
+			} else if (selected_category >= 24 && selected_category <= 35) {
+				goto dialog_116;
+			} else {
+				goto dialog_89;
+			}
+
+    // @description: weapon attributes menu
+    dialog_113:
+      flow_poll_mode = 2;
+			local_macro_id[0] = 22;
+			local_macro_id[1] = 23;
+			local_macro_id[2] = 24;
+			local_macro_id[3] = 25;
+			local_macro_id[4] = 26;
+			local_macro_id[5] = 27;
+			local_macro_id[6] = 28;
+			local_macro_id[7] = 33;
+			local_macro_id[8] = 34;
+			local_macro_id[9] = 35;
+			local_macro_id[10] = 36;
+			local_macro_id[11] = 37;
+			local_macro_id[12] = 38;
+			local_macro_attr[0] = 0;
+			local_macro_attr[1] = 1;
+			local_macro_attr[2] = 2;
+			local_macro_attr[3] = 3;
+			local_macro_attr[4] = 4;
+			local_macro_attr[5] = 5;
+			local_macro_attr[6] = 6;
+			local_macro_attr[7] = 11;
+			local_macro_attr[8] = 12;
+			local_macro_attr[9] = 13;
+			local_macro_attr[10] = 14;
+			local_macro_attr[11] = 15;
+			local_macro_attr[12] = 16;
+			local_choice_id[0] = 0;
+			local_choice_id[1] = 1;
+			local_choice_id[2] = 2;
+			local_choice_id[3] = 3;
+			local_choice_id[4] = 4;
+			local_choice_id[5] = 5;
+			local_choice_id[6] = 6;
+			local_choice_id[7] = 7;
+			local_choice_id[8] = 8;
+			local_choice_id[9] = 9;
+			local_choice_id[10] = 10;
+			local_choice_id[11] = 11;
+			local_choice_id[12] = 12;
+			local_choice_subcategory_id[0] = 10;
+			local_choice_subcategory_id[1] = 11;
+			local_choice_subcategory_id[2] = 12;
+			local_choice_subcategory_id[3] = 16;
+			local_choice_subcategory_id[4] = 14;
+			local_choice_subcategory_id[5] = 15;
+			local_choice_subcategory_id[6] = 13;
+			local_choice_subcategory_id[7] = 21;
+			local_choice_subcategory_id[8] = 22;
+			local_choice_subcategory_id[9] = 23;
+			local_choice_subcategory_id[10] = 24;
+			local_choice_subcategory_id[11] = 25;
+			local_choice_subcategory_id[12] = 26;
+			local_choice_dialog_id[0] = 117;
+			local_choice_dialog_id[1] = 118;
+			local_choice_dialog_id[2] = 119;
+			local_choice_dialog_id[3] = 123;
+			local_choice_dialog_id[4] = 121;
+			local_choice_dialog_id[5] = 122;
+			local_choice_dialog_id[6] = 120;
+			local_choice_dialog_id[7] = 128;
+			local_choice_dialog_id[8] = 129;
+			local_choice_dialog_id[9] = 130;
+			local_choice_dialog_id[10] = 131;
+			local_choice_dialog_id[11] = 132;
+			local_choice_dialog_id[12] = 133;
+			setmesmacro(0, 0, 1, selected_equipment_id);
+			local_count = 0;
+			local_i = 0;
+			while (local_i < 13) {
+				setmesmacro(0, local_macro_id[local_i], 0,
+					quest_unlocked_attributes[local_macro_attr[local_i]]);
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
+					setaskselectignore(0, local_choice_id[local_i]);
+				}
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
+					local_count++;
+				}
+				local_i++;
+			}
+			local_count += 2;
+			if (local_count > 15) {
+				local_count = 15;
+			}
+			if (local_count > 7) {
+				setmeswinline(0, 7);
+			} else {
+				setmeswinline(0, local_count);
+			}
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 113, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 14) {
+				goto dialog_89;
+			}
+			if (local_choice == 13) {
+				selected_subcategory = 9;
+				goto check_attribute_before_remove;
+			}
+			if (local_choice >= 0 && local_choice < 13 &&
+				quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+				selected_subcategory = local_choice_subcategory_id[local_choice];
+				if (local_choice == 0) {
+					goto dialog_117;
+				} else if (local_choice == 1) {
+					goto dialog_118;
+				} else if (local_choice == 2) {
+					goto dialog_119;
+				} else if (local_choice == 3) {
+					goto dialog_123;
+				} else if (local_choice == 4) {
+					goto dialog_121;
+				} else if (local_choice == 5) {
+					goto dialog_122;
+				} else if (local_choice == 6) {
+					goto dialog_120;
+				} else if (local_choice == 7) {
+					goto dialog_128;
+				} else if (local_choice == 8) {
+					goto dialog_129;
+				} else if (local_choice == 9) {
+					goto dialog_130;
+				} else if (local_choice == 10) {
+					goto dialog_131;
+				} else if (local_choice == 11) {
+					goto dialog_132;
+				} else if (local_choice == 12) {
+					goto dialog_133;
+				}
+			}
+
+    dialog_114:
+      flow_poll_mode = 2;
+			local_macro_id[0] = 29;
+			local_macro_id[1] = 30;
+			local_macro_id[2] = 33;
+			local_macro_id[3] = 34;
+			local_macro_id[4] = 35;
+			local_macro_id[5] = 36;
+			local_macro_id[6] = 37;
+			local_macro_id[7] = 38;
+			local_macro_attr[0] = 7;
+			local_macro_attr[1] = 8;
+			local_macro_attr[2] = 11;
+			local_macro_attr[3] = 12;
+			local_macro_attr[4] = 13;
+			local_macro_attr[5] = 14;
+			local_macro_attr[6] = 15;
+			local_macro_attr[7] = 16;
+			local_choice_id[0] = 0;
+			local_choice_id[1] = 1;
+			local_choice_id[2] = 2;
+			local_choice_id[3] = 3;
+			local_choice_id[4] = 4;
+			local_choice_id[5] = 5;
+			local_choice_id[6] = 6;
+			local_choice_id[7] = 7;
+			local_choice_subcategory_id[0] = 17;
+			local_choice_subcategory_id[1] = 18;
+			local_choice_subcategory_id[2] = 21;
+			local_choice_subcategory_id[3] = 22;
+			local_choice_subcategory_id[4] = 23;
+			local_choice_subcategory_id[5] = 24;
+			local_choice_subcategory_id[6] = 25;
+			local_choice_subcategory_id[7] = 26;
+			local_choice_dialog_id[0] = 124;
+			local_choice_dialog_id[1] = 125;
+			local_choice_dialog_id[2] = 128;
+			local_choice_dialog_id[3] = 129;
+			local_choice_dialog_id[4] = 130;
+			local_choice_dialog_id[5] = 131;
+			local_choice_dialog_id[6] = 132;
+			local_choice_dialog_id[7] = 133;
+			setmesmacro(0, 0, 1, selected_equipment_id);
+			local_count = 0;
+			local_i = 0;
+			while (local_i < 8) {
+				setmesmacro(0, local_macro_id[local_i], 0,
+					quest_unlocked_attributes[local_macro_attr[local_i]]);
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
+					setaskselectignore(0, local_choice_id[local_i]);
+				}
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
+					local_count++;
+				}
+				local_i++;
+			}
+			local_count += 2;
+			if (local_count > 7) {
+				setmeswinline(0, 7);
+			} else {
+				setmeswinline(0, local_count);
+			}
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 114, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 9) {
+				goto dialog_89;
+			}
+			if (local_choice >= 0 && local_choice < 8 &&
+				quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+				selected_subcategory = local_choice_subcategory_id[local_choice];
+				if (local_choice == 0) {
+					goto dialog_124;
+				} else if (local_choice == 1) {
+					goto dialog_125;
+				} else if (local_choice == 2) {
+					goto dialog_128;
+				} else if (local_choice == 3) {
+					goto dialog_129;
+				} else if (local_choice == 4) {
+					goto dialog_130;
+				} else if (local_choice == 5) {
+					goto dialog_131;
+				} else if (local_choice == 6) {
+					goto dialog_132;
+				} else if (local_choice == 7) {
+					goto dialog_133;
+				}
+			} else if (local_choice == 8) {
+				selected_subcategory = 9;
+				goto check_attribute_before_remove;
+			}
+
+    dialog_115:
+      flow_poll_mode = 2;
+			local_macro_id[0] = 31;
+			local_macro_id[1] = 32;
+			local_macro_id[2] = 33;
+			local_macro_id[3] = 34;
+			local_macro_id[4] = 35;
+			local_macro_id[5] = 36;
+			local_macro_id[6] = 37;
+			local_macro_id[7] = 38;
+			local_macro_attr[0] = 9;
+			local_macro_attr[1] = 10;
+			local_macro_attr[2] = 11;
+			local_macro_attr[3] = 12;
+			local_macro_attr[4] = 13;
+			local_macro_attr[5] = 14;
+			local_macro_attr[6] = 15;
+			local_macro_attr[7] = 16;
+			local_choice_id[0] = 0;
+			local_choice_id[1] = 1;
+			local_choice_id[2] = 2;
+			local_choice_id[3] = 3;
+			local_choice_id[4] = 4;
+			local_choice_id[5] = 5;
+			local_choice_id[6] = 6;
+			local_choice_id[7] = 7;
+			local_choice_subcategory_id[0] = 19;
+			local_choice_subcategory_id[1] = 20;
+			local_choice_subcategory_id[2] = 21;
+			local_choice_subcategory_id[3] = 22;
+			local_choice_subcategory_id[4] = 23;
+			local_choice_subcategory_id[5] = 24;
+			local_choice_subcategory_id[6] = 25;
+			local_choice_subcategory_id[7] = 26;
+			local_choice_dialog_id[0] = 126;
+			local_choice_dialog_id[1] = 127;
+			local_choice_dialog_id[2] = 128;
+			local_choice_dialog_id[3] = 129;
+			local_choice_dialog_id[4] = 130;
+			local_choice_dialog_id[5] = 131;
+			local_choice_dialog_id[6] = 132;
+			local_choice_dialog_id[7] = 133;
+			setmesmacro(0, 0, 1, selected_equipment_id);
+			local_count = 0;
+			local_i = 0;
+			while (local_i < 8) {
+				setmesmacro(0, local_macro_id[local_i], 0,
+					quest_unlocked_attributes[local_macro_attr[local_i]]);
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
+					setaskselectignore(0, local_choice_id[local_i]);
+				}
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
+					local_count++;
+				}
+				local_i++;
+			}
+			local_count += 2;
+			if (local_count > 7) {
+				setmeswinline(0, 7);
+			} else {
+				setmeswinline(0, local_count);
+			}
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 115, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 9) {
+				goto dialog_89;
+			}
+			if (local_choice >= 0 && local_choice < 8 &&
+				quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+				selected_subcategory = local_choice_subcategory_id[local_choice];
+				if (local_choice == 0) {
+					goto dialog_126;
+				} else if (local_choice == 1) {
+					goto dialog_127;
+				} else if (local_choice == 2) {
+					goto dialog_128;
+				} else if (local_choice == 3) {
+					goto dialog_129;
+				} else if (local_choice == 4) {
+					goto dialog_130;
+				} else if (local_choice == 5) {
+					goto dialog_131;
+				} else if (local_choice == 6) {
+					goto dialog_132;
+				} else if (local_choice == 7) {
+					goto dialog_133;
+				}
+			} else if (local_choice == 8) {
+				selected_subcategory = 9;
+				goto check_attribute_before_remove;
+			}
+
+    dialog_116:
+      flow_poll_mode = 2;
+			local_macro_id[0] = 24;
+			local_macro_id[1] = 28;
+			local_macro_id[2] = 25;
+			local_macro_id[3] = 33;
+			local_macro_id[4] = 34;
+			local_macro_id[5] = 35;
+			local_macro_id[6] = 36;
+			local_macro_id[7] = 37;
+			local_macro_id[8] = 38;
+			local_macro_attr[0] = 2;
+			local_macro_attr[1] = 6;
+			local_macro_attr[2] = 3;
+			local_macro_attr[3] = 11;
+			local_macro_attr[4] = 12;
+			local_macro_attr[5] = 13;
+			local_macro_attr[6] = 14;
+			local_macro_attr[7] = 15;
+			local_macro_attr[8] = 16;
+			local_choice_id[0] = 0;
+			local_choice_id[1] = 1;
+			local_choice_id[2] = 2;
+			local_choice_id[3] = 3;
+			local_choice_id[4] = 4;
+			local_choice_id[5] = 5;
+			local_choice_id[6] = 6;
+			local_choice_id[7] = 7;
+			local_choice_id[8] = 8;
+			local_choice_subcategory_id[0] = 12;
+			local_choice_subcategory_id[1] = 16;
+			local_choice_subcategory_id[2] = 13;
+			local_choice_subcategory_id[3] = 21;
+			local_choice_subcategory_id[4] = 22;
+			local_choice_subcategory_id[5] = 23;
+			local_choice_subcategory_id[6] = 24;
+			local_choice_subcategory_id[7] = 25;
+			local_choice_subcategory_id[8] = 26;
+			local_choice_dialog_id[0] = 119;
+			local_choice_dialog_id[1] = 123;
+			local_choice_dialog_id[2] = 120;
+			local_choice_dialog_id[3] = 128;
+			local_choice_dialog_id[4] = 129;
+			local_choice_dialog_id[5] = 130;
+			local_choice_dialog_id[6] = 131;
+			local_choice_dialog_id[7] = 132;
+			local_choice_dialog_id[8] = 133;
+			setmesmacro(0, 0, 1, selected_equipment_id);
+			local_count = 0;
+			local_i = 0;
+			while (local_i < 9) {
+				setmesmacro(0, local_macro_id[local_i], 0,
+					quest_unlocked_attributes[local_macro_attr[local_i]]);
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] == 0) {
+					setaskselectignore(0, local_choice_id[local_i]);
+				}
+				if (quest_unlocked_attributes[local_macro_attr[local_i]] > 0) {
+					local_count++;
+				}
+				local_i++;
+			}
+			local_count += 2;
+			if (local_count > 7) {
+				setmeswinline(0, 7);
+			} else {
+				setmeswinline(0, local_count);
+			}
+			askpos(0, 0, 1);
+			local_choice = aask(0, 0x01000000 | 116, 48, 0x03fe, 1);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 10) {
+				goto dialog_89;
+			}
+			if (local_choice >= 0 && local_choice < 9 &&
+				quest_unlocked_attributes[local_macro_attr[local_choice]] > 0) {
+				selected_subcategory = local_choice_subcategory_id[local_choice];
+				if (local_choice == 0) {
+					goto dialog_119;
+				} else if (local_choice == 1) {
+					goto dialog_123;
+				} else if (local_choice == 2) {
+					goto dialog_120;
+				} else if (local_choice == 3) {
+					goto dialog_128;
+				} else if (local_choice == 4) {
+					goto dialog_129;
+				} else if (local_choice == 5) {
+					goto dialog_130;
+				} else if (local_choice == 6) {
+					goto dialog_131;
+				} else if (local_choice == 7) {
+					goto dialog_132;
+				} else if (local_choice == 8) {
+					goto dialog_133;
+				}
+			} else if (local_choice == 9) {
+				selected_subcategory = 9;
+				goto check_attribute_before_remove;
+			}
+
+    dialog_117:
+      flow_poll_mode = 2;
+			selected_subcategory = 10;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 117);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_118:
+      flow_poll_mode = 2;
+			selected_subcategory = 11;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 118);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_119:
+      flow_poll_mode = 2;
+			selected_subcategory = 12;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 119);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_120:
+      flow_poll_mode = 2;
+			selected_subcategory = 13;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 120);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_121:
+      flow_poll_mode = 2;
+			selected_subcategory = 14;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 121);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_122:
+      flow_poll_mode = 2;
+			selected_subcategory = 15;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 122);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_123:
+      flow_poll_mode = 2;
+			selected_subcategory = 16;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 123);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_124:
+      flow_poll_mode = 2;
+			selected_subcategory = 17;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 124);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_125:
+      flow_poll_mode = 2;
+			selected_subcategory = 18;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 125);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_126:
+      flow_poll_mode = 2;
+			selected_subcategory = 19;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 126);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_127:
+      flow_poll_mode = 2;
+			selected_subcategory = 20;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 127);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_128:
+      flow_poll_mode = 2;
+			selected_subcategory = 21;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 128);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_129:
+      flow_poll_mode = 2;
+			selected_subcategory = 22;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 129);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_130:
+      flow_poll_mode = 2;
+			selected_subcategory = 23;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 130);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_131:
+      flow_poll_mode = 2;
+			selected_subcategory = 24;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 131);
+			mesclose(0);
+			messync(0, 1);
+
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_132:
+      flow_poll_mode = 2;
+			selected_subcategory = 25;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 132);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    dialog_133:
+      flow_poll_mode = 2;
+			selected_subcategory = 26;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetTierMacros);
+			setmeswinline(0, file_alchemist_tier_count);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 133);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 3) {
+				goto return_to_attribute_menu;
+			}
+			selected_tier = local_choice + 1;
+			goto check_attribute_before_apply;
+
+    // @description: check existing attribute before apply
+    check_attribute_before_apply:
+      flow_check_attribute = 1;
+			wait(16);
+			flow_check_attribute = 0;
+			if (current_attribute >= 10 && current_attribute <= 26) {
+				if (selected_tier == 1) {
+					goto dialog_156;
+				} else if (selected_tier == 2) {
+					goto dialog_157;
+				} else if (selected_tier == 3) {
+					goto dialog_158;
+				} else {
+					goto dialog_156;
+				}
+			}
+			if (selected_tier == 1) {
+				goto dialog_134;
+			} else if (selected_tier == 2) {
+				goto dialog_135;
+			} else if (selected_tier == 3) {
+				goto dialog_136;
+			} else {
+				goto dialog_134;
+			}
+
+    // @description: tier 1 confirmation
+    dialog_134:
+      flow_poll_mode = 2;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 134);
+			if (local_choice == 1) {
+				mesclose(0);
+				messync(0, 1);
+				goto return_to_attribute_menu;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_167;
+
+    // @description: tier 2 confirmation
+    dialog_135:
+      sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 135);
+			if (local_choice == 1) {
+				mesclose(0);
+				messync(0, 1);
+				goto return_to_attribute_menu;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_168;
+
+    // @description: tier 3 confirmation
+    dialog_136:
+      sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			gillwinopen(havegill());
+			local_choice = aaske(0, 0x01000000 | 136);
+			if (local_choice == 1) {
+				mesclose(0);
+				messync(0, 1);
+				goto return_to_attribute_menu;
+			}
+			sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+			if (file_alchemist_has_items == 0) {
+				mesclose(0);
+				messync(0, 1);
+				goto dialog_102;
+			}
+			sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+			mesclose(0);
+			messync(0, 1);
+			sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+			goto dialog_169;
+
+    // @description: check existing attribute before remove
+    check_attribute_before_remove:
+      flow_check_attribute = 1;
+			wait(16);
+			flow_check_attribute = 0;
+
+			if (current_attribute == 0) {
+				goto dialog_171;
+			}
+			goto dialog_137;
+
+			// @description: remove attribute
+			dialog_137:
+				flow_poll_mode = 2;
+				selected_subcategory = 9;
+				sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+				sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
+				setmeswinline(0, 3);
+				askpos(0, 0, 1);
+				gillwinopen(havegill());
+				local_choice = aaske(0, 0x01000000 | 137);
+				if (local_choice == 1) {
+					mesclose(0);
+					messync(0, 1);
+					goto return_to_attribute_menu;
+				}
+				sysReqew(0, Alchemist_Utility::CheckHasRequiredItems);
+				if (file_alchemist_has_items == 0) {
+					mesclose(0);
+					messync(0, 1);
+					goto dialog_102;
+				}
+				sysReqew(0, Alchemist_Utility::ConsumeUpgradeCosts);
+				mesclose(0);
+				messync(0, 1);
+				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
+				goto dialog_155;
+
+    // @description: attribute success dialog route
+    attribute_success_dialog:
+      if (selected_subcategory == 10) {
+        goto dialog_138;
+      } else if (selected_subcategory == 11) {
+				goto dialog_139;
+			} else if (selected_subcategory == 12) {
+				goto dialog_140;
+			} else if (selected_subcategory == 13) {
+				goto dialog_141;
+			} else if (selected_subcategory == 14) {
+				goto dialog_142;
+			} else if (selected_subcategory == 15) {
+				goto dialog_143;
+			} else if (selected_subcategory == 16) {
+				goto dialog_144;
+			} else if (selected_subcategory == 17) {
+				goto dialog_145;
+			} else if (selected_subcategory == 18) {
+				goto dialog_146;
+			} else if (selected_subcategory == 19) {
+				goto dialog_147;
+			} else if (selected_subcategory == 20) {
+				goto dialog_148;
+			} else if (selected_subcategory == 21) {
+				goto dialog_149;
+			} else if (selected_subcategory == 22) {
+				goto dialog_150;
+			} else if (selected_subcategory == 23) {
+				goto dialog_151;
+			} else if (selected_subcategory == 24) {
+				goto dialog_152;
+			} else if (selected_subcategory == 25) {
+				goto dialog_153;
+			} else if (selected_subcategory == 26) {
+				goto dialog_154;
+			} else {
+				goto return_to_attribute_menu;
+			}
+
+    dialog_138:
+      flow_poll_mode = 2;
+			sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 138);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_139:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 139);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_140:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 140);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_141:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 141);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_142:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 142);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_143:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 143);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_144:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 144);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_145:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 145);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_146:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 146);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_147:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 147);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_148:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 148);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_149:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 149);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_150:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 150);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_151:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 151);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_152:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 152);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_153:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 153);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    dialog_154:
+      sysReqew(0, Alchemist_Utility::SetResultMacros);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 154);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    // @description: attribute removal success
+    dialog_155:
+      sebsoundplay(0, 38);
+			sysCommon2effectplay(PC00, 10);
+			wait(35);
+			setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 155);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 0) {
+				goto return_to_attribute_menu;
+			} else {
+				goto dialog_90;
+			}
+
+    // @description: tier 1 overwrite
+    dialog_156:
+      flow_poll_mode = 2;
+			sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			setmesmacro(0, 1, 0, refinement_default_attribute_value);
+			setmesmacro(0, 2, 0, refinement_total_attribute_value);
+			setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 156);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			if (selected_tier == 1) {
+				goto dialog_134;
+			} else if (selected_tier == 2) {
+				goto dialog_135;
+			} else if (selected_tier == 3) {
+				goto dialog_136;
+			} else {
+				goto dialog_134;
+			}
+
+    // @description: tier 2 overwrite
+    dialog_157:
+      sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			setmesmacro(0, 1, 0, refinement_default_attribute_value);
+			setmesmacro(0, 2, 0, refinement_total_attribute_value);
+			setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 157);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			if (selected_tier == 1) {
+				goto dialog_134;
+			} else if (selected_tier == 2) {
+				goto dialog_135;
+			} else if (selected_tier == 3) {
+				goto dialog_136;
+			} else {
+				goto dialog_135;
+			}
+
+    // @description: tier 3 overwrite
+    dialog_158:
+      sysReqew(0, Alchemist_Utility::TriggerLoadEquipment);
+			setmesmacro(0, 1, 0, refinement_default_attribute_value);
+			setmesmacro(0, 2, 0, refinement_total_attribute_value);
+			setmesmacro(0, 7, 1, selected_equipment_id);
+			setmeswinline(0, 4);
+			askpos(0, 0, 1);
+			local_choice = aaske(0, 0x01000000 | 158);
+			mesclose(0);
+			messync(0, 1);
+			if (local_choice == 1) {
+				goto dialog_89;
+			}
+			if (selected_tier == 1) {
+				goto dialog_134;
+			} else if (selected_tier == 2) {
+				goto dialog_135;
+			} else if (selected_tier == 3) {
+				goto dialog_136;
+			} else {
+				goto dialog_136;
+			}
+
+    // @description: tier 1 animation
+    dialog_167:
+      flow_poll_mode = 1;
+			sebsoundplay(0, 39);
+			amese(0, 0x01000000 | 168);
+			messync(0, 1);
+			sebsoundplay(0, 38);
+			sysCommon2effectplay(PC00, 4);
+			goto attribute_success_dialog;
+
+    // @description: tier 2 animation
+    dialog_168:
+      flow_poll_mode = 1;
+			sebsoundplay(0, 39);
+			amese(0, 0x01000000 | 169);
+			messync(0, 1);
+			sebsoundplay(0, 38);
+			sysCommon2effectplay(PC00, 4);
+			goto attribute_success_dialog;
+
+    // @description: tier 3 animation
+    dialog_169:
+      flow_poll_mode = 1;
+			sebsoundplay(0, 39);
+			amese(0, 0x01000000 | 170);
+			messync(0, 1);
+			sebsoundplay(0, 38);
+			sysCommon2effectplay(PC00, 4);
+			goto attribute_success_dialog;
+
+    // @description: exit message
+    dialog_90:
+      flow_poll_mode = 1;
+			amese(0, 0x01000000 | 90);
+			messync(0, 1);
+			goto cleanup;
+
+    // @description: cleanup and restore
+    cleanup:
+      flow_talk_status = 0;
+			flow_selected_intention = 0;
+			flow_confirmed_intention = 0;
+			flow_reset_flow = 0;
+			flow_load_equipment = 0;
+			selected_category = 0;
+			selected_subcategory = 0;
+			selected_equipment_id = 0;
+			selected_tier = 0;
+
+			setkutipakustatus(0);
+			setunazukistatus(0);
+			setkubifuristatus(0);
+
+			ucon();
+			sethpmenu(1);
+			clear_force_char_nearfade();
+			setmaphighmodeldepth(-1);
+			setmapmodelstatus(1);
+			setstatuserrordispdenystatus(0);
+			settrapshowstatus(1);
+			stdmotionplay_2c2(0x01000000, 20);
     return;
   }
 }
