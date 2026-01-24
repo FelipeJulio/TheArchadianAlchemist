@@ -1673,16 +1673,17 @@ actor Alchemist_Utility(0)
 
 	function CheckHasRequiredItems()
 	{
-		if ((haveitem(load_upgrade_item_ids[0]) < load_upgrade_item_qtys[0] ||
-			 haveitem(load_upgrade_item_ids[1]) < load_upgrade_item_qtys[1] ||
-			 haveitem(load_upgrade_item_ids[2]) < load_upgrade_item_qtys[2]) &&
-			(load_upgrade_gil[0] > 0 && havegill() < load_upgrade_gil[0])) {
-			file_alchemist_has_items = 0;
-		} else {
-			file_alchemist_has_items = 1;
-		}
-		return;
-	}
+    if (haveitem(load_upgrade_item_ids[0]) >= load_upgrade_item_qtys[0] &&
+      	haveitem(load_upgrade_item_ids[1]) >= load_upgrade_item_qtys[1] &&
+      	haveitem(load_upgrade_item_ids[2]) >= load_upgrade_item_qtys[2] &&
+      	(load_upgrade_gil[0] == 0 || havegill() >= load_upgrade_gil[0])) {
+
+      file_alchemist_has_items = 1;
+    } else {
+      file_alchemist_has_items = 0;
+    }
+    return;
+  }
 
 	function TriggerLoadEquipment()
 	{
