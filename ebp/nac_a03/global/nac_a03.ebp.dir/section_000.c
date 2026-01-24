@@ -5642,31 +5642,26 @@ actor NPC_Alchemist(6) {
 			local_count = 0;
 			local_equipment_qtty = 0;
 			for (local_i = 0; local_i <= 30; local_i++) {
-				if (load_equipment_list[local_i] == 0) {
+        if (load_equipment_list[local_i] == 0) {
+            setaskselectignore(0, local_i);
+        } else if (haveitem(load_equipment_list[local_i]) > 0) {
+            setmesmacro(0, local_equipment_qtty, 1, load_equipment_list[local_i]);
+            local_available_indices[local_equipment_qtty] = local_i;
+            local_equipment_qtty++;
+        } else {
 					setaskselectignore(0, local_i);
-				} else {
-					local_count++;
-					if (haveitem(load_equipment_list[local_i]) > 0) {
-						setmesmacro(0, local_equipment_qtty, 1, load_equipment_list[local_i]);
-						local_available_indices[local_equipment_qtty] = local_i;
-						local_equipment_qtty++;
-					} else {
-						setaskselectignore(0, local_i);
-					}
-				}
-			}
+        }
+  	  }
 			if (local_equipment_qtty == 0) {
 				amese(0, 0x01000000 | 91);
 				messync(0, 1);
 				goto return_to_category_dialog;
 			}
 			for (local_i = local_equipment_qtty; local_i <= 30; local_i++) {
-				setaskselectignore(0, local_i);
-			}
-			if (local_equipment_qtty > 6) {
-				setmeswinline(0, 7);
-			} else {
-				setmeswinline(0, local_equipment_qtty + 1);
+        setaskselectignore(0, local_i);
+    	}
+			if (local_equipment_qtty >= 6) {
+        setmeswinline(0, 7);
 			}
 			askpos(0, 0, local_equipment_qtty + 1);
 			local_equipment_index = aask(0, 0x01000000 | 89, 48, 0x03fe, 1);
