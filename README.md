@@ -1,6 +1,6 @@
-# Dynamic Description
+# The Archadian Alchemist
 
-Dynamic Description is a real-time description generator for Final Fantasy XII: The Zodiac Age. It reads battlepack data directly from the game's memory to automatically generate accurate item descriptions, working alongside The Insurgent's Descriptive Inventory.
+The Archadian Alchemist introduces an alchemy system that allows you to alter elemental properties and enhance equipment attributes through a specialized alchemist, unlocking new strategic possibilities as the laboratory progresses.
 
 ---
 
