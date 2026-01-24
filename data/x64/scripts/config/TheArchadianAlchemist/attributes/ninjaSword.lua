@@ -20,17 +20,17 @@ local ninjaSword = {
     chargeTime = {
         [1] = {
             gil = 2784,
-            value = 2,
+            value = -2,
             items = {{8290, 1}, {8291, 1}, {8292, 1}}
         },
         [2] = {
             gil = 6960,
-            value = 3,
+            value = -3,
             items = {{8293, 2}, {8270, 2}, {8271, 2}}
         },
         [3] = {
             gil = 13920,
-            value = 5,
+            value = -5,
             items = {{8272, 3}, {8340, 3}, {8334, 3}}
         }
     },

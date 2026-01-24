@@ -20,17 +20,17 @@ local crossBow = {
 	chargeTime = {
 		[1] = {
 			gil = 2755,
-			value = 1,
+			value = -1,
 			items = {{8290, 1}, {8291, 1}, {8292, 1}}
 		},
 		[2] = {
 			gil = 6887,
-			value = 4,
+			value = -4,
 			items = {{8293, 2}, {8270, 2}, {8271, 2}}
 		},
 		[3] = {
 			gil = 13775,
-			value = 7,
+			value = -7,
 			items = {{8272, 3}, {8340, 3}, {8334, 3}}
 		}
 	},

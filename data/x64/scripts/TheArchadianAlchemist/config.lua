@@ -26,7 +26,7 @@ local function parseQuestlineSection(section, nameToId)
 	for tier = 1, 3 do
 		local tierData = section[tier]
 		if tierData then
-			parsed.ids[tier] = tierData.id
+			parsed.ids[tier] = tierData.progress
 			if tierData.unlocks then
 				parsed.contents[tier] = {}
 				for name, flag in pairs(tierData.unlocks) do
@@ -124,19 +124,19 @@ function config.questline(rawQuestline, elementNameToId, attributeNameToId)
 	local parsed = {
 		overrideEvents = rawQuestline.overrideEvents or false
 	}
-	local mainQuest = rawQuestline.mainQuest
+	local quest = rawQuestline.quest
 
-	if mainQuest then
-		parsed.mainQuest = {}
-		if mainQuest.startQuest then
-			parsed.mainQuest.startQuest = {
-				id = mainQuest.startQuest.id,
-				gil = mainQuest.startQuest.gil or 0
+	if quest then
+		parsed.quest = {}
+		if quest.start then
+			parsed.quest.start = {
+				progress = quest.start.progress,
+				gil = quest.start.gil or 0
 			}
 		end
-		if mainQuest.finishQuest then
-			parsed.mainQuest.finishQuest = {
-				id = mainQuest.finishQuest.id
+		if quest.finish then
+			parsed.quest.finish = {
+				progress = quest.finish.progress
 			}
 		end
 	end

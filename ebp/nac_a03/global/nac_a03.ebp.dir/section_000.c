@@ -1609,9 +1609,26 @@ actor Alchemist_Utility(0)
 
 	function SetTierMacros()
 	{
-		setmesmacro(0, 8, 0, refinement_tier1_attribute_value);
-		setmesmacro(0, 9, 0, refinement_tier2_attribute_value);
-		setmesmacro(0, 10, 0, refinement_tier3_attribute_value);
+		int local_tier1_abs;
+		int local_tier2_abs;
+		int local_tier3_abs;
+
+		local_tier1_abs = refinement_tier1_attribute_value;
+		if (local_tier1_abs < 0) {
+			local_tier1_abs = -local_tier1_abs;
+		}
+		local_tier2_abs = refinement_tier2_attribute_value;
+		if (local_tier2_abs < 0) {
+			local_tier2_abs = -local_tier2_abs;
+		}
+		local_tier3_abs = refinement_tier3_attribute_value;
+		if (local_tier3_abs < 0) {
+			local_tier3_abs = -local_tier3_abs;
+		}
+
+		setmesmacro(0, 8, 0, local_tier1_abs);
+		setmesmacro(0, 9, 0, local_tier2_abs);
+		setmesmacro(0, 10, 0, local_tier3_abs);
 		setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
 		setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
 		setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
@@ -1627,13 +1644,13 @@ actor Alchemist_Utility(0)
 		}
 
 		file_alchemist_tier_count = 0;
-		if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value > 0) {
+		if (quest_unlocked_tiers >= 1 && refinement_tier1_attribute_value != 0) {
 			file_alchemist_tier_count = file_alchemist_tier_count + 1;
 		}
-		if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value > 0) {
+		if (quest_unlocked_tiers >= 2 && refinement_tier2_attribute_value != 0) {
 			file_alchemist_tier_count = file_alchemist_tier_count + 1;
 		}
-		if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value > 0) {
+		if (quest_unlocked_tiers >= 3 && refinement_tier3_attribute_value != 0) {
 			file_alchemist_tier_count = file_alchemist_tier_count + 1;
 		}
 		file_alchemist_tier_count = file_alchemist_tier_count + 1;

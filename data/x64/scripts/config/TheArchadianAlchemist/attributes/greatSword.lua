@@ -20,17 +20,17 @@ local greatSword = {
     chargeTime = {
         [1] = {
             gil = 2761,
-            value = 5,
+            value = -5,
             items = {{8290, 1}, {8291, 1}, {8292, 1}}
         },
         [2] = {
             gil = 6902,
-            value = 8,
+            value = -8,
             items = {{8293, 2}, {8270, 2}, {8271, 2}}
         },
         [3] = {
             gil = 13805,
-            value = 12,
+            value = -12,
             items = {{8272, 3}, {8340, 3}, {8334, 3}}
         }
     },

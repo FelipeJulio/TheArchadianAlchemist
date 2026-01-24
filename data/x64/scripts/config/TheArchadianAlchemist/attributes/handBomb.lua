@@ -20,17 +20,17 @@ local handBomb = {
 	chargeTime = {
 		[1] = {
 			gil = 2771,
-			value = 3,
+			value = -3,
 			items = {{8290, 1}, {8291, 1}, {8292, 1}}
 		},
 		[2] = {
 			gil = 6927,
-			value = 3,
+			value = -3,
 			items = {{8293, 2}, {8270, 2}, {8271, 2}}
 		},
 		[3] = {
 			gil = 13855,
-			value = 4,
+			value = -4,
 			items = {{8272, 3}, {8340, 3}, {8334, 3}}
 		}
 	},

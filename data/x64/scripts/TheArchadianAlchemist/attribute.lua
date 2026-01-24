@@ -39,7 +39,7 @@ function attribute.set(base, addrs, tier, config)
 
 	local initial = (stateAttributes and stateAttributes.id == attributeId) and stateAttributes.initial or
 		                (equipment.read(equipmentId, "attribute", attributeId) or 0)
-	local total = attributeId == 11 and (initial - extraValue) or (initial + extraValue)
+	local total = initial + extraValue
 
 	equipment.write(equipmentId, "attribute", attributeId, total)
 	equipment.update(equipmentId, "attributes", {

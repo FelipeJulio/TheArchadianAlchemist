@@ -8,20 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [0.2.0-beta] - 2026-01-24
 
-## [0.2.0-beta] - 2026-01-23
-
-## [0.2.3-beta] - 2026-01-23
-
-## [0.2.2-beta] - 2026-01-23
-
-## [0.2.1-beta] - 2026-01-22
-
-## [0.2.0-beta] - 2026-01-21
+Code refactoring through the removal of unnecessary checks, improved validation, and simplification of code/logic.
 
 ## [0.1.1-beta] - 2026-01-17
 
-## [0.1.0-beta] - 2026-01-16
+Fixed an accidentally overwritten file.
 
 ## [0.1.0-beta] - 2026-01-16
 
-## [0.1.0-beta] - 2026-01-16
+Initial release.
