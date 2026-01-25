@@ -46,7 +46,7 @@ mappings.addresses = {
 	},
 	load = {
 		upgradeList = 0xA0,
-		equipmentList = 0xB0
+		blockList = 0xB0
 	}
 }
 
@@ -60,33 +60,33 @@ mappings.equipment = {
 	[7] = "bow",
 	[8] = "crossBow",
 	[9] = "gun",
-	[10] = "dagger",
-	[11] = "rod",
-	[12] = "staff",
-	[13] = "mace",
-	[14] = "axe",
-	[15] = "hammer",
-	[16] = "handBomb",
-	[17] = "measure",
-	[18] = "heavyArmor",
-	[19] = "lightArmor",
-	[20] = "mysticArmor",
+	[10] = "axe",
+	[11] = "hammer",
+	[12] = "dagger",
+	[13] = "rod",
+	[14] = "staff",
+	[15] = "mace",
+	[16] = "measure",
+	[17] = "handBomb",
+	[18] = "shield",
+	[19] = "lightHelm",
+	[20] = "mysticHelm",
 	[21] = "heavyHelm",
-	[22] = "lightHelm",
-	[23] = "mysticHelm",
-	[24] = "belt",
-	[25] = "boot",
+	[22] = "lightArmor",
+	[23] = "mysticArmor",
+	[24] = "heavyArmor",
+	[25] = "ring",
 	[26] = "bracelet",
-	[27] = "collar",
-	[28] = "crown",
-	[29] = "glove",
-	[30] = "pendant",
-	[31] = "ring",
-	[32] = "arrow",
-	[33] = "bolt",
-	[34] = "bomb",
+	[27] = "glove",
+	[28] = "collar",
+	[29] = "pendant",
+	[30] = "belt",
+	[31] = "boot",
+	[32] = "crown",
+	[33] = "arrow",
+	[34] = "bolt",
 	[35] = "shot",
-	[36] = "shield"
+	[36] = "bomb"
 }
 
 mappings.attribute = {

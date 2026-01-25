@@ -52,12 +52,12 @@ end
 
 function config.clearLookupCache() lookupCache = {} end
 
-function config.equipment(rawEquipment, categoryNameToId)
+function config.blocklist(rawBlocklist, categoryNameToId)
 	local parsed = {}
 
-	for categoryName, equipmentList in pairs(rawEquipment or {}) do
+	for categoryName, blockList in pairs(rawBlocklist or {}) do
 		local categoryId = categoryNameToId[categoryName]
-		if categoryId then parsed[categoryId] = equipmentList end
+		if categoryId then parsed[categoryId] = blockList end
 	end
 
 	return parsed
@@ -155,7 +155,7 @@ function config.parse(rawConfig)
 	local categoryNameToId, attributeNameToId, elementNameToId = config.lookup()
 
 	return {
-		equipment = config.equipment(rawConfig.equipment, categoryNameToId),
+		blocklist = config.blocklist(rawConfig.blocklist, categoryNameToId),
 		attributes = config.attribute(rawConfig.attributes, attributeNameToId),
 		elements = config.element(rawConfig.elements, elementNameToId),
 		questline = config.questline(rawConfig.questline, elementNameToId, attributeNameToId)

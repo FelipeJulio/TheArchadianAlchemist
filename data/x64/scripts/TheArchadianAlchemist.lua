@@ -17,7 +17,7 @@ local paths = {
 		controller = MODULE_BASE .. "/controller.lua"
 	},
 	config = {
-		equipment = CONFIG_BASE .. "/equipment.lua",
+		blocklist = CONFIG_BASE .. "/blocklist.lua",
 		element = CONFIG_BASE .. "/element.lua",
 		questline = CONFIG_BASE .. "/questline.lua",
 		attribute = {
@@ -30,33 +30,34 @@ local paths = {
 			[7] = CONFIG_BASE .. "/attributes/bow.lua",
 			[8] = CONFIG_BASE .. "/attributes/crossBow.lua",
 			[9] = CONFIG_BASE .. "/attributes/gun.lua",
-			[10] = CONFIG_BASE .. "/attributes/dagger.lua",
-			[11] = CONFIG_BASE .. "/attributes/rod.lua",
-			[12] = CONFIG_BASE .. "/attributes/staff.lua",
-			[13] = CONFIG_BASE .. "/attributes/mace.lua",
-			[14] = CONFIG_BASE .. "/attributes/axe.lua",
-			[15] = CONFIG_BASE .. "/attributes/hammer.lua",
-			[16] = CONFIG_BASE .. "/attributes/handBomb.lua",
-			[17] = CONFIG_BASE .. "/attributes/measure.lua",
-			[18] = CONFIG_BASE .. "/attributes/heavyArmor.lua",
-			[19] = CONFIG_BASE .. "/attributes/lightArmor.lua",
-			[20] = CONFIG_BASE .. "/attributes/mysticArmor.lua",
+			[10] = CONFIG_BASE .. "/attributes/axe.lua",
+			[11] = CONFIG_BASE .. "/attributes/hammer.lua",
+			[12] = CONFIG_BASE .. "/attributes/dagger.lua",
+			[13] = CONFIG_BASE .. "/attributes/rod.lua",
+			[14] = CONFIG_BASE .. "/attributes/staff.lua",
+			[15] = CONFIG_BASE .. "/attributes/mace.lua",
+			[16] = CONFIG_BASE .. "/attributes/measure.lua",
+			[17] = CONFIG_BASE .. "/attributes/handBomb.lua",
+			[18] = CONFIG_BASE .. "/attributes/shield.lua",
+			[19] = CONFIG_BASE .. "/attributes/lightHelm.lua",
+			[20] = CONFIG_BASE .. "/attributes/mysticHelm.lua",
 			[21] = CONFIG_BASE .. "/attributes/heavyHelm.lua",
-			[22] = CONFIG_BASE .. "/attributes/lightHelm.lua",
-			[23] = CONFIG_BASE .. "/attributes/mysticHelm.lua",
-			[24] = CONFIG_BASE .. "/attributes/belt.lua",
-			[25] = CONFIG_BASE .. "/attributes/boot.lua",
+			[22] = CONFIG_BASE .. "/attributes/lightArmor.lua",
+			[23] = CONFIG_BASE .. "/attributes/mysticArmor.lua",
+			[24] = CONFIG_BASE .. "/attributes/heavyArmor.lua",
+			[25] = CONFIG_BASE .. "/attributes/ring.lua",
 			[26] = CONFIG_BASE .. "/attributes/bracelet.lua",
-			[27] = CONFIG_BASE .. "/attributes/collar.lua",
-			[28] = CONFIG_BASE .. "/attributes/crown.lua",
-			[29] = CONFIG_BASE .. "/attributes/glove.lua",
-			[30] = CONFIG_BASE .. "/attributes/pendant.lua",
-			[31] = CONFIG_BASE .. "/attributes/ring.lua",
-			[32] = CONFIG_BASE .. "/attributes/arrow.lua",
-			[33] = CONFIG_BASE .. "/attributes/bolt.lua",
-			[34] = CONFIG_BASE .. "/attributes/bomb.lua",
+			[27] = CONFIG_BASE .. "/attributes/glove.lua",
+			[28] = CONFIG_BASE .. "/attributes/collar.lua",
+			[29] = CONFIG_BASE .. "/attributes/pendant.lua",
+			[30] = CONFIG_BASE .. "/attributes/belt.lua",
+			[31] = CONFIG_BASE .. "/attributes/boot.lua",
+			[32] = CONFIG_BASE .. "/attributes/crown.lua",
+			[33] = CONFIG_BASE .. "/attributes/arrow.lua",
+			[34] = CONFIG_BASE .. "/attributes/bolt.lua",
 			[35] = CONFIG_BASE .. "/attributes/shot.lua",
-			[36] = CONFIG_BASE .. "/attributes/shield.lua"
+			[36] = CONFIG_BASE .. "/attributes/bomb.lua"
+
 		}
 	},
 	watch = CONFIG_BASE .. "/*.lua"
@@ -184,7 +185,7 @@ function loader.file(path)
 end
 
 function loader.config()
-	local equipmentConfig = loader.file(paths.config.equipment) or {}
+	local blocklistConfig = loader.file(paths.config.blocklist) or {}
 	local elementConfig = loader.file(paths.config.element) or {}
 	local questlineConfig = loader.file(paths.config.questline) or {}
 
@@ -195,7 +196,7 @@ function loader.config()
 	end
 
 	local rawConfig = {
-		equipment = equipmentConfig,
+		blocklist = blocklistConfig,
 		attributes = attributeConfigs,
 		elements = elementConfig,
 		questline = questlineConfig

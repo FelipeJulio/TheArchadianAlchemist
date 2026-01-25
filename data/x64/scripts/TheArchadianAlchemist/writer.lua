@@ -66,7 +66,8 @@ function writer.dispatch(base, addrs, config)
 		mem.writeU16(base, addrs.refinement.tier3AttributeValue, 0)
 	end
 
-	if categoryId and categoryId ~= 0 then writer.equipment(base, addrs.load.equipmentList, categoryId, config) end
+	-- check this
+	if categoryId and categoryId ~= 0 then writer.blocklist(base, addrs.load.blockList, categoryId, config) end
 
 	if flowStatus == 3 then
 		if helpers.validateRange(tierId, constants.tierMin, constants.tierMax) then
@@ -91,16 +92,16 @@ function writer.dispatch(base, addrs, config)
 	return true
 end
 
-function writer.equipment(base, offset, categoryId, config)
-	local equipmentList = config.equipment[categoryId]
-	if not equipmentList then return false end
+function writer.blocklist(base, offset, categoryId, config)
+	local blockList = config.blocklist[categoryId]
+	if not blockList then return false end
 
 	local baseAddr = base + offset
 
-	mem.clear(base, offset, 62)
+	mem.clear(base, offset, 60)
 
-	local maxItems = math.min(#equipmentList, 31)
-	for i = 1, maxItems do mem.writeU16(baseAddr + ((i - 1) * 2), nil, equipmentList[i]) end
+	local maxItems = math.min(#blockList, 30)
+	for i = 1, maxItems do mem.writeU16(baseAddr + ((i - 1) * 2), nil, blockList[i]) end
 
 	return true
 end

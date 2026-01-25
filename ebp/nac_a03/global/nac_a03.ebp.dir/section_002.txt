@@ -794,7 +794,7 @@ Then, we shall refine its attributes.
 {item}{macro:27,0,1,0}{/item}
 {item}{macro:28,0,1,0}{/item}
 {item}{macro:29,0,1,0}{/item}
-{item}{macro:30,0,1,0}{/item}
+{item}{size:0,0}{macro:30,0,1,0}{size:10,10}{color:gold}Next.{color:none}{/item}
 {item}Back.{/item}
 {/choice}
 {/dialog}
