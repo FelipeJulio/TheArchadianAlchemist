@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0-beta] - 2026-01-25
+
+Added equipment loader via ebp
+Added equipment blocklist instead of equipment list, 
+Refactored code to handle blocklist,
+Added pagination
+
 ## [0.2.1-beta] - 2026-01-24
 
 Stability and reliability improvements
