@@ -1746,18 +1746,9 @@ actor Alchemist_Utility(0) {
 
     // @description: obtem base da section13
     local_section13_base = tim_memoryReadInt(local_bp_base + 0x38);
-    if (local_section13_base == 0) {
-      return;
-    }
-
-    // @description: le os dados da section13
-    local_entry_count = tim_memoryReadShort(local_section13_base + 0x04);
+    local_entry_count = tim_memoryReadInt(local_section13_base + 0x04);
     local_entry_size = tim_memoryReadShort(local_section13_base + 0x08);
     local_entries_ptr = tim_memoryReadInt(local_section13_base + 0x0C);
-
-    if (local_entry_count == 0 || local_entry_size == 0 || local_entries_ptr == 0) {
-      return;
-    }
 
     // @description: percorre todos os entries da section13
     // @description: calcula o address do entry atual
