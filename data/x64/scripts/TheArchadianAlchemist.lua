@@ -57,7 +57,6 @@ local paths = {
 			[34] = CONFIG_BASE .. "/attributes/bolt.lua",
 			[35] = CONFIG_BASE .. "/attributes/shot.lua",
 			[36] = CONFIG_BASE .. "/attributes/bomb.lua"
-
 		}
 	},
 	watch = CONFIG_BASE .. "/*.lua"

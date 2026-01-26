@@ -698,14 +698,14 @@ Then, we shall refine its attributes.
 {item}Bow{/item}
 {item}Crossbow{/item}
 {item}Gun{/item}
+{item}Axe{/item}
+{item}Hammer{/item}
 {item}Dagger{/item}
 {item}Rod{/item}
 {item}Staff{/item}
 {item}Mace{/item}
-{item}Axe{/item}
-{item}Hammer{/item}
-{item}Hand Bomb{/item}
 {item}Measure{/item}
+{item}Hand Bomb{/item}
 {item}Back.{/item}
 {item}Leave.{/item}
 {/choice}
@@ -714,9 +714,9 @@ Then, we shall refine its attributes.
 {dialog 85}
 {speed}What type of Armor?
 {choice}
-{item}Heavy Armor{/item}
 {item}Light Armor{/item}
 {item}Mystic Armor{/item}
+{item}Heavy Armor{/item}
 {item}Back.{/item}
 {item}Leave.{/item}
 {/choice}
@@ -725,9 +725,9 @@ Then, we shall refine its attributes.
 {dialog 86}
 {speed}What type of Helm?
 {choice}
-{item}Heavy Helm{/item}
 {item}Light Helm{/item}
 {item}Mystic Helm{/item}
+{item}Heavy Helm{/item}
 {item}Back.{/item}
 {item}Leave.{/item}
 {/choice}
@@ -736,14 +736,14 @@ Then, we shall refine its attributes.
 {dialog 87}
 {speed}What type of Accessory?
 {choice}
+{item}Ring{/item}
+{item}Bracelet{/item}
+{item}Glove{/item}
+{item}Collar{/item}
+{item}Pendant{/item}
 {item}Belt{/item}
 {item}Boot{/item}
-{item}Bracelet{/item}
-{item}Collar{/item}
 {item}Crown{/item}
-{item}Glove{/item}
-{item}Pendant{/item}
-{item}Ring{/item}
 {item}Back.{/item}
 {item}Leave.{/item}
 {/choice}
@@ -754,8 +754,8 @@ Then, we shall refine its attributes.
 {choice}
 {item}Arrow{/item}
 {item}Bolt{/item}
-{item}Bomb{/item}
 {item}Shot{/item}
+{item}Bomb{/item}
 {item}Back.{/item}
 {item}Leave.{/item}
 {/choice}
