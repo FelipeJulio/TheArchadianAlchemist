@@ -1605,6 +1605,8 @@ actor Alchemist_Utility(0) {
   }
 
   function SetTierMacros() {
+		flow_poll_mode = 2;
+		wait(8);
     int local_tier1_abs;
     int local_tier2_abs;
     int local_tier3_abs;
@@ -1628,6 +1630,7 @@ actor Alchemist_Utility(0) {
     setmesmacro(0, 11, 0, quest_unlocked_tiers >= 1);
     setmesmacro(0, 12, 0, quest_unlocked_tiers >= 2);
     setmesmacro(0, 13, 0, quest_unlocked_tiers >= 3);
+		flow_poll_mode = 1;
 
     if (quest_unlocked_tiers < 1 || refinement_tier1_attribute_value == 0) {
       setaskselectignore(0, 0);
@@ -1660,9 +1663,12 @@ actor Alchemist_Utility(0) {
   }
 
   function SetResultMacros() {
+		flow_poll_mode = 2;
+		wait(8);
     setmesmacro(0, 7, 1, selected_equipment_id);
     setmesmacro(0, 1, 0, refinement_default_attribute_value);
     setmesmacro(0, 2, 0, refinement_total_attribute_value);
+		flow_poll_mode = 1;
     return;
   }
 
@@ -1679,16 +1685,9 @@ actor Alchemist_Utility(0) {
     return;
   }
 
-  function TriggerLoadEquipment() {
-    flow_load_equipment = 1;
-    wait(16);
-    flow_load_equipment = 0;
-    return;
-  }
-
   function TriggerConfirmIntention() {
     flow_confirmed_intention = 1;
-    wait(16);
+    wait(8);
     flow_confirmed_intention = 0;
     return;
   }
@@ -1696,6 +1695,8 @@ actor Alchemist_Utility(0) {
   // @description: le a bpack section13, filtra pelo icon do equipamento selecionado e retorna
   // apenas o que existe no inventario colocando os ids validos em load_equipment_list
   function LoadEquipmentFromBpack() {
+		flow_poll_mode = 2;
+
     int local_bp_base;
     int local_section13_base;
     int local_entry_count;
@@ -1711,9 +1712,9 @@ actor Alchemist_Utility(0) {
     int local_skip;
     int local_total_valid_found;
 
-    // @description: chama os ids na blocklist do lua
+    flow_poll_mode = 2;
     flow_load_equipment = 1;
-    wait(16);
+    wait(8);
     flow_load_equipment = 0;
 
     local_available_count = 0;
@@ -1795,6 +1796,8 @@ actor Alchemist_Utility(0) {
         }
       }
     }
+		flow_poll_mode = 1;
+
 		return;
   }
 }
@@ -5287,6 +5290,100 @@ actor PC乗っ取り(6)
 	}
 }
 
+actor Workshop_Forge(6) {
+	// forge
+
+  function init() {
+    return;
+  }
+
+  function set() {
+    usemapid(0);
+    setpos(246.1000061, 25.20000076, 126.7300034);
+    dir(4.900000095);
+    bindp2_d4(6750213, 0, 0);
+    fetchambient_4e1(280.153412, 24.25, 133.651474);
+    setweight(-1);
+    usecharhit(0);
+    return;
+  }
+}
+
+
+actor Workshop_Shadow(6) {
+	// shadow
+
+  function init() {
+    return;
+  }
+
+  function set() {
+    usemapid(0);
+    setpos(251, 27, 125.8000031);
+    bindp2_d4(6750212, 0, 0);
+    setweight(-1);
+    usecharhit(0);
+    return;
+  }
+}
+
+actor Workshop_Box(6) {
+	// box
+
+  function init() {
+    return;
+  }
+
+  function set() {
+    usemapid(0);
+    setpos(250.3000031, 26.54999924, 124.0999985);
+    dir(2.700000048);
+		bindp2_d4(6750279, 0, 0);
+    fetchambient_4e1(280.153412, 24.25, 133.651474);
+    setweight(-1);
+    usecharhit(0);
+    return;
+  }
+}
+
+actor Workshop_Door(6) {
+	// door
+
+  function init() {
+    return;
+  }
+
+  function set() {
+    usemapid(0);
+    setpos(251.8999939, 24.29999924, 128);
+    dir(3.400000095);
+		bindp2_d4(6750303, 0, 0);
+    fetchambient_4e1(280.153412, 24.25, 133.651474);
+    setweight(-1);
+    usecharhit(0);
+    return;
+  }
+}
+
+actor Workshop_Supplies(6) {
+	// Supplies
+
+  function init() {
+    return;
+  }
+
+  function set() {
+    usemapid(0);
+    setpos(250.8000031, 26.52400017, 127.7399979);
+    dir(1.100000024);
+		bindp2_d4(6422542, 0, 0);
+    fetchambient_4e1(280.153412, 24.25, 133.651474);
+    setweight(-1);
+    usecharhit(0);
+    return;
+  }
+}
+
 actor NPC_Alchemist(6) {
   int stop_random_motion;
 	int random_move_head;
@@ -5329,15 +5426,12 @@ actor NPC_Alchemist(6) {
     stdmotionreadsync();
     stdmotionplay_2c2(0x01000000, 0);
 		motionloop(1);
-
     usemapid(0);
-    setpos(273.3, 24.2500038, 130.3);
-    dir(2.31438398);
+    setpos(253.6499939, 24.2500038, 125);
+    dir(1.799999952);
     setweight(-1);
     set_ignore_hitgroup(1);
     setoverheadicontype(1);
-    settalkradiusoffset(1.7, 1, -1);
-    talkradius(0.4);
     wait(1);
     fetchambient_4e1(280.153412, 24.25, 133.651474);
 
@@ -5414,7 +5508,7 @@ actor NPC_Alchemist(6) {
     // @description: dialog handler
     stop_random_motion = 1;
     flow_talk_status = 0;
-    flow_poll_mode = 0;
+    flow_poll_mode = 1;
     flow_selected_intention = 0;
     flow_confirmed_intention = 0;
     flow_reset_flow = 0;
@@ -5457,7 +5551,6 @@ actor NPC_Alchemist(6) {
 			goto cleanup;
 
     dialog_173:
-      flow_poll_mode = 2;
 			setmeswinline(0, 4);
 			askpos(0, 0, 1);
 			local_choice = aaske(0, 0x01000000 | 173);
@@ -5538,7 +5631,6 @@ actor NPC_Alchemist(6) {
 
     // @description: main menu
     dialog_79:
-      flow_poll_mode = 1;
 			if (notification_show_tier_message == 1) {
 				sysReqew(0, Alchemist_Utility::Notify);
 				notification_show_tier_message = 0;
@@ -5574,23 +5666,18 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_80:
-      flow_poll_mode = 1;
 			amese(0, 0x01000000 | 80);
 			messync(0, 1);
 			goto dialog_82;
 
 		dialog_81:
-			flow_poll_mode = 1;
 			amese(0, 0x01000000 | 81);
 			messync(0, 1);
 			goto dialog_83;
 
     // @description: element category selection
     dialog_82:
-      flow_poll_mode = 2;
 			selected_subcategory = 0;
-			flow_load_equipment = 0;
-
 			setmeswinline(0, 4);
 			askpos(0, 0, 1);
 			local_choice = aask(0, 0x01000000 | 82, 48, 0x03fe, 1);
@@ -5613,9 +5700,7 @@ actor NPC_Alchemist(6) {
 
     // @description: attribute category selection
     dialog_83:
-      flow_poll_mode = 2;
 			selected_subcategory = 0;
-			flow_load_equipment = 0;
 			setmeswinline(0, 6);
 			askpos(0, 0, 1);
 			local_choice = aask(0, 0x01000000 | 83, 48, 0x03fe, 1);
@@ -5646,9 +5731,7 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_84:
-      flow_poll_mode = 2;
 			selected_subcategory = 0;
-			flow_load_equipment = 0;
 			setmeswinline(0, 6);
 			askpos(0, 0, 1);
 			local_choice = aask(0, 0x01000000 | 84, 48, 0x03fe, 1);
@@ -5672,9 +5755,7 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_85:
-      flow_poll_mode = 2;
 			selected_subcategory = 0;
-			flow_load_equipment = 0;
 			setmeswinline(0, 5);
 			askpos(0, 0, 1);
 			local_choice = aask(0, 0x01000000 | 85, 48, 0x03fe, 1);
@@ -5698,9 +5779,7 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_86:
-      flow_poll_mode = 2;
 			selected_subcategory = 0;
-			flow_load_equipment = 0;
 			setmeswinline(0, 5);
 			askpos(0, 0, 1);
 			local_choice = aask(0, 0x01000000 | 86, 48, 0x03fe, 1);
@@ -5725,9 +5804,7 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_87:
-      flow_poll_mode = 2;
 			selected_subcategory = 0;
-			flow_load_equipment = 0;
 			setmeswinline(0, 5);
 			askpos(0, 0, 1);
 			local_choice = aask(0, 0x01000000 | 87, 48, 0x03fe, 1);
@@ -5752,9 +5829,7 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_88:
-      flow_poll_mode = 2;
 			selected_subcategory = 0;
-			flow_load_equipment = 0;
 			setmeswinline(0, 6);
 			askpos(0, 0, 1);
 			local_choice = aask(0, 0x01000000 | 88, 48, 0x03fe, 1);
@@ -5791,7 +5866,7 @@ actor NPC_Alchemist(6) {
 
     // @description: equipment list
     dialog_89:
-      flow_poll_mode = 2;
+		  selected_tier = 0;
       local_equipment_qtty = 0;
       for (local_i = 0; local_i < 30; local_i++) {
         if (load_equipment_list[local_i] != 0) {
@@ -5858,7 +5933,6 @@ actor NPC_Alchemist(6) {
 
     // @description: element selection
     dialog_92:
-      flow_poll_mode = 2;
 			local_macro_id[0] = 14;
 			local_macro_id[1] = 15;
 			local_macro_id[2] = 16;
@@ -5931,7 +6005,6 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_93:
-      flow_poll_mode = 2;
 			selected_subcategory = 1;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
@@ -6363,7 +6436,6 @@ actor NPC_Alchemist(6) {
 
     // @description: no element to remove
     dialog_170:
-      flow_poll_mode = 2;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			setmesmacro(0, 7, 1, selected_equipment_id);
 			setmeswinline(0, 4);
@@ -6379,7 +6451,6 @@ actor NPC_Alchemist(6) {
 
     // @description: no attribute to remove
     dialog_171:
-      flow_poll_mode = 2;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			setmesmacro(0, 7, 1, selected_equipment_id);
 			setmeswinline(0, 4);
@@ -6395,7 +6466,6 @@ actor NPC_Alchemist(6) {
 
     // @description: alchemy animation
     dialog_112:
-      flow_poll_mode = 1;
 			amese(0, 0x01000000 | 112);
 			messync(0, 1);
 			sebsoundplay(0, 38);
@@ -6440,7 +6510,6 @@ actor NPC_Alchemist(6) {
 
     // @description: not enough items
     dialog_102:
-      flow_poll_mode = 1;
 			setmeswinline(0, 4);
 			askpos(0, 0, 1);
 			gillwinclose();
@@ -6579,9 +6648,10 @@ actor NPC_Alchemist(6) {
 				sysReqew(0, Alchemist_Utility::TriggerConfirmIntention);
 				goto dialog_90;
 			}
-			// @description: back to attribute menu
-			return_to_attribute_menu:
-				gillwinclose();
+
+		// @description: back to attribute menu
+		return_to_attribute_menu:
+			gillwinclose();
 			selected_subcategory = 0;
 			selected_tier = 0;
 			if (selected_category >= 1 && selected_category <= 17) {
@@ -6598,7 +6668,6 @@ actor NPC_Alchemist(6) {
 
     // @description: weapon attributes menu
     dialog_113:
-      flow_poll_mode = 2;
 			local_macro_id[0] = 22;
 			local_macro_id[1] = 23;
 			local_macro_id[2] = 24;
@@ -6731,7 +6800,6 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_114:
-      flow_poll_mode = 2;
 			local_macro_id[0] = 29;
 			local_macro_id[1] = 30;
 			local_macro_id[2] = 33;
@@ -6825,7 +6893,6 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_115:
-      flow_poll_mode = 2;
 			local_macro_id[0] = 31;
 			local_macro_id[1] = 32;
 			local_macro_id[2] = 33;
@@ -6919,7 +6986,6 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_116:
-      flow_poll_mode = 2;
 			local_macro_id[0] = 24;
 			local_macro_id[1] = 28;
 			local_macro_id[2] = 25;
@@ -7020,7 +7086,6 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_117:
-      flow_poll_mode = 2;
 			selected_subcategory = 10;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7036,7 +7101,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_118:
-      flow_poll_mode = 2;
 			selected_subcategory = 11;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7052,7 +7116,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_119:
-      flow_poll_mode = 2;
 			selected_subcategory = 12;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7068,7 +7131,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_120:
-      flow_poll_mode = 2;
 			selected_subcategory = 13;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7084,7 +7146,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_121:
-      flow_poll_mode = 2;
 			selected_subcategory = 14;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7100,7 +7161,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_122:
-      flow_poll_mode = 2;
 			selected_subcategory = 15;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7116,7 +7176,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_123:
-      flow_poll_mode = 2;
 			selected_subcategory = 16;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7132,7 +7191,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_124:
-      flow_poll_mode = 2;
 			selected_subcategory = 17;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7148,7 +7206,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_125:
-      flow_poll_mode = 2;
 			selected_subcategory = 18;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7164,7 +7221,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_126:
-      flow_poll_mode = 2;
 			selected_subcategory = 19;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7180,7 +7236,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_127:
-      flow_poll_mode = 2;
 			selected_subcategory = 20;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7196,7 +7251,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_128:
-      flow_poll_mode = 2;
 			selected_subcategory = 21;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7212,7 +7266,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_129:
-      flow_poll_mode = 2;
 			selected_subcategory = 22;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7228,7 +7281,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_130:
-      flow_poll_mode = 2;
 			selected_subcategory = 23;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7244,7 +7296,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_131:
-      flow_poll_mode = 2;
 			selected_subcategory = 24;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7261,7 +7312,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_132:
-      flow_poll_mode = 2;
 			selected_subcategory = 25;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7277,7 +7327,6 @@ actor NPC_Alchemist(6) {
 			goto check_attribute_before_apply;
 
     dialog_133:
-      flow_poll_mode = 2;
 			selected_subcategory = 26;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetTierMacros);
@@ -7320,7 +7369,6 @@ actor NPC_Alchemist(6) {
 
     // @description: tier 1 confirmation
     dialog_134:
-      flow_poll_mode = 2;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
 			setmeswinline(0, 4);
@@ -7407,7 +7455,7 @@ actor NPC_Alchemist(6) {
 
 			// @description: remove attribute
 			dialog_137:
-				flow_poll_mode = 2;
+
 				selected_subcategory = 9;
 				sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 				sysReqew(0, Alchemist_Utility::SetUpgradeMacros);
@@ -7473,7 +7521,6 @@ actor NPC_Alchemist(6) {
 			}
 
     dialog_138:
-      flow_poll_mode = 2;
 			sysReqew(0, Alchemist_Utility::SetResultMacros);
 			setmeswinline(0, 4);
 			askpos(0, 0, 1);
@@ -7713,7 +7760,6 @@ actor NPC_Alchemist(6) {
 
     // @description: tier 1 overwrite
     dialog_156:
-      flow_poll_mode = 2;
 			sysReqew(0, Alchemist_Utility::LoadEquipmentFromBpack);
 			setmesmacro(0, 1, 0, refinement_default_attribute_value);
 			setmesmacro(0, 2, 0, refinement_total_attribute_value);
@@ -7786,7 +7832,6 @@ actor NPC_Alchemist(6) {
 
     // @description: tier 1 animation
     dialog_167:
-      flow_poll_mode = 1;
 			sebsoundplay(0, 39);
 			amese(0, 0x01000000 | 168);
 			messync(0, 1);
@@ -7796,7 +7841,6 @@ actor NPC_Alchemist(6) {
 
     // @description: tier 2 animation
     dialog_168:
-      flow_poll_mode = 1;
 			sebsoundplay(0, 39);
 			amese(0, 0x01000000 | 169);
 			messync(0, 1);
@@ -7806,7 +7850,6 @@ actor NPC_Alchemist(6) {
 
     // @description: tier 3 animation
     dialog_169:
-      flow_poll_mode = 1;
 			sebsoundplay(0, 39);
 			amese(0, 0x01000000 | 170);
 			messync(0, 1);
@@ -7816,7 +7859,6 @@ actor NPC_Alchemist(6) {
 
     // @description: exit message
     dialog_90:
-      flow_poll_mode = 1;
 			amese(0, 0x01000000 | 90);
 			messync(0, 1);
 			goto cleanup;
@@ -7825,6 +7867,7 @@ actor NPC_Alchemist(6) {
     cleanup:
 			stop_random_motion = 0;
       flow_talk_status = 0;
+			flow_poll_mode = 0;
 			flow_selected_intention = 0;
 			flow_confirmed_intention = 0;
 			flow_reset_flow = 0;
@@ -8928,7 +8971,12 @@ reqa   reqArr0[] = {
 	NAC_A03_NPC01::set,
 	NAC_A03_NPC02::set,
 	NAC_A03_NPC03::set,
-	NPC_Alchemist::set
+	NPC_Alchemist::set,
+	Workshop_Forge::set,
+	Workshop_Shadow::set,
+	Workshop_Box::set,
+	Workshop_Door::set,
+	Workshop_Supplies::set
 };
 
 reqa   reqArr1[] = {
